@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build output
+dist/
+**/dist/
+
+# Agent & IDE Tooling
+.agent-grid/
+.agents/
+.claude/
+.cursor/
+.impeccable/
+
+# Local Settings
+*.local.json
+
+# Large Media Assets (Videos)
+content/herovideos/*.mp4
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
