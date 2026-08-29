@@ -73,8 +73,7 @@ export default function CountUp({ to, duration = 1.2, delay = 0, className = '' 
       animate={inView ? { opacity: 1 } : { opacity: 0 }}
       transition={{ duration: 0.4, delay }}
     >
-      {formatted}
-      {suffix}
+      {num === 0 ? formatted : `${formatted}${suffix}`}
     </motion.span>
   );
 }
