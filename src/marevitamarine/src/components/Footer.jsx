@@ -69,7 +69,7 @@ export default function Footer() {
               <li className="flex items-start space-x-2">
                 <MapPin className="h-5 w-5 text-gray-400 flex-shrink-0 mt-0.5" />
                 <span className="text-sm text-gray-400">
-                  Mumbai, India
+                  Kerala, India
                 </span>
               </li>
             </ul>
