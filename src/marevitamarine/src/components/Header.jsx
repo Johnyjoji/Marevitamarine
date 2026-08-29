@@ -216,7 +216,9 @@ export default function Header() {
                 exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
                 transition={{ type: 'spring', damping: 18, stiffness: 300 }}
               >
+              {isExpanded && (
                 <Menu className="h-[18px] w-[18px]" strokeWidth={2.25} />
+              )}
               </motion.div>
             )}
           </AnimatePresence>
@@ -233,7 +235,7 @@ export default function Header() {
             transition={{ type: 'spring', damping: 22, stiffness: 280, duration: 0.3 }}
             className="md:hidden mt-2 mx-auto max-w-7xl px-4 sm:px-6 rounded-3xl border border-black/5 bg-white/95 backdrop-blur-xl shadow-[0_18px_40px_-12px_rgba(15,23,42,0.18)] p-2 pointer-events-auto overflow-hidden z-50"
           >
-            <nav aria-label="Mobile" className="flex flex-col">
+            <nav aria-label="Mobile" className="flex flex-col p-3 items-center justify-center gap-3">
               {NAV.map((item, i) => (
                 <motion.div
                   key={item.name}
