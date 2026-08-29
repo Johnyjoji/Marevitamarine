@@ -1,5 +1,5 @@
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Menu, Navigation } from 'lucide-react';
+import { Menu, X, Navigation } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence, useMotionValueEvent } from 'framer-motion';
 import { useHeroScroll } from '../context/HeroScrollContext';
@@ -61,7 +61,7 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed inset-x-0 top-4 sm:top-6 z-50 px-4 sm:px-6 pointer-events-none">
+    <header className="fixed inset-x-0 top-4 sm:top-6 z-50 px-4 sm:px-6">
       <motion.nav
         initial={false}
         animate={{
@@ -75,7 +75,7 @@ export default function Header() {
           isExpanded
             ? 'shadow-[0_10px_40px_-12px_rgba(15,23,42,0.22),0_2px_8px_-2px_rgba(15,23,42,0.06)]'
             : 'shadow-[0_8px_28px_-12px_rgba(15,23,42,0.18),0_2px_6px_-2px_rgba(15,23,42,0.08)]'
-        } pointer-events-auto`}
+        }`}
       >
         {/* Logo with name - expanded state */}
         <AnimatePresence initial={false}>
@@ -186,44 +186,80 @@ export default function Header() {
         </AnimatePresence>
 
         {/* Mobile menu toggle (always visible on small screens) */}
-        <button
+        <motion.button
           type="button"
           onClick={(e) => {
             e.stopPropagation();
             setMobileMenuOpen((v) => !v);
           }}
+          whileTap={{ scale: 0.9 }}
           className="md:hidden ml-auto mr-2 inline-flex items-center justify-center h-9 w-9 rounded-full bg-navy-50 text-navy-900 hover:bg-navy-100 transition-colors"
           aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={mobileMenuOpen}
         >
-          {isExpanded && (
-           <Menu className="h-[18px] w-[18px]" strokeWidth={2.25} />
-          )}
-        </button>
+          <AnimatePresence mode="wait">
+            {mobileMenuOpen ? (
+              <motion.div
+                key="close"
+                initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                transition={{ type: 'spring', damping: 18, stiffness: 300 }}
+              >
+                <X className="h-[18px] w-[18px]" strokeWidth={2.25} />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="menu"
+                initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                transition={{ type: 'spring', damping: 18, stiffness: 300 }}
+              >
+                <Menu className="h-[18px] w-[18px]" strokeWidth={2.25} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.button>
       </motion.nav>
 
-      {/* Mobile sheet */}
-      {mobileMenuOpen && (
-        <div className="md:hidden mt-2 mx-auto max-w-7xl rounded-3xl border border-black/5 bg-white/95 backdrop-blur-xl shadow-[0_18px_40px_-12px_rgba(15,23,42,0.18)] p-2 pointer-events-auto">
-          <nav aria-label="Mobile" className="flex flex-col">
-            {NAV.map((item) => (
-              <NavLink
-                key={item.name}
-                to={item.href}
-                className={({ isActive }) =>
-                  `rounded-2xl px-4 py-3 text-sm font-medium transition-colors ${
-                    isActive
-                      ? 'bg-marine-50 text-marine-700'
-                      : 'text-navy-800 hover:bg-navy-50'
-                  }`
-                }
-              >
-                {item.name}
-              </NavLink>
-            ))}
-          </nav>
-        </div>
-      )}
+      {/* Mobile sheet — animated slide (outside nav so it's not clipped) */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -16, height: 0 }}
+            animate={{ opacity: 1, y: 0, height: 'auto' }}
+            exit={{ opacity: 0, y: -16, height: 0 }}
+            transition={{ type: 'spring', damping: 22, stiffness: 280, duration: 0.3 }}
+            className="md:hidden mt-2 mx-auto max-w-7xl px-4 sm:px-6 rounded-3xl border border-black/5 bg-white/95 backdrop-blur-xl shadow-[0_18px_40px_-12px_rgba(15,23,42,0.18)] p-2 pointer-events-auto overflow-hidden z-50"
+          >
+            <nav aria-label="Mobile" className="flex flex-col">
+              {NAV.map((item, i) => (
+                <motion.div
+                  key={item.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ type: 'spring', damping: 18, stiffness: 280, delay: 0.05 + i * 0.04 }}
+                >
+                  <NavLink
+                    to={item.href}
+                    className={({ isActive }) =>
+                      `rounded-2xl px-4 py-3 text-sm font-medium transition-colors ${
+                        isActive
+                          ? 'bg-marine-50 text-marine-700'
+                          : 'text-navy-800 hover:bg-navy-50'
+                      }`
+                    }
+                  >
+                    {item.name}
+                  </NavLink>
+                </motion.div>
+              ))}
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
