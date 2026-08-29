@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import SectionDivider from '../components/SectionDivider';
 import HeroVideoCarousel, { HeroText } from '../components/HeroVideoCarousel';
+import CountUp from '../components/CountUp';
 import { useHeroScroll } from '../context/HeroScrollContext';
 
 /**
@@ -98,7 +99,7 @@ function HeroComposition({ scene }) {
         </motion.p>
       </AnimatePresence>
 
-      {/* Single primary CTA per scene */}
+      {/* Single primary CTA per scene — spring hover/tap for a premium tactile feel */}
       <AnimatePresence mode="wait">
         <motion.div
           key={scene.id + '-cta'}
@@ -108,15 +109,33 @@ function HeroComposition({ scene }) {
           transition={{ duration: 0.5, delay: 0.4, ease: 'easeOut' }}
           className="mt-4"
         >
-          <Link
-            to={scene.cta.href}
-            className="group inline-flex items-center gap-3 rounded-full bg-marine-500 hover:bg-marine-400 pl-5 pr-3 py-3 text-sm text-white shadow-2xl shadow-marine-950/50 hover:shadow-marine-500/40 hover:-translate-y-0.5 transition-all"
+          <motion.div
+            whileHover={{ y: -2, scale: 1.02 }}
+            whileTap={{ scale: 0.97, y: 0 }}
+            transition={{ type: 'spring', damping: 18, stiffness: 320 }}
+            className="inline-block"
           >
-            {scene.cta.label}
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15 group-hover:bg-white/25 transition-colors">
-              <ArrowRight className="h-4 w-4" />
-            </span>
-          </Link>
+            <Link
+              to={scene.cta.href}
+              className="group inline-flex items-center gap-3 rounded-full bg-marine-500 pl-5 pr-3 py-3 text-sm text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 hover:shadow-marine-500/40 transition-colors"
+            >
+              {scene.cta.label}
+              <motion.span
+                className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15"
+                // Inner chevron glides on hover
+                whileHover={{ backgroundColor: 'rgba(255,255,255,0.25)' }}
+              >
+                <motion.span
+                  className="inline-flex"
+                  initial={{ x: 0 }}
+                  whileHover={{ x: 3 }}
+                  transition={{ type: 'spring', damping: 18, stiffness: 320 }}
+                >
+                  <ArrowRight className="h-4 w-4" />
+                </motion.span>
+              </motion.span>
+            </Link>
+          </motion.div>
         </motion.div>
       </AnimatePresence>
     </div>
@@ -131,10 +150,16 @@ function HeroComposition({ scene }) {
 function CaseStudyCard({ kind, name, meta, fact, href, index }) {
   return (
     <motion.article
-      initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      // Stagger + slight scale-down "settle" — feels like editorial covers being
+      // placed rather than boxes fading in. Keeps the section premium.
+      initial={{ opacity: 0, y: 40, scale: 1.02 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.7, delay: index * 0.12, ease: [0.2, 0.65, 0.3, 0.9] }}
+      transition={{
+        duration: 0.7,
+        delay: index * 0.14,
+        ease: [0.2, 0.65, 0.3, 0.9],
+      }}
       className="group relative overflow-hidden rounded-sm bg-navy-950 text-white aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5]"
     >
       <CaseStudyIllustration kind={kind} />
@@ -417,11 +442,11 @@ function HomeContent() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.2 }}
+                transition={{ duration: 0.5, delay: i * 0.15 }}
                 className="text-left"
               >
                 <div className="text-5xl lg:text-6xl font-extrabold text-marine-400 leading-none">
-                  {stat.value}
+                  <CountUp to={stat.value} delay={0.1 + i * 0.12} duration={1.1} />
                 </div>
                 <div className="mt-3 text-sm font-semibold uppercase tracking-wider text-white">
                   {stat.label}
@@ -501,15 +526,32 @@ function HomeContent() {
               Tell us about your fleet, your voyage, your next challenge. We respond within one business day, with a named point of contact.
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <Link
-                to="/contact"
-                className="group inline-flex items-center gap-3 rounded-full bg-marine-500 hover:bg-marine-400 pl-7 pr-5 py-4 text-sm font-semibold text-white shadow-2xl shadow-marine-950/50 hover:shadow-marine-500/40 hover:-translate-y-0.5 transition-all"
+              <motion.div
+                whileHover={{ y: -2, scale: 1.02 }}
+                whileTap={{ scale: 0.97, y: 0 }}
+                transition={{ type: 'spring', damping: 18, stiffness: 320 }}
+                className="inline-block"
               >
-                Request a quote
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15 group-hover:bg-white/25 transition-colors">
-                  <ArrowRight className="h-4 w-4" />
-                </span>
-              </Link>
+                <Link
+                  to="/contact"
+                  className="group inline-flex items-center gap-3 rounded-full bg-marine-500 pl-7 pr-5 py-4 text-sm font-semibold text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 hover:shadow-marine-500/40 transition-colors"
+                >
+                  Request a quote
+                  <motion.span
+                    className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15"
+                    whileHover={{ backgroundColor: 'rgba(255,255,255,0.25)' }}
+                  >
+                    <motion.span
+                      className="inline-flex"
+                      initial={{ x: 0 }}
+                      whileHover={{ x: 3 }}
+                      transition={{ type: 'spring', damping: 18, stiffness: 320 }}
+                    >
+                      <ArrowRight className="h-4 w-4" />
+                    </motion.span>
+                  </motion.span>
+                </Link>
+              </motion.div>
             </div>
             <p className="mt-6 text-xs text-navy-400 font-mono tracking-widest uppercase">
               24 / 7 · operations@marevitamarine.com
