@@ -25,3 +25,7 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Extensions
+kickbacks-v2.vsix
+palette-comparison.html
