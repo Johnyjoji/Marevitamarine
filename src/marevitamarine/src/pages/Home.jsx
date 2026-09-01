@@ -14,6 +14,17 @@ import SectionDivider from '../components/SectionDivider';
 import HeroVideoCarousel, { HeroText } from '../components/HeroVideoCarousel';
 import CountUp from '../components/CountUp';
 import { useHeroScroll } from '../context/HeroScrollContext';
+import {
+  TrigParallax,
+  TrigReveal,
+  TrigFloating,
+  TrigWaveDivider,
+  TrigScrollRotate,
+  TrigScaleReveal,
+  TrigScrollIndicator,
+  TrigBackgroundWave,
+  TrigSectionWrapper,
+} from '../components/TrigScrollAnimations';
 
 /**
  * Per-scene layout: where the typography sits inside the safe band.
@@ -339,6 +350,19 @@ function CaseStudyIllustration({ kind }) {
   return null;
 }
 
+/**
+ * DecorativeIcon - Floating decorative icon with trig-based scroll rotation
+ */
+function DecorativeIcon({ Icon, className, style, amplitude = 20, period = 5000, rotateStrength = 8 }) {
+  return (
+    <TrigScrollRotate maxDegrees={rotateStrength} easing="organic" className={className} style={style}>
+      <TrigFloating amplitude={amplitude} period={period}>
+        <Icon className="w-full h-full" strokeWidth={1} />
+      </TrigFloating>
+    </TrigScrollRotate>
+  );
+}
+
 function HomeContent() {
   const { heroRef } = useHeroScroll();
   const caseStudies = [
@@ -393,6 +417,22 @@ function HomeContent() {
 
   return (
     <div>
+      {/* Scroll progress indicator — uses sine wave for subtle lateral drift */}
+      <TrigScrollIndicator color="#0ea5e9" height={3} />
+
+      {/* Decorative floating icons in the hero zone */}
+      <TrigFloating amplitude={15} period={6000} className="fixed top-1/3 left-8 w-8 h-8 text-marine-400/20 pointer-events-none z-0 hidden lg:block">
+        <Anchor className="w-full h-full" strokeWidth={1} />
+      </TrigFloating>
+      <TrigFloating amplitude={20} period={7000} horizontal horizontalAmplitude={10} className="fixed top-2/3 right-12 w-10 h-10 text-marine-400/15 pointer-events-none z-0 hidden lg:block">
+        <Waves className="w-full h-full" strokeWidth={1} />
+      </TrigFloating>
+      <TrigScrollRotate maxDegrees={10} easing="organic" className="fixed top-1/2 right-1/4 w-6 h-6 text-marine-400/20 pointer-events-none z-0 hidden lg:block">
+        <TrigFloating amplitude={12} period={5500} horizontal>
+          <Compass className="w-full h-full" strokeWidth={1} />
+        </TrigFloating>
+      </TrigScrollRotate>
+
       {/* ===================== HERO with per-scene compositions ===================== */}
       <HeroVideoCarousel ref={heroRef}>
         {({ scene }) => (
@@ -402,23 +442,48 @@ function HomeContent() {
         )}
       </HeroVideoCarousel>
 
-      {/* Wavy divider: hero (dark) → white */}
-      <SectionDivider type="deep" fromColor="#0f172a" toColor="white" height={140} />
+      {/* Animated wave divider: hero (dark) → white — pulses with scroll */}
+      <TrigWaveDivider
+        fromColor="#0f172a"
+        toColor="white"
+        height={140}
+        baseFrequency={1.5}
+        frequencyRange={0.8}
+        baseAmplitude={35}
+        amplitudeRange={15}
+        phaseSpeed={0.4}
+      />
 
       {/* ===================== CASE STUDIES (White) ===================== */}
-      <section className="bg-white text-navy-900">
-        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32">
+      <section className="bg-white text-navy-900 relative overflow-hidden">
+        {/* Subtle background wave */}
+        <TrigBackgroundWave
+          className="opacity-30"
+          baseColor="rgba(14, 165, 233, 0.04)"
+          amplitude={30}
+          frequency={0.3}
+          speed={0.0002}
+          layerCount={2}
+        />
+
+        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
           <div className="max-w-3xl mb-16">
-            <span className="text-sm font-semibold tracking-[0.2em] uppercase text-marine-600">
-              Selected work
-            </span>
-            <h2 className="mt-4 text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
-              Three vessels, one harbor, one watch.
-              <span className="text-marine-500"> Right now, today.</span>
-            </h2>
-            <p className="mt-6 text-lg text-navy-600 max-w-2xl">
-              We don't sell services — we run voyages. Three recent operations, the kind that go right because every moving part was owned by one accountable team.
-            </p>
+            <TrigReveal direction="up" amplitude={20} duration={0.7}>
+              <span className="text-sm font-semibold tracking-[0.2em] uppercase text-marine-600">
+                Selected work
+              </span>
+            </TrigReveal>
+            <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
+              <h2 className="mt-4 text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
+                Three vessels, one harbor, one watch.
+                <span className="text-marine-500"> Right now, today.</span>
+              </h2>
+            </TrigReveal>
+            <TrigReveal direction="up" amplitude={20} delay={0.2} duration={0.7}>
+              <p className="mt-6 text-lg text-navy-600 max-w-2xl">
+                We don't sell services — we run voyages. Three recent operations, the kind that go right because every moving part was owned by one accountable team.
+              </p>
+            </TrigReveal>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
@@ -429,12 +494,29 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Wavy divider: white → black */}
-      <SectionDivider type="rugged" fromColor="white" toColor="#0f172a" height={140} />
+      {/* Animated wave divider: white → black */}
+      <TrigWaveDivider
+        fromColor="white"
+        toColor="#0f172a"
+        height={140}
+        baseFrequency={2.2}
+        frequencyRange={1}
+        baseAmplitude={40}
+        amplitudeRange={20}
+        phaseSpeed={0.5}
+      />
 
       {/* ===================== STATS (Black) — provenanced ===================== */}
-      <section className="bg-navy-900 text-white">
-        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+      <section className="bg-navy-900 text-white relative overflow-hidden">
+        {/* Subtle parallax decorative element */}
+        <TrigParallax strength={-40} easing="organic" className="absolute top-10 right-10 w-32 h-32 text-marine-400/10 pointer-events-none">
+          <Compass className="w-full h-full" strokeWidth={0.5} />
+        </TrigParallax>
+        <TrigParallax strength={30} easing="sine" className="absolute bottom-10 left-10 w-24 h-24 text-marine-400/8 pointer-events-none">
+          <Anchor className="w-full h-full" strokeWidth={0.5} />
+        </TrigParallax>
+
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8 relative z-10">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-6">
             {stats.map((stat, i) => (
               <motion.div
@@ -460,71 +542,125 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Wavy divider: black → white */}
-      <SectionDivider type="coast" fromColor="#0f172a" toColor="white" height={140} />
+      {/* Animated wave divider: black → white */}
+      <TrigWaveDivider
+        fromColor="#0f172a"
+        toColor="white"
+        height={140}
+        baseFrequency={1.8}
+        frequencyRange={0.7}
+        baseAmplitude={30}
+        amplitudeRange={18}
+        phaseSpeed={0.45}
+      />
 
       {/* ===================== WHY CHOOSE US (White) ===================== */}
-      <section className="bg-white text-navy-900">
-        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32">
+      <section className="bg-white text-navy-900 relative overflow-hidden">
+        <TrigBackgroundWave
+          className="opacity-40"
+          baseColor="rgba(14, 165, 233, 0.03)"
+          amplitude={25}
+          frequency={0.4}
+          speed={0.00025}
+          layerCount={2}
+        />
+
+        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
-            <div>
-              <span className="text-sm font-semibold tracking-[0.2em] uppercase text-marine-600">
-                Why owners stay
-              </span>
-              <h2 className="mt-4 text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
-                Four reasons operators sign long.
-              </h2>
-              <p className="mt-6 text-lg text-navy-600 max-w-xl">
-                The maritime industry doesn't reward novelty. It rewards the quiet, methodical, never-anything-went-wrong kind of service. That's what we sell.
-              </p>
-            </div>
+            <TrigParallax strength={-20} easing="sine">
+              <div>
+                <TrigReveal direction="left" amplitude={20} duration={0.6}>
+                  <span className="text-sm font-semibold tracking-[0.2em] uppercase text-marine-600">
+                    Why owners stay
+                  </span>
+                </TrigReveal>
+                <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
+                  <h2 className="mt-4 text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
+                    Four reasons operators sign long.
+                  </h2>
+                </TrigReveal>
+                <TrigReveal direction="up" amplitude={20} delay={0.2} duration={0.7}>
+                  <p className="mt-6 text-lg text-navy-600 max-w-xl">
+                    The maritime industry doesn't reward novelty. It rewards the quiet, methodical, never-anything-went-wrong kind of service. That's what we sell.
+                  </p>
+                </TrigReveal>
+              </div>
+            </TrigParallax>
 
             <div className="space-y-8">
               {differentiators.map((item, i) => (
-                <motion.div
+                <TrigReveal
                   key={item.title}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.5, delay: i * 0.2 }}
-                  className="flex gap-5"
+                  direction="right"
+                  amplitude={25}
+                  delay={i * 0.1}
+                  duration={0.6}
                 >
-                  <div className="flex-shrink-0">
-                    <CheckCircle2 className="h-7 w-7 text-marine-500" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold">{item.title}</h3>
-                    <p className="mt-2 text-navy-600 leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
-                </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 0.5, delay: i * 0.2 }}
+                    className="flex gap-5"
+                  >
+                    <div className="flex-shrink-0">
+                      <CheckCircle2 className="h-7 w-7 text-marine-500" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold">{item.title}</h3>
+                      <p className="mt-2 text-navy-600 leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                </TrigReveal>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Wavy divider: white → black */}
-      <SectionDivider type="ripple" fromColor="white" toColor="#0f172a" height={120} />
+      {/* Animated wave divider: white → black */}
+      <TrigWaveDivider
+        fromColor="white"
+        toColor="#0f172a"
+        height={120}
+        baseFrequency={2}
+        frequencyRange={0.6}
+        baseAmplitude={25}
+        amplitudeRange={12}
+        phaseSpeed={0.4}
+      />
 
       {/* ===================== CTA (Black) ===================== */}
-      <section className="bg-navy-900 text-white">
-        <div className="mx-auto max-w-4xl px-6 py-24 lg:px-8 lg:py-32 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+      <section className="bg-navy-900 text-white relative overflow-hidden">
+        {/* Floating decorative shapes */}
+        <TrigFloating amplitude={25} period={8000} className="absolute top-20 left-20 w-16 h-16 text-marine-400/10 pointer-events-none">
+          <Ship className="w-full h-full" strokeWidth={0.5} />
+        </TrigFloating>
+        <TrigFloating amplitude={20} period={6500} horizontal horizontalAmplitude={15} className="absolute bottom-32 right-32 w-20 h-20 text-marine-400/8 pointer-events-none">
+          <Waves className="w-full h-full" strokeWidth={0.5} />
+        </TrigFloating>
+        <TrigScrollRotate maxDegrees={15} easing="organic" className="absolute top-1/2 left-1/3 w-12 h-12 text-marine-400/10 pointer-events-none">
+          <TrigFloating amplitude={15} period={7000} horizontal>
+            <Compass className="w-full h-full" strokeWidth={0.5} />
+          </TrigFloating>
+        </TrigScrollRotate>
+
+        <div className="mx-auto max-w-4xl px-6 py-24 lg:px-8 lg:py-32 text-center relative z-10">
+          <TrigReveal direction="up" amplitude={30} duration={0.8}>
             <h2 className="mt-6 text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
               One accountable team.
               <br />
               From the pilot to the port.
             </h2>
+          </TrigReveal>
+          <TrigReveal direction="up" amplitude={20} delay={0.15} duration={0.7}>
             <p className="mt-6 text-lg text-navy-200 max-w-2xl mx-auto">
               Tell us about your fleet, your voyage, your next challenge. We respond within one business day, with a named point of contact.
             </p>
+          </TrigReveal>
+          <TrigReveal direction="up" amplitude={20} delay={0.3} duration={0.7}>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <motion.div
                 whileHover={{ y: -2, scale: 1.02 }}
@@ -553,10 +689,12 @@ function HomeContent() {
                 </Link>
               </motion.div>
             </div>
+          </TrigReveal>
+          <TrigReveal direction="up" amplitude={15} delay={0.4} duration={0.6}>
             <p className="mt-6 text-xs text-navy-400 font-mono tracking-widest uppercase">
               24 / 7 · operations@marevitamarine.com
             </p>
-          </motion.div>
+          </TrigReveal>
         </div>
       </section>
     </div>

@@ -13,6 +13,7 @@ This is the official business website for **Marevita Marine Private Ltd**, a mar
 │   └── fonts/                # Custom fonts for the website
 ├── references/               # Design references and inspirations
 ├── content/                  # Content assets including sample screenshots
+├── ANIMATION.md              # Animation libraries, principles, and guidelines
 └── CLAUDE.md                 # This file
 ```
 
