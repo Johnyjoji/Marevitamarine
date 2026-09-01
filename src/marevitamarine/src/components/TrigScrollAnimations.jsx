@@ -157,7 +157,7 @@ export function TrigFloating({
  * Creates organic, coastline-like dividers between sections
  */
 export function TrigWaveDivider({
-  fromColor = '#0f172a',
+  fromColor = '#0f1318',
   toColor = 'white',
   height = 120,
   baseFrequency = 2,
@@ -393,12 +393,13 @@ export function TrigScrollIndicator({
     >
       <div
         style={{
-          width: `${scrollProgress * 100}%`,
+          width: '100%',
           height: '100%',
           background: `linear-gradient(90deg, ${color}, ${color}80)`,
-          transform: `translateX(${waveOffset}px)`,
-          transition: 'width 0.1s linear',
-          willChange: 'width, transform',
+          transform: `scaleX(${scrollProgress}) translateX(${waveOffset}px)`,
+          transformOrigin: 'left',
+          transition: 'transform 0.1s linear',
+          willChange: 'transform',
         }}
       />
     </div>

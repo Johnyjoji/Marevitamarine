@@ -15,7 +15,7 @@
 export default function SectionDivider({
   type = 'coast',
   fromColor = 'white',
-  toColor = '#0f172a',
+  toColor = '#0f1318',
   flip = false,
   height = 120,
   className = '',

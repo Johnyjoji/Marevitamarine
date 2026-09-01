@@ -235,7 +235,7 @@ function CaseStudyIllustration({ kind }) {
         <rect x="120" y="270" width="160" height="40" fill="#cbd5e1" />
         <rect x="200" y="240" width="60" height="30" fill="#cbd5e1" />
         {/* Funnel */}
-        <rect x="220" y="210" width="20" height="30" fill="#0f172a" />
+        <rect x="220" y="210" width="20" height="30" fill="#0f1318" />
         <rect x="218" y="208" width="24" height="6" fill="#0ea5e9" />
         {/* Masts */}
         <line x1="100" y1="270" x2="100" y2="210" stroke="#cbd5e1" strokeWidth="1" />
@@ -444,7 +444,7 @@ function HomeContent() {
 
       {/* Animated wave divider: hero (dark) → white — pulses with scroll */}
       <TrigWaveDivider
-        fromColor="#0f172a"
+        fromColor="#0f1318"
         toColor="white"
         height={140}
         baseFrequency={1.5}
@@ -497,7 +497,7 @@ function HomeContent() {
       {/* Animated wave divider: white → black */}
       <TrigWaveDivider
         fromColor="white"
-        toColor="#0f172a"
+        toColor="#0f1318"
         height={140}
         baseFrequency={2.2}
         frequencyRange={1}
@@ -544,7 +544,7 @@ function HomeContent() {
 
       {/* Animated wave divider: black → white */}
       <TrigWaveDivider
-        fromColor="#0f172a"
+        fromColor="#0f1318"
         toColor="white"
         height={140}
         baseFrequency={1.8}
@@ -623,7 +623,7 @@ function HomeContent() {
       {/* Animated wave divider: white → black */}
       <TrigWaveDivider
         fromColor="white"
-        toColor="#0f172a"
+        toColor="#0f1318"
         height={120}
         baseFrequency={2}
         frequencyRange={0.6}

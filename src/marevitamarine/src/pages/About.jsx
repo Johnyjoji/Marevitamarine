@@ -341,63 +341,46 @@ function WhatWeDo() {
 
   return (
     <section className="bg-white text-navy-900">
-      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32">
-        <div className="grid lg:grid-cols-[1fr,1.5fr] gap-16 lg:gap-20">
-          {/* Left Column — Heading */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
-            transition={{ duration: 0.8 }}
-            className="lg:sticky lg:top-24 lg:self-start"
-          >
-            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-[-0.03em] leading-[0.95]">
-              Our<br />
-              <span className="text-marine-500">Services</span>
-            </h2>
-            <p className="mt-6 text-base text-navy-600 leading-relaxed max-w-md">
-              Bring your interior design vision to life. Each service is tailored to meet the unique needs of our clients, ensuring a seamless and satisfying experience.
-            </p>
+      <div className="mx-auto max-w-6xl px-6 py-20 lg:px-8 lg:py-24">
+        <div className="grid lg:grid-cols-[1fr,2fr] gap-12 lg:gap-16 items-start">
+          {/* Left Column — Heading + Image (Sticky) */}
+          <div className="lg:sticky lg:top-32 space-y-6">
+            <div>
+              <h2 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
+                Our Services
+              </h2>
+              <p className="mt-4 text-sm text-navy-600 leading-relaxed">
+                Bring your interior design vision to life. Each service is tailored to meet the unique needs of our clients, ensuring a seamless and satisfying experience.
+              </p>
+            </div>
 
-            {/* Decorative image */}
-            <div className="mt-10 relative rounded-2xl overflow-hidden border border-navy-100">
+            {/* Decorative Image */}
+            <div className="relative rounded-2xl overflow-hidden">
               <div className="aspect-[4/3]">
                 <img
                   src="/assets/placeholder.png"
-                  alt="Our Services"
+                  alt="Marine Services"
                   className="w-full h-full object-cover"
                 />
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right Column — Services List */}
-          <div ref={ref} className="space-y-6">
+          <div ref={ref} className="space-y-8">
             {services.map((service, i) => (
               <motion.div
                 key={service.title}
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="group relative"
+                transition={{ duration: 0.5, delay: i * 0.08 }}
               >
-                <div className="flex gap-6 p-6 rounded-2xl border border-navy-100 bg-white hover:border-marine-200 hover:shadow-[0_10px_30px_-10px_rgba(14,165,233,0.15)] transition-all duration-500">
-                  {/* Icon */}
-                  <div className="flex-shrink-0">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-marine-50 text-marine-600 group-hover:bg-marine-500 group-hover:text-white transition-colors duration-500">
-                      <service.icon className="h-7 w-7" />
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-bold tracking-[0.15em] text-navy-900 mb-2">
-                      {service.title}
-                    </h3>
-                    <p className="text-sm text-navy-600 leading-relaxed">
-                      {service.description}
-                    </p>
-                  </div>
-                </div>
+                <h3 className="text-sm font-bold tracking-[0.1em] uppercase text-navy-900 mb-2">
+                  {service.title}
+                </h3>
+                <p className="text-sm text-navy-700 leading-relaxed">
+                  {service.description}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -611,31 +594,31 @@ export default function About() {
       <OurPhilosophy />
 
       {/* Wavy divider */}
-      <SectionDivider type="rugged" fromColor="white" toColor="#0f172a" height={140} />
+      <SectionDivider type="rugged" fromColor="white" toColor="#0f1318" height={140} />
 
       {/* Our Edge */}
       <OurEdge />
 
       {/* Wavy divider */}
-      <SectionDivider type="coast" fromColor="#0f172a" toColor="white" height={140} />
+      <SectionDivider type="coast" fromColor="#0f1318" toColor="white" height={140} />
 
       {/* What We Do */}
       <WhatWeDo />
 
       {/* Wavy divider */}
-      <SectionDivider type="ripple" fromColor="white" toColor="#0f172a" height={120} />
+      <SectionDivider type="ripple" fromColor="white" toColor="#0f1318" height={120} />
 
       {/* Meet The Principals */}
       <MeetThePrincipals />
 
       {/* Wavy divider */}
-      <SectionDivider type="deep" fromColor="#0f172a" toColor="white" height={120} />
+      <SectionDivider type="deep" fromColor="#0f1318" toColor="white" height={120} />
 
       {/* Headquarters */}
       <Headquarters />
 
       {/* Wavy divider */}
-      <SectionDivider type="rugged" fromColor="white" toColor="#0f172a" height={120} />
+      <SectionDivider type="rugged" fromColor="white" toColor="#0f1318" height={120} />
 
       {/* CTA */}
       <CTASection />

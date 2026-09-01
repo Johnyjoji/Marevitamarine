@@ -22,31 +22,31 @@
   --font-display: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
-  /* Marine — primary action + accent */
-  --color-marine-50: #f0f9ff;
-  --color-marine-100: #e0f2fe;
-  --color-marine-200: #bae6fd;
-  --color-marine-300: #7dd3fc;
-  --color-marine-400: #38bdf8;
-  --color-marine-500: #0ea5e9;
-  --color-marine-600: #0284c7;
-  --color-marine-700: #0369a1;
-  --color-marine-800: #075985;
-  --color-marine-900: #0c4a6e;
-  --color-marine-950: #082f49;
+  /* Marine — primary action + accent (Classic Naval Blue) */
+  --color-marine-50: #f0f4f8;
+  --color-marine-100: #dce6f0;
+  --color-marine-200: #b5cce0;
+  --color-marine-300: #82a8ca;
+  --color-marine-400: #4a7ba7;
+  --color-marine-500: #2d5f8d;
+  --color-marine-600: #204770;
+  --color-marine-700: #183554;
+  --color-marine-800: #11253c;
+  --color-marine-900: #0b1726;
+  --color-marine-950: #060c14;
 
-  /* Navy — structural dark + text */
-  --color-navy-50: #f8fafc;
-  --color-navy-100: #f1f5f9;
-  --color-navy-200: #e2e8f0;
-  --color-navy-300: #cbd5e1;
-  --color-navy-400: #94a3b8;
-  --color-navy-500: #64748b;
-  --color-navy-600: #475569;
-  --color-navy-700: #334155;
-  --color-navy-800: #1e293b;
-  --color-navy-900: #0f172a;
-  --color-navy-950: #020617;
+  /* Navy — structural dark + text (Rich Black) */
+  --color-navy-50: #f7f8f9;
+  --color-navy-100: #eceef1;
+  --color-navy-200: #d5d9de;
+  --color-navy-300: #b0b7c1;
+  --color-navy-400: #8690a0;
+  --color-navy-500: #657080;
+  --color-navy-600: #4f5866;
+  --color-navy-700: #3f4651;
+  --color-navy-800: #2a3039;
+  --color-navy-900: #0f1318;
+  --color-navy-950: #080a0d;
 }
 
 @layer base {
