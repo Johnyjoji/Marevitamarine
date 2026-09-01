@@ -154,12 +154,25 @@ export function TrigFloating({
 
 /**
  * TrigWaveDivider - Animated SVG wave divider that responds to scroll
- * Creates organic, coastline-like dividers between sections
+ * Creates organic, coastline-like dividers between sections.
+ *
+ * Multi-layered: draws 2-3 stacked waves of different speeds & frequencies,
+ * scrolling at different rates for a parallax water effect. Uses absolute
+ * scrollY (not progress) so waves feel fast and alive.
  */
 export function TrigWaveDivider({
   fromColor = '#0f1318',
   toColor = 'white',
   height = 120,
+  // Per-layer wave parameters — drawn back-to-front, fastest & smallest in front
+  layers = [
+    { frequency: 1.2, amplitude: 18, speed: 0.012, phaseOffset: 0,    opacity: 1.0 },
+    { frequency: 2.0, amplitude: 12, speed: 0.022, phaseOffset: 1.4,  opacity: 0.55 },
+    { frequency: 3.4, amplitude: 7,  speed: 0.035, phaseOffset: 2.7,  opacity: 0.30 },
+  ],
+  baseSpeed = 1,        // Global speed multiplier
+  segments = 160,       // Path resolution
+  // Legacy props (used if `layers` not provided)
   baseFrequency = 2,
   frequencyRange = 1,
   baseAmplitude = 30,
@@ -167,8 +180,8 @@ export function TrigWaveDivider({
   phaseSpeed = 0.5,
   className = '',
 }) {
-  const { scrollProgress } = useTrigScroll();
-  const [path, setPath] = useState('');
+  const { scrollY } = useTrigScroll();
+  const [paths, setPaths] = useState([]);
   const containerRef = useRef(null);
   const [width, setWidth] = useState(1440);
 
@@ -182,22 +195,47 @@ export function TrigWaveDivider({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  useEffect(() => {
-    const freq = baseFrequency + Math.sin(scrollProgress * Math.PI * 2) * frequencyRange;
-    const amp = baseAmplitude + Math.cos(scrollProgress * Math.PI * 2) * amplitudeRange;
-    const ph = scrollProgress * Math.PI * 2 * phaseSpeed;
+  // Resolve layers: use the `layers` prop if provided, otherwise build from legacy props
+  const resolvedLayers = layers || [
+    {
+      frequency: baseFrequency,
+      amplitude: baseAmplitude,
+      speed: 0.012 * baseSpeed,
+      phaseOffset: 0,
+      opacity: 1.0,
+    },
+    {
+      frequency: baseFrequency * 1.6,
+      amplitude: baseAmplitude * 0.4,
+      speed: 0.022 * baseSpeed,
+      phaseOffset: 1.4,
+      opacity: 0.5,
+    },
+  ];
 
-    let newPath = `M 0 ${height / 2}`;
-    const segments = 120;
-    for (let i = 0; i <= segments; i++) {
-      const x = (width / segments) * i;
-      const p = i / segments;
-      const y = height / 2 + Math.sin(p * Math.PI * 2 * freq + ph) * amp;
-      newPath += ` L ${x} ${y}`;
-    }
-    newPath += ` L ${width} ${height} L 0 ${height} Z`;
-    setPath(newPath);
-  }, [scrollProgress, width, height, baseFrequency, frequencyRange, baseAmplitude, amplitudeRange, phaseSpeed]);
+  useEffect(() => {
+    // Phase animates with absolute scrollY (fast, dramatic) instead of progress (slow)
+    const newPaths = resolvedLayers.map((layer) => {
+      const ph = scrollY * layer.speed * baseSpeed + layer.phaseOffset;
+      const freq = layer.frequency;
+      const amp = layer.amplitude;
+
+      let newPath = `M 0 ${height / 2}`;
+      for (let i = 0; i <= segments; i++) {
+        const x = (width / segments) * i;
+        const p = i / segments;
+        // Base sine + cosine harmonic for richer coastline silhouette
+        const y =
+          height / 2 +
+          Math.sin(p * Math.PI * 2 * freq + ph) * amp +
+          Math.cos(p * Math.PI * 3 * freq + ph * 0.6) * (amp * 0.25);
+        newPath += ` L ${x} ${y}`;
+      }
+      newPath += ` L ${width} ${height} L 0 ${height} Z`;
+      return { d: newPath, opacity: layer.opacity };
+    });
+    setPaths(newPaths);
+  }, [scrollY, width, height, segments, baseSpeed, resolvedLayers]);
 
   return (
     <div
@@ -216,7 +254,15 @@ export function TrigWaveDivider({
         preserveAspectRatio="none"
         style={{ display: 'block' }}
       >
-        <path d={path} fill={toColor} fillOpacity="1" />
+        {paths.map((p, i) => (
+          <path
+            key={i}
+            d={p.d}
+            fill={toColor}
+            fillOpacity={p.opacity}
+            style={{ willChange: 'd' }}
+          />
+        ))}
       </svg>
     </div>
   );

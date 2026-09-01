@@ -442,16 +442,17 @@ function HomeContent() {
         )}
       </HeroVideoCarousel>
 
-      {/* Animated wave divider: hero (dark) → white — pulses with scroll */}
+      {/* Animated wave divider: hero (dark) → white — fast multi-layer waves */}
       <TrigWaveDivider
         fromColor="#0f1318"
         toColor="white"
         height={140}
-        baseFrequency={1.5}
-        frequencyRange={0.8}
-        baseAmplitude={35}
-        amplitudeRange={15}
-        phaseSpeed={0.4}
+        baseSpeed={1.5}
+        layers={[
+          { frequency: 1.3, amplitude: 22, speed: 0.014, phaseOffset: 0,    opacity: 1.0 },
+          { frequency: 2.1, amplitude: 14, speed: 0.026, phaseOffset: 1.2,  opacity: 0.55 },
+          { frequency: 3.8, amplitude: 8,  speed: 0.042, phaseOffset: 2.5,  opacity: 0.30 },
+        ]}
       />
 
       {/* ===================== CASE STUDIES (White) ===================== */}
@@ -494,16 +495,17 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Animated wave divider: white → black */}
+      {/* Animated wave divider: white → black — fast multi-layer waves */}
       <TrigWaveDivider
         fromColor="white"
         toColor="#0f1318"
         height={140}
-        baseFrequency={2.2}
-        frequencyRange={1}
-        baseAmplitude={40}
-        amplitudeRange={20}
-        phaseSpeed={0.5}
+        baseSpeed={1.3}
+        layers={[
+          { frequency: 1.1, amplitude: 20, speed: 0.012, phaseOffset: 0,    opacity: 1.0 },
+          { frequency: 2.3, amplitude: 13, speed: 0.024, phaseOffset: 1.5,  opacity: 0.55 },
+          { frequency: 4.0, amplitude: 7,  speed: 0.038, phaseOffset: 2.8,  opacity: 0.30 },
+        ]}
       />
 
       {/* ===================== STATS (Black) — provenanced ===================== */}
@@ -542,16 +544,17 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Animated wave divider: black → white */}
+      {/* Animated wave divider: black → white — fast multi-layer waves */}
       <TrigWaveDivider
         fromColor="#0f1318"
         toColor="white"
         height={140}
-        baseFrequency={1.8}
-        frequencyRange={0.7}
-        baseAmplitude={30}
-        amplitudeRange={18}
-        phaseSpeed={0.45}
+        baseSpeed={1.4}
+        layers={[
+          { frequency: 1.4, amplitude: 19, speed: 0.013, phaseOffset: 0,    opacity: 1.0 },
+          { frequency: 2.2, amplitude: 12, speed: 0.025, phaseOffset: 1.3,  opacity: 0.55 },
+          { frequency: 3.6, amplitude: 7,  speed: 0.040, phaseOffset: 2.6,  opacity: 0.30 },
+        ]}
       />
 
       {/* ===================== WHY CHOOSE US (White) ===================== */}
@@ -620,16 +623,17 @@ function HomeContent() {
         </div>
       </section>
 
-      {/* Animated wave divider: white → black */}
+      {/* Animated wave divider: white → black — fast multi-layer waves */}
       <TrigWaveDivider
         fromColor="white"
         toColor="#0f1318"
         height={120}
-        baseFrequency={2}
-        frequencyRange={0.6}
-        baseAmplitude={25}
-        amplitudeRange={12}
-        phaseSpeed={0.4}
+        baseSpeed={1.2}
+        layers={[
+          { frequency: 1.0, amplitude: 17, speed: 0.011, phaseOffset: 0,    opacity: 1.0 },
+          { frequency: 2.5, amplitude: 11, speed: 0.023, phaseOffset: 1.6,  opacity: 0.55 },
+          { frequency: 4.2, amplitude: 6,  speed: 0.036, phaseOffset: 3.0,  opacity: 0.30 },
+        ]}
       />
 
       {/* ===================== CTA (Black) ===================== */}
