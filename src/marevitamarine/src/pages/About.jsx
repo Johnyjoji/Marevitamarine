@@ -41,7 +41,7 @@ function AboutUsHero() {
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   return (
-    <section className="relative bg-white text-navy-900 overflow-hidden min-h-screen flex items-center">
+    <section className="relative bg-white text-navy-900 overflow-hidden h-full flex items-center">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -184,7 +184,7 @@ function OurPhilosophy() {
   ];
 
   return (
-    <section id="our-philosophy" className="bg-white text-navy-900 relative overflow-hidden">
+    <section id="our-philosophy" className="bg-white text-navy-900 relative overflow-hidden h-full">
       <TrigBackgroundWave
         className="opacity-40"
         baseColor="rgba(14, 165, 233, 0.04)"
@@ -194,7 +194,7 @@ function OurPhilosophy() {
         layerCount={2}
       />
 
-      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
+      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10 h-full flex flex-col justify-center">
         <div className="max-w-3xl mb-16">
           <TrigReveal direction="up" amplitude={20} duration={0.6}>
             <span className="text-sm font-semibold tracking-[0.2em] uppercase text-marine-600">
@@ -269,7 +269,7 @@ function OurEdge() {
   ];
 
   return (
-    <section className="bg-navy-900 text-white relative overflow-hidden">
+    <section className="bg-navy-900 text-white relative overflow-hidden h-full">
       {/* Floating decorative icons */}
       <TrigFloating amplitude={22} period={7000} horizontal horizontalAmplitude={12} className="absolute top-20 right-10 w-12 h-12 text-marine-400/15 pointer-events-none">
         <Compass className="w-full h-full" strokeWidth={1} />
@@ -278,7 +278,7 @@ function OurEdge() {
         <Anchor className="w-full h-full" strokeWidth={0.5} />
       </TrigParallax>
 
-      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
+      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10 h-full flex flex-col justify-center">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left — Image */}
           <motion.div
@@ -392,7 +392,7 @@ function WhatWeDo() {
   ];
 
   return (
-    <section className="bg-white text-navy-900 relative overflow-hidden">
+    <section className="bg-white text-navy-900 relative overflow-hidden h-full">
       <TrigBackgroundWave
         className="opacity-30"
         baseColor="rgba(14, 165, 233, 0.04)"
@@ -402,7 +402,7 @@ function WhatWeDo() {
         layerCount={2}
       />
 
-      <div className="mx-auto max-w-6xl px-6 py-20 lg:px-8 lg:py-24 relative z-10">
+      <div className="mx-auto max-w-6xl px-6 py-20 lg:px-8 lg:py-24 relative z-10 h-full flex flex-col justify-center">
         <div className="grid lg:grid-cols-[1fr,2fr] gap-12 lg:gap-16 items-start">
           {/* Left Column — Heading + Image (Sticky) */}
           <div className="lg:sticky lg:top-32 space-y-6">
@@ -505,7 +505,7 @@ function MeetThePrincipals() {
   ];
 
   return (
-    <section className="bg-navy-900 text-white relative overflow-hidden">
+    <section className="bg-navy-900 text-white relative overflow-hidden h-full">
       {/* Decorative floating anchors */}
       <TrigScrollRotate maxDegrees={8} easing="organic" className="absolute top-16 left-1/4 w-10 h-10 text-marine-400/12 pointer-events-none">
         <TrigFloating amplitude={18} period={7500} horizontal>
@@ -516,7 +516,7 @@ function MeetThePrincipals() {
         <Anchor className="w-full h-full" strokeWidth={0.5} />
       </TrigFloating>
 
-      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
+      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10 h-full flex flex-col justify-center">
         {/* Header */}
         <motion.div
           ref={ref}
@@ -572,7 +572,7 @@ function Headquarters() {
   ];
 
   return (
-    <section className="bg-white text-navy-900 relative overflow-hidden">
+    <section className="bg-white text-navy-900 relative overflow-hidden h-full">
       <TrigBackgroundWave
         className="opacity-35"
         baseColor="rgba(14, 165, 233, 0.04)"
@@ -582,7 +582,7 @@ function Headquarters() {
         layerCount={2}
       />
 
-      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
+      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10 h-full flex flex-col justify-center">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div ref={ref}>
             <TrigReveal direction="up" amplitude={20} duration={0.6}>
@@ -649,7 +649,7 @@ function CTASection() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
 
   return (
-    <section className="bg-navy-900 text-white relative overflow-hidden">
+    <section className="bg-navy-900 text-white relative overflow-hidden h-full">
       {/* Floating decorative elements */}
       <TrigFloating amplitude={20} period={8000} className="absolute top-24 left-20 w-14 h-14 text-marine-400/12 pointer-events-none">
         <Ship className="w-full h-full" strokeWidth={0.5} />
@@ -660,7 +660,7 @@ function CTASection() {
         </TrigFloating>
       </TrigScrollRotate>
 
-      <div className="mx-auto max-w-4xl px-6 py-24 lg:px-8 lg:py-32 text-center relative z-10">
+      <div className="mx-auto max-w-4xl px-6 py-24 lg:px-8 lg:py-32 text-center relative z-10 h-full flex flex-col justify-center">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 30 }}
