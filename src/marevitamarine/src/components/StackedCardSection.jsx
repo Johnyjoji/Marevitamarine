@@ -20,14 +20,16 @@ function useReducedMotion() {
  * StackedCardSection
  * ------------------
  * Renders a section that physically stacks over the next section as the user
- * scrolls. The current card stays pinned at the top of the viewport while
- * scaling down, dimming, and rounding its corners. The next section is
- * rendered as a separate sibling with a higher z-index, so it slides up and
- * visually covers the card beneath it — like a deck of cards.
+ * scrolls. The sticky element stays pinned at the top of the viewport while
+ * the inner element scales, dims, and rounds its corners. The next section
+ * is a separate sibling with a higher z-index, so it slides up and visually
+ * covers the card beneath it — like a deck of cards.
  *
- * IMPORTANT: The outer wrapper has NO overflow constraints and NO
- * transform/filter/will-change on itself; only the inner `motion.div`
- * has transforms, so sticky positioning behaves predictably.
+ * IMPORTANT: We separate the sticky positioning from the transforms.
+ * Applying `transform` to the same element as `position: sticky` makes
+ * the element a containing block for itself, which can break sticky
+ * behavior. So the OUTER element is sticky, and the INNER element
+ * receives the transforms.
  */
 export function StackedCardSection({
   children,
@@ -56,7 +58,7 @@ export function StackedCardSection({
 
   const isLast = index === total - 1;
 
-  // Transforms applied to the current card
+  // Transforms applied to the inner element as the user scrolls
   const scale = useTransform(smoothProgress, [0, 1], [1, targetScale]);
   const opacity = useTransform(smoothProgress, [0, 0.7, 1], [1, 0.95, 0.7]);
   const brightness = useTransform(smoothProgress, [0, 1], [1, 0.78]);
@@ -79,23 +81,32 @@ export function StackedCardSection({
       className={`relative ${isLast ? 'h-screen' : 'h-[160vh]'} ${className}`}
       style={{ zIndex: (index + 1) * 10 }}
     >
-      <motion.div
-        style={
-          isLast
-            ? {}
-            : {
-                scale,
-                opacity,
-                filter,
-                borderRadius,
-                y: yOffset,
-                transformOrigin: 'top center',
-              }
-        }
-        className={`sticky top-0 h-screen w-full overflow-hidden transition-shadow duration-300 ${cardClassName}`}
+      {/* Outer sticky element — NO transforms on this element so sticky works */}
+      <div
+        className={`sticky top-0 h-screen w-full overflow-hidden ${cardClassName}`}
       >
-        {children}
-      </motion.div>
+        {/* Inner element receives the transforms. transformOrigin: top center
+            keeps the top edge of the card visually pinned while the rest scales. */}
+        <motion.div
+          style={
+            isLast
+              ? { height: '100%', width: '100%' }
+              : {
+                  scale,
+                  opacity,
+                  filter,
+                  borderRadius,
+                  y: yOffset,
+                  transformOrigin: 'top center',
+                  height: '100%',
+                  width: '100%',
+                }
+          }
+          className="overflow-hidden"
+        >
+          {children}
+        </motion.div>
+      </div>
     </div>
   );
 }
