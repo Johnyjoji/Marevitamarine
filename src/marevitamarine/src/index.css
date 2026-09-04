@@ -59,7 +59,7 @@
      or hero overlays. The hero/scene-picker are absolutely positioned and
      can otherwise bleed past the viewport on small screens. */
   html, body {
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 }
 
