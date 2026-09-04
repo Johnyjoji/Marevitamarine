@@ -725,8 +725,8 @@ export default function About() {
       <StackedCardSection
         index={0}
         total={TOTAL_SECTIONS}
-        targetScale={0.92}
-        cardClassName="bg-white shadow-[0_-15px_40px_rgba(0,0,0,0.15)]"
+        targetScale={0.88}
+        cardClassName="bg-white shadow-xl"
       >
         <AboutUsHero />
       </StackedCardSection>
@@ -735,8 +735,8 @@ export default function About() {
       <StackedCardSection
         index={1}
         total={TOTAL_SECTIONS}
-        targetScale={0.92}
-        cardClassName="bg-white shadow-[0_-25px_60px_rgba(0,0,0,0.25)] rounded-t-[32px] sm:rounded-t-[44px]"
+        targetScale={0.88}
+        cardClassName="bg-white shadow-[0_-35px_80px_rgba(0,0,0,0.35)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-navy-100"
       >
         <TrigWaveDivider
           fromColor="white"
@@ -754,8 +754,8 @@ export default function About() {
       <StackedCardSection
         index={2}
         total={TOTAL_SECTIONS}
-        targetScale={0.92}
-        cardClassName="bg-navy-900 shadow-[0_-25px_60px_rgba(0,0,0,0.45)] rounded-t-[32px] sm:rounded-t-[44px]"
+        targetScale={0.88}
+        cardClassName="bg-navy-900 shadow-[0_-35px_80px_rgba(0,0,0,0.55)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-white/10"
       >
         <TrigWaveDivider
           fromColor="white"
@@ -774,8 +774,8 @@ export default function About() {
       <StackedCardSection
         index={3}
         total={TOTAL_SECTIONS}
-        targetScale={0.92}
-        cardClassName="bg-white shadow-[0_-25px_60px_rgba(0,0,0,0.25)] rounded-t-[32px] sm:rounded-t-[44px]"
+        targetScale={0.88}
+        cardClassName="bg-white shadow-[0_-35px_80px_rgba(0,0,0,0.35)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-navy-100"
       >
         <TrigWaveDivider
           fromColor="#0f1318"
@@ -794,8 +794,8 @@ export default function About() {
       <StackedCardSection
         index={4}
         total={TOTAL_SECTIONS}
-        targetScale={0.92}
-        cardClassName="bg-navy-900 shadow-[0_-25px_60px_rgba(0,0,0,0.45)] rounded-t-[32px] sm:rounded-t-[44px]"
+        targetScale={0.88}
+        cardClassName="bg-navy-900 shadow-[0_-35px_80px_rgba(0,0,0,0.55)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-white/10"
       >
         <TrigWaveDivider
           fromColor="white"
@@ -814,8 +814,8 @@ export default function About() {
       <StackedCardSection
         index={5}
         total={TOTAL_SECTIONS}
-        targetScale={0.92}
-        cardClassName="bg-white shadow-[0_-25px_60px_rgba(0,0,0,0.25)] rounded-t-[32px] sm:rounded-t-[44px]"
+        targetScale={0.88}
+        cardClassName="bg-white shadow-[0_-35px_80px_rgba(0,0,0,0.35)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-navy-100"
       >
         <TrigWaveDivider
           fromColor="#0f1318"
@@ -834,7 +834,7 @@ export default function About() {
       <StackedCardSection
         index={6}
         total={TOTAL_SECTIONS}
-        cardClassName="bg-navy-900 shadow-[0_-25px_60px_rgba(0,0,0,0.5)] rounded-t-[32px] sm:rounded-t-[44px]"
+        cardClassName="bg-navy-900 shadow-[0_-35px_80px_rgba(0,0,0,0.6)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-white/10"
       >
         <TrigWaveDivider
           fromColor="white"
