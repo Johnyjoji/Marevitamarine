@@ -29,15 +29,19 @@ function useReducedMotion() {
  *      the section passes through the sticky window — the user can read
  *      all of the content.
  *
- *   2. Cards stack vertically: each container starts where the previous
- *      one ended (no negative margin). During the last `100vh` of a
- *      container, the next card's sticky slides up from the bottom of
- *      the viewport into view — that's the deck-of-cards transition.
- *      The previous card plays a release animation (scale, opacity,
- *      border-radius, brightness) during that same window.
+ *   2. Cards stack on top of each other (deck-of-cards): every container
+ *      after the first pulls itself UP by `100vh` with a negative margin.
+ *      That overlap is what makes the next card's sticky slide up from
+ *      the bottom of the viewport into the current card's release zone.
+ *      The current card plays a release animation (scale, opacity,
+ *      border-radius, brightness) during that same window, so the user
+ *      sees a true deck-of-cards transition.
  *
- *   3. Z-index increases per card so the new card paints on top once
- *      the two stickies meet at the top of the viewport.
+ *   3. Z-index DECREASES per card: earlier cards paint on top. This way
+ *      during a card's release, the releasing card is on top (its
+ *      scale/opacity animation is visible), and the next card is behind,
+ *      sliding up. After the release, the current card un-pins and the
+ *      next card takes over the viewport top.
  *
  * The transforms (translate, scale, opacity, border-radius, filter) live
  * on the inner motion.div, NOT on the sticky element. Putting `transform`
@@ -50,6 +54,10 @@ function useReducedMotion() {
  * render. Solution: render the children once in a hidden, in-flow
  * measurement div BEFORE committing to the sticky layout. Once we know
  * the natural content height, the sticky render uses that height.
+ *
+ * Last card: the last section in the stack has no next card to slide up
+ * over it, so we skip the release animation and the negative margin. It
+ * just pins for its content and then un-pins, like a normal section.
  */
 export function StackedCardSection({
   children,
@@ -62,6 +70,8 @@ export function StackedCardSection({
   const containerRef = useRef(null);
   const measureRef = useRef(null);
   const isReducedMotion = useReducedMotion();
+  const isFirst = index === 0;
+  const isLast = index === total - 1;
 
   // Measured natural height of the content (in px). Starts at 0 (un-measured).
   // The first render uses the hidden measurement div to compute this; once
@@ -110,16 +120,14 @@ export function StackedCardSection({
   }, []);
 
   // Track scroll progress of this section's container.
-  // The 'end start' means: progress = 1 when container bottom hits viewport top,
-  // which lines up with the sticky element releasing after its full content.
-  // We only start measuring once the sticky layout has rendered (i.e.
-  // contentHeight > 0); before that, the container is the placeholder height.
+  // 'end start' means: progress = 1 when container bottom hits viewport top,
+  // which is one full containerHeight past progress 0.
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
   });
 
-  // Smooth the scroll progress with a spring for an organic, physics feel
+  // Smooth the scroll progress with a spring for an organic, physics feel.
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 110,
     damping: 26,
@@ -129,13 +137,17 @@ export function StackedCardSection({
 
   // Transforms applied to the inner element as the user scrolls.
   //
-  // The container is contentHeight + 100vh tall. Of that, the first
-  // (contentHeight - 100vh) / containerHeight portion of scrollYProgress
-  // is the "content scroll" — during it, we translate the content up
-  // inside the sticky so the user can read every line. The last
-  // 100vh / containerHeight portion is the "release" — the content sits
-  // at its bottom position, and we apply scale/opacity/border-radius to
-  // shrink the card while the next card slides up from below.
+  // Container = contentHeight + 100vh. Sticky pins from 0 to contentHeight
+  // (the first `contentHeight` pixels of scroll). Within that pinned range:
+  //   - First (contentHeight - 100vh) pixels: content translates from 0 to
+  //     -(contentHeight - 100vh), so every line of the content passes
+  //     through the sticky window.
+  //   - Last 100vh pixels: content sits at its bottom position while the
+  //     release animation plays (scale, opacity, border-radius, brightness).
+  //
+  // For the last card we collapse the release range to [1, 1] so the
+  // transforms stay at their initial values — there's no next card to
+  // hand off to, so no scale/opacity change is wanted.
   //
   // These hooks MUST run on every render in the same order — including
   // before the content height is known — so the hook order stays stable
@@ -144,16 +156,23 @@ export function StackedCardSection({
   const releaseZone = vh;
   const hasMeasured = contentHeight > 0;
   const containerHeight = hasMeasured ? contentHeight + releaseZone : releaseZone;
-  // Progress at which the content has finished scrolling and the release begins.
-  // For contentHeight <= 100vh, this clamps to 0 and the content never translates.
+  // Fraction of scroll for the content-scroll phase (the first
+  // (contentHeight - 100vh) of the container). Clamped to [0, 1].
   const contentScrollEnd = Math.max(
     0,
     Math.min(1, (contentHeight - releaseZone) / containerHeight)
   );
   // Distance the content translates up. 0 when contentHeight <= 100vh.
   const contentTranslate = -(Math.max(0, contentHeight - releaseZone));
-  // Release range: the last 100vh of the container.
-  const releaseStart = contentHeight / containerHeight;
+  // Release range — the LAST 100vh of the sticky pinning (not the last
+  // 100vh of the container, which would be after the sticky un-pinned and
+  // invisible). For the last card, collapse to [1, 1] (no release).
+  const releaseStart = isLast
+    ? 1
+    : Math.max(0, (contentHeight - releaseZone) / containerHeight);
+  const releaseEnd = isLast ? 1 : Math.min(1, contentHeight / containerHeight);
+  // Mid-point of the release range, for the opacity animation curve.
+  const releaseMid = (releaseStart + releaseEnd) / 2;
 
   const contentY = useTransform(
     smoothProgress,
@@ -162,24 +181,27 @@ export function StackedCardSection({
     { clamp: true }
   );
   // Scale the card down to targetScale during the release.
-  const scale = useTransform(smoothProgress, [releaseStart, 1], [1, targetScale], {
-    clamp: true,
-  });
+  const scale = useTransform(
+    smoothProgress,
+    [releaseStart, releaseEnd],
+    [1, targetScale],
+    { clamp: true }
+  );
   const opacity = useTransform(
     smoothProgress,
-    [releaseStart, releaseStart + 0.6, 1],
+    [releaseStart, releaseMid, releaseEnd],
     [1, 0.92, 0.7],
     { clamp: true }
   );
   const brightness = useTransform(
     smoothProgress,
-    [releaseStart, 1],
+    [releaseStart, releaseEnd],
     [1, 0.78],
     { clamp: true }
   );
   const borderRadius = useTransform(
     smoothProgress,
-    [releaseStart, releaseStart + 0.1, 1],
+    [releaseStart, releaseStart + 0.05, releaseEnd],
     ['0px', '20px', '32px'],
     { clamp: true }
   );
@@ -222,16 +244,12 @@ export function StackedCardSection({
   // content (which is contentHeight tall) overflows the sticky and we
   // translate it up as the user scrolls to reveal every line.
   //
-  // During the first (contentHeight - 100vh) pixels of container scroll,
-  // the content translates from translateY(0) to translateY(-(contentHeight
-  // - 100vh)), exposing the bottom of the content. During the last 100vh
-  // pixels, the content stays at its bottom position and we apply the
-  // release animation (scale, opacity, border-radius, brightness) so the
-  // card shrinks while the next card slides up from below.
-  //
-  // No negative margin: cards stack vertically, each container starts
-  // right after the previous one ends. The next card's sticky naturally
-  // slides up from the bottom of the viewport during the release.
+  // Each card after the first has marginTop: -100vh, so its container
+  // starts 100vh before the previous card's container ends. That overlap
+  // is what makes the next card's sticky slide up from the bottom of
+  // the viewport during the current card's release — the deck-of-cards
+  // transition. Z-index decreases per card so the releasing card paints
+  // on top.
 
   return (
     <div
@@ -239,7 +257,14 @@ export function StackedCardSection({
       className={`relative ${className}`}
       style={{
         height: `${containerHeight}px`,
-        zIndex: (index + 1) * 10,
+        // Negative margin on every non-first, non-last card so the next
+        // card overlaps the previous one by 100vh. The last card skips
+        // the margin (nothing to overlap with).
+        marginTop: isFirst || isLast ? 0 : `-${releaseZone}px`,
+        // Z-index decreases per card. During a card's release, the
+        // releasing card has the higher z-index of the two visible
+        // cards, so its scale/opacity animation is on top.
+        zIndex: 100 - index * 10,
       }}
     >
       {/* Outer sticky element — 100vh tall, overflow hidden, NO transforms
