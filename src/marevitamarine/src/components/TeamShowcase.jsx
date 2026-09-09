@@ -18,14 +18,14 @@ export default function TeamShowcase({ members = [] }) {
   return (
     <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-14 select-none w-full max-w-6xl mx-auto">
       {/* Left: Photo Grid */}
-      <div className="flex gap-3 flex-shrink-0 overflow-x-auto pb-2 lg:pb-0 w-full lg:w-auto">
+      <div className="flex gap-3 flex-shrink-0 overflow-hidden pb-2 lg:pb-0 w-full lg:w-auto">
         {/* Column 1 */}
         <div className="flex flex-col gap-3">
           {col1.map((member) => (
             <PhotoCard
               key={member.id}
               member={member}
-              className="w-[130px] h-[150px] sm:w-[155px] sm:h-[175px]"
+              className="w-[130px] h-[150px] sm:w-[155px] sm:h-[175px] "
               hoveredId={hoveredId}
               onHover={setHoveredId}
             />

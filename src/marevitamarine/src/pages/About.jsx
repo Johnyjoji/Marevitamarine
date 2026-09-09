@@ -470,13 +470,13 @@ function MeetThePrincipals() {
       id: '1',
       name: 'Capt. Jayan Nair',
       role: 'MASTER MARINER',
-      image: '/assets/placeholder.png',
+      image: '/team/jayannair.jpeg',
     },
     {
       id: '2',
       name: 'Capt. Eldose P. Paul',
       role: 'MASTER MARINER',
-      image: '/assets/placeholder.png',
+      image: '/team/eldhoseppaul.jpeg',
     },
     {
       id: '3',
@@ -494,13 +494,13 @@ function MeetThePrincipals() {
       id: '5',
       name: 'Stoney Olivero',
       role: 'MARINE CREWING OFFICER',
-      image: '/assets/placeholder.png',
+      image: '/team/stoneyolivero.jpeg',
     },
     {
       id: '6',
       name: 'Anil Antony',
       role: 'TECHNICAL OFFICER',
-      image: '/assets/placeholder.png',
+      image: '/team/anilantony.jpeg',
     },
   ];
 
