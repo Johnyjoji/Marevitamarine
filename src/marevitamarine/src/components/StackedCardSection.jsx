@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useLayoutEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 
 /**
@@ -17,30 +17,44 @@ function useReducedMotion() {
 }
 
 /**
+ * useViewportHeight — tracks window.innerHeight for layout math.
+ */
+function useViewportHeight() {
+  const [vh, setVh] = useState(() =>
+    typeof window !== 'undefined' ? window.innerHeight : 800
+  );
+
+  useEffect(() => {
+    const update = () => setVh(window.innerHeight);
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
+  return vh;
+}
+
+/**
  * StackedCardSection
  * ------------------
- * A section that physically stacks over the previous one as the user scrolls
- * (deck-of-cards). The effect is created by three things working together:
+ * Deck-of-cards scroll stacking where every section's full content is
+ * reachable — even when taller than the viewport.
  *
- *   1. The container is 200vh tall. The OUTER sticky element pins to the top
- *      of the viewport for the first 100vh of the container's scroll, then
- *      releases. That gives us 100vh of "overlap zone" per card.
+ *   1. Sticky window is always exactly one viewport tall (overflow hidden).
+ *      The inner content is the section's natural height and translates up
+ *      as the user scrolls, so every line passes through the sticky window.
  *
- *   2. Every container after the first pulls itself UP by 100vh with a
- *      negative margin, so the next card's container starts at the same Y
- *      as the previous card's top. The sticky inside the new container
- *      pins to top:0 immediately, covering the previous card.
+ *   2. Container height = contentHeight + 100vh (content scroll + release).
+ *      During the last 100vh the card scales/dims while the next card's
+ *      sticky slides up from the bottom.
  *
- *   3. Z-index increases per card, so later cards always paint on top.
+ *   3. Non-first cards use marginTop: -100vh so their sticky overlaps the
+ *      previous card's release zone — the visible deck-of-cards handoff.
  *
- * The transform (scale/opacity/border-radius/filter) lives on a child of the
- * sticky element. Putting `transform` on the same element as `position: sticky`
- * would create a new containing block and break sticky behavior — so we
- * keep them on separate layers.
+ *   4. Z-index increases per card so the incoming card paints on top.
  *
- * Why per-container useScroll (not page scroll)? Because each container
- * owns its own 200vh range, the progress curve (0 at container start, 1 at
- * container end) is the natural fit.
+ * Transforms live on the inner motion.div, never on the sticky element
+ * (transform on sticky creates a containing block and breaks pinning).
  */
 export function StackedCardSection({
   children,
@@ -51,17 +65,64 @@ export function StackedCardSection({
   className = '',
 }) {
   const containerRef = useRef(null);
+  const contentRef = useRef(null);
   const isReducedMotion = useReducedMotion();
+  const vh = useViewportHeight();
+  const isFirst = index === 0;
+  const isLast = index === total - 1;
 
-  // Track scroll progress of this section's container.
-  // The 'end start' means: progress = 1 when container bottom hits viewport top,
-  // which lines up with when the sticky element is about to release.
+  const [contentHeight, setContentHeight] = useState(0);
+
+  // Measure the content's natural height. offsetHeight/scrollHeight report
+  // the full box even when a sticky ancestor clips with overflow:hidden.
+  useLayoutEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+
+    const measure = () => {
+      if (!contentRef.current) return;
+      const h = Math.max(
+        contentRef.current.scrollHeight,
+        contentRef.current.offsetHeight
+      );
+      if (h > 0) {
+        setContentHeight((prev) => (Math.abs(prev - h) > 0.5 ? h : prev));
+      }
+    };
+
+    measure();
+
+    let rafId = null;
+    const schedule = () => {
+      if (rafId != null) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        measure();
+      });
+    };
+
+    const ro = new ResizeObserver(schedule);
+    ro.observe(el);
+    // Images / fonts can change height after first paint.
+    el.querySelectorAll?.('img').forEach((img) => {
+      if (!img.complete) img.addEventListener('load', schedule, { once: true });
+    });
+    window.addEventListener('resize', schedule);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', schedule);
+      if (rafId != null) cancelAnimationFrame(rafId);
+    };
+  }, [children]);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
   });
 
-  // Smooth the scroll progress with a spring for an organic, physics feel
+  // Direct progress for content scrubbing (1:1 with scroll — reading content
+  // should not lag). Spring only on the release polish transforms.
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 110,
     damping: 26,
@@ -69,28 +130,85 @@ export function StackedCardSection({
     restDelta: 0.001,
   });
 
-  const isLast = index === total - 1;
+  const releaseZone = vh;
+  // Layout height is at least one viewport so short cards still get a full
+  // pin + release cycle.
+  const layoutHeight = Math.max(contentHeight || vh, vh);
+  const containerHeight = isLast ? layoutHeight : layoutHeight + releaseZone;
 
-  // Transforms applied to the inner element as the user scrolls.
-  // We only apply transforms while the sticky is actually pinned (the first
-  // ~0.5 of progress), so the card finishes shrinking by the time the next
-  // card has fully covered it.
-  const scale = useTransform(smoothProgress, [0, 0.5], [1, targetScale], {
-    clamp: true,
+  // Derived scroll geometry. Kept in refs so useTransform function
+  // callbacks always read the latest measured values (array-range
+  // useTransform can stale-close over the pre-measure 0-height state).
+  const geometryRef = useRef({
+    layoutHeight,
+    containerHeight,
+    contentHeight: contentHeight || 0,
+    releaseZone,
+    isLast,
+    targetScale,
   });
-  const opacity = useTransform(smoothProgress, [0, 0.4, 0.5], [1, 0.92, 0.7], {
-    clamp: true,
-  });
-  const brightness = useTransform(smoothProgress, [0, 0.5], [1, 0.78], {
-    clamp: true,
-  });
-  const borderRadius = useTransform(
-    smoothProgress,
-    [0, 0.1, 0.5],
-    ['0px', '20px', '32px'],
-    { clamp: true }
-  );
+  geometryRef.current = {
+    layoutHeight,
+    containerHeight,
+    contentHeight: contentHeight || 0,
+    releaseZone,
+    isLast,
+    targetScale,
+  };
 
+  // Content scrub: translate 1:1 with scroll so every line is readable.
+  const contentY = useTransform(scrollYProgress, (p) => {
+    const g = geometryRef.current;
+    const scrollable = Math.max(0, g.contentHeight - g.releaseZone);
+    if (scrollable <= 0 || g.containerHeight <= 0) return 0;
+    const contentScrollEnd = scrollable / g.containerHeight;
+    const t = Math.min(1, Math.max(0, p / Math.max(contentScrollEnd, 0.0001)));
+    return -scrollable * t;
+  });
+
+  // Release polish: scale / dim / round during the last 100vh of pin.
+  const scale = useTransform(smoothProgress, (p) => {
+    const g = geometryRef.current;
+    if (g.isLast || g.containerHeight <= 0) return 1;
+    const start = Math.max(0, (g.layoutHeight - g.releaseZone) / g.containerHeight);
+    const end = Math.min(1, g.layoutHeight / g.containerHeight);
+    if (end <= start) return 1;
+    const t = Math.min(1, Math.max(0, (p - start) / (end - start)));
+    return 1 + (g.targetScale - 1) * t;
+  });
+  const opacity = useTransform(smoothProgress, (p) => {
+    const g = geometryRef.current;
+    if (g.isLast || g.containerHeight <= 0) return 1;
+    const start = Math.max(0, (g.layoutHeight - g.releaseZone) / g.containerHeight);
+    const end = Math.min(1, g.layoutHeight / g.containerHeight);
+    if (end <= start) return 1;
+    const t = Math.min(1, Math.max(0, (p - start) / (end - start)));
+    if (t < 0.5) return 1 + (0.92 - 1) * (t / 0.5);
+    return 0.92 + (0.7 - 0.92) * ((t - 0.5) / 0.5);
+  });
+  const brightness = useTransform(smoothProgress, (p) => {
+    const g = geometryRef.current;
+    if (g.isLast || g.containerHeight <= 0) return 1;
+    const start = Math.max(0, (g.layoutHeight - g.releaseZone) / g.containerHeight);
+    const end = Math.min(1, g.layoutHeight / g.containerHeight);
+    if (end <= start) return 1;
+    const t = Math.min(1, Math.max(0, (p - start) / (end - start)));
+    return 1 + (0.78 - 1) * t;
+  });
+  const borderRadius = useTransform(smoothProgress, (p) => {
+    const g = geometryRef.current;
+    if (g.isLast || g.containerHeight <= 0) return '0px';
+    const start = Math.max(0, (g.layoutHeight - g.releaseZone) / g.containerHeight);
+    const end = Math.min(1, g.layoutHeight / g.containerHeight);
+    if (end <= start) return '0px';
+    const t = Math.min(1, Math.max(0, (p - start) / (end - start)));
+    if (t < 0.1) {
+      const u = t / 0.1;
+      return `${20 * u}px`;
+    }
+    const u = (t - 0.1) / 0.9;
+    return `${20 + (32 - 20) * u}px`;
+  });
   const filter = useTransform(brightness, (b) => `brightness(${b})`);
 
   if (isReducedMotion) {
@@ -98,38 +216,35 @@ export function StackedCardSection({
   }
 
   return (
-    // 200vh container gives the sticky 100vh of pinned scroll.
-    // The negative top margin on all but the first container makes the next
-    // card overlap the previous one, creating the deck-of-cards effect.
     <div
       ref={containerRef}
-      className={`relative h-[200vh] ${className}`}
+      className={`relative ${className}`}
       style={{
+        height: `${containerHeight}px`,
+        // Pull each non-first card up so its sticky overlaps the previous
+        // card's release zone (deck-of-cards handoff).
+        marginTop: isFirst ? 0 : `-${releaseZone}px`,
         zIndex: (index + 1) * 10,
-        marginTop: index === 0 ? 0 : '-100vh',
       }}
     >
-      {/* Outer sticky element — NO transforms on this element so sticky works */}
       <div
-        className={`sticky top-0 h-screen w-full overflow-hidden ${cardClassName}`}
+        className={`sticky top-0 w-full overflow-hidden ${cardClassName}`}
+        style={{ height: `${releaseZone}px` }}
       >
-        {/* Inner element receives the transforms. transformOrigin: top center
-            keeps the top edge of the card visually pinned while the rest scales. */}
         <motion.div
-          style={
-            isLast
-              ? { height: '100%', width: '100%' }
-              : {
-                  scale,
-                  opacity,
-                  filter,
-                  borderRadius,
-                  transformOrigin: 'top center',
-                  height: '100%',
-                  width: '100%',
-                }
-          }
-          className="overflow-hidden"
+          ref={contentRef}
+          style={{
+            y: contentY,
+            scale,
+            opacity,
+            filter,
+            borderRadius,
+            transformOrigin: 'top center',
+            width: '100%',
+            // Natural content height; falls back to auto until measured.
+            minHeight: contentHeight ? undefined : '100%',
+            height: contentHeight ? `${contentHeight}px` : 'auto',
+          }}
         >
           {children}
         </motion.div>

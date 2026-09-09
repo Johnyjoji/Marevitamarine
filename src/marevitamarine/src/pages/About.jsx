@@ -404,8 +404,8 @@ function WhatWeDo() {
 
       <div className="mx-auto max-w-6xl px-6 py-20 lg:px-8 lg:py-24 relative z-10">
         <div className="grid lg:grid-cols-[1fr,2fr] gap-12 lg:gap-16 items-start">
-          {/* Left Column — Heading + Image (Sticky) */}
-          <div className="lg:sticky lg:top-32 space-y-6">
+          {/* Left Column — Heading + Image */}
+          <div className="space-y-6">
             <div>
               <h2 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
                 Our Services

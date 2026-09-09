@@ -12,6 +12,7 @@ dist/
 .claude/
 .cursor/
 .impeccable/
+.playwright-mcp
 
 # Local Settings
 *.local.json
