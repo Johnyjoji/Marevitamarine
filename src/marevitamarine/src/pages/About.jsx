@@ -482,13 +482,13 @@ function MeetThePrincipals() {
       id: '3',
       name: 'C/E Sanu Paul',
       role: 'CHIEF ENGINEER',
-      image: '/assets/placeholder.png',
+      image: '/team/sanupaul.jpg',
     },
     {
       id: '4',
-      name: 'C/E George Kutty',
+      name: 'C/E Varghese Joy',
       role: 'CHIEF ENGINEER',
-      image: '/assets/placeholder.png',
+      image: '/team/varghesejoy.jpg',
     },
     {
       id: '5',
