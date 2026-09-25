@@ -738,16 +738,17 @@ export default function About() {
         targetScale={0.88}
         cardClassName="bg-white shadow-[0_-35px_80px_rgba(0,0,0,0.35)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-navy-100"
       >
+        <OurPhilosophy />
         <TrigWaveDivider
           fromColor="white"
-          toColor="white"
+          toColor="#0f1318"
           height={80}
           baseSpeed={1.0}
+          flip={true}
           layers={[
             { frequency: 0.9, amplitude: 12, speed: 0.008, phaseOffset: 0, opacity: 0.6 },
           ]}
         />
-        <OurPhilosophy />
       </StackedCardSection>
 
       {/* 2. Our Edge (Dark) */}
@@ -757,17 +758,18 @@ export default function About() {
         targetScale={0.88}
         cardClassName="bg-navy-900 shadow-[0_-35px_80px_rgba(0,0,0,0.55)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-white/10"
       >
+        <OurEdge />
         <TrigWaveDivider
-          fromColor="white"
-          toColor="#0f1318"
+          fromColor="#0f1318"
+          toColor="white"
           height={100}
           baseSpeed={1.4}
+          flip={true}
           layers={[
             { frequency: 1.2, amplitude: 20, speed: 0.013, phaseOffset: 0, opacity: 1.0 },
             { frequency: 2.0, amplitude: 13, speed: 0.024, phaseOffset: 1.3, opacity: 0.55 },
           ]}
         />
-        <OurEdge />
       </StackedCardSection>
 
       {/* 3. What We Do (Light) */}
@@ -777,17 +779,18 @@ export default function About() {
         targetScale={0.88}
         cardClassName="bg-white shadow-[0_-35px_80px_rgba(0,0,0,0.35)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-navy-100"
       >
+        <WhatWeDo />
         <TrigWaveDivider
-          fromColor="#0f1318"
-          toColor="white"
+          fromColor="white"
+          toColor="#0f1318"
           height={100}
           baseSpeed={1.3}
+          flip={true}
           layers={[
             { frequency: 1.1, amplitude: 19, speed: 0.012, phaseOffset: 0, opacity: 1.0 },
             { frequency: 2.3, amplitude: 12, speed: 0.025, phaseOffset: 1.5, opacity: 0.55 },
           ]}
         />
-        <WhatWeDo />
       </StackedCardSection>
 
       {/* 4. Meet The Principals (Dark) */}
@@ -797,17 +800,18 @@ export default function About() {
         targetScale={0.88}
         cardClassName="bg-navy-900 shadow-[0_-35px_80px_rgba(0,0,0,0.55)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-white/10"
       >
+        <MeetThePrincipals />
         <TrigWaveDivider
-          fromColor="white"
-          toColor="#0f1318"
+          fromColor="#0f1318"
+          toColor="white"
           height={100}
           baseSpeed={1.2}
+          flip={true}
           layers={[
             { frequency: 1.0, amplitude: 17, speed: 0.011, phaseOffset: 0, opacity: 1.0 },
             { frequency: 2.5, amplitude: 11, speed: 0.023, phaseOffset: 1.6, opacity: 0.55 },
           ]}
         />
-        <MeetThePrincipals />
       </StackedCardSection>
 
       {/* 5. Headquarters (Light) */}
@@ -817,17 +821,18 @@ export default function About() {
         targetScale={0.88}
         cardClassName="bg-white shadow-[0_-35px_80px_rgba(0,0,0,0.35)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-navy-100"
       >
+        <Headquarters />
         <TrigWaveDivider
-          fromColor="#0f1318"
-          toColor="white"
+          fromColor="white"
+          toColor="#0f1318"
           height={100}
           baseSpeed={1.5}
+          flip={true}
           layers={[
             { frequency: 1.4, amplitude: 18, speed: 0.014, phaseOffset: 0, opacity: 1.0 },
             { frequency: 2.1, amplitude: 12, speed: 0.026, phaseOffset: 1.2, opacity: 0.55 },
           ]}
         />
-        <Headquarters />
       </StackedCardSection>
 
       {/* 6. CTA Section (Dark - Final Card) */}
@@ -836,17 +841,18 @@ export default function About() {
         total={TOTAL_SECTIONS}
         cardClassName="bg-navy-900 shadow-[0_-35px_80px_rgba(0,0,0,0.6)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-white/10"
       >
+        <CTASection />
         <TrigWaveDivider
-          fromColor="white"
-          toColor="#0f1318"
+          fromColor="#0f1318"
+          toColor="white"
           height={100}
           baseSpeed={1.2}
+          flip={true}
           layers={[
             { frequency: 1.1, amplitude: 16, speed: 0.012, phaseOffset: 0, opacity: 1.0 },
             { frequency: 2.4, amplitude: 11, speed: 0.024, phaseOffset: 1.4, opacity: 0.55 },
           ]}
         />
-        <CTASection />
       </StackedCardSection>
     </div>
   );

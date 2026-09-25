@@ -88,8 +88,27 @@ export default function LeadershipCardStack() {
   const reducedMotion = usePrefersReducedMotion();
   // Top-of-stack index
   const [topIndex, setTopIndex] = useState(0);
+  // Responsive card dimensions
+  const [cardWidth, setCardWidth] = useState(340);
+  const [cardHeight, setCardHeight] = useState(460);
   // Animation state: cards track their own {x, rot} progress
   const containerRef = useRef(null);
+
+  // Set responsive dimensions on mount and resize
+  useEffect(() => {
+    const updateDimensions = () => {
+      const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+      // Scale down on smaller screens: max width 90% of viewport, but not less than 260px
+      const newWidth = Math.min(Math.max(vw * 0.9, 260), 340);
+      // Maintain aspect ratio ~340:460 => 0.739
+      const newHeight = newWidth * (460 / 340);
+      setCardWidth(newWidth);
+      setCardHeight(newHeight);
+    };
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
 
   const [{ x, rot }, api] = useSpring(() => ({
     x: 0,
@@ -157,7 +176,7 @@ export default function LeadershipCardStack() {
     <div
       ref={containerRef}
       className="relative mx-auto select-none"
-      style={{ width: CARD_W, height: CARD_H + 40 }}
+      style={{ width: cardWidth, height: cardHeight + 40 }}
       role="region"
       aria-label="Leadership team — swipe to browse"
       tabIndex={0}
@@ -220,8 +239,8 @@ function TopCard({ card, x, rot, bind }) {
         position: 'absolute',
         top: 0,
         left: 0,
-        width: CARD_W,
-        height: CARD_H,
+        width: cardWidth,
+        height: cardHeight,
         // Compose x + rot into a single transform string
         transform: to(
           [x, rot],
@@ -283,8 +302,8 @@ function BehindCard({ card, x }) {
         position: 'absolute',
         top: 0,
         left: 0,
-        width: CARD_W,
-        height: CARD_H,
+        width: cardWidth,
+        height: cardHeight,
         transform,
         zIndex: 10 - depth,
         willChange: 'transform',

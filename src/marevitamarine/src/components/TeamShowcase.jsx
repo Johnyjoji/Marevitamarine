@@ -16,9 +16,9 @@ export default function TeamShowcase({ members = [] }) {
   const col3 = members.filter((_, i) => i % 3 === 2);
 
   return (
-    <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-14 select-none w-full max-w-6xl mx-auto">
+    <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-14 select-none w-full max-w-6xl mx-auto px-4">
       {/* Left: Photo Grid */}
-      <div className="flex gap-3 flex-shrink-0 overflow-hidden pb-2 lg:pb-0 w-full lg:w-auto">
+      <div className="flex gap-3 flex-shrink-0 overflow-x-auto overflow-y-hidden pb-2 lg:pb-0 w-full lg:w-auto snap-x snap-mandatory scroll-smooth scrollbar-hide">
         {/* Column 1 */}
         <div className="flex flex-col gap-3">
           {col1.map((member) => (
