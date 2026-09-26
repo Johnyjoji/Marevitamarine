@@ -92,7 +92,7 @@ function AboutUsHero() {
               </div>
             </div>
 
-            <h1 className="text-[80px] sm:text-[100px] lg:text-[120px] font-black tracking-[-0.03em] leading-[0.85] text-navy-900">
+            <h1 className="text-[clamp(5rem,10vw,7.5rem)] font-black tracking-[-0.03em] leading-[0.85] text-navy-900">
               ABOUT
               <br />
               <span className="text-marine-500">US</span>
