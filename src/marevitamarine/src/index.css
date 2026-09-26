@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Erica+One&family=Prompt:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 /* ============================================================
@@ -6,15 +5,15 @@
    ------------------------------------------------------------
    - Color: two scales only — marine (cyan, accents & CTAs) and
      navy (the structural dark surface). No third palette.
-   - Type: a system stack for body, a tightened display scale,
-     and an editorial tracking range used by the per-scene hero.
+   - Type: Erica One for display headlines, Prompt for body.
    ============================================================ */
 
-.erica-one{
-  font-family:'Erica One',sans-serif;
+.erica-one {
+  font-family: 'Erica One', sans-serif;
 }
-.prompt{
-  font-family:'Prompt',sans-serif;
+
+.prompt {
+  font-family: 'Prompt', sans-serif;
 }
 
 @theme {

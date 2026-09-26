@@ -41,7 +41,7 @@ function AboutUsHero() {
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   return (
-    <section className="relative bg-white text-navy-900 overflow-hidden min-h-screen flex items-center">
+    <section className="relative bg-white text-navy-900 overflow-hidden min-h-[100dvh] flex items-center">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -179,7 +179,7 @@ function OurPhilosophy() {
       icon: Sparkles,
       label: 'Our Values',
       title: 'Unwavering professionalism. Safety-first culture.',
-      description: 'Honest, transparent service. These aren\'t slogans — they\'re the watch-standing principles we live by.',
+      description: 'Honest, transparent service. These are not slogans; they are the watch-standing principles we live by.',
     },
   ];
 
@@ -196,11 +196,6 @@ function OurPhilosophy() {
 
       <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
         <div className="max-w-3xl mb-16">
-          <TrigReveal direction="up" amplitude={20} duration={0.6}>
-            <span className="text-sm font-semibold tracking-[0.2em] uppercase text-marine-600">
-              Our Philosophy
-            </span>
-          </TrigReveal>
           <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
             <h2 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
               Three principles.<br />
@@ -209,27 +204,33 @@ function OurPhilosophy() {
           </TrigReveal>
         </div>
 
-        <div ref={ref} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div ref={ref} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {cards.map((card, i) => (
             <motion.div
               key={card.label}
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="group relative p-8 rounded-2xl border border-navy-100 bg-gradient-to-b from-white to-navy-50/50 hover:border-marine-200 hover:shadow-[0_20px_40px_-15px_rgba(14,165,233,0.15)] transition-all duration-500"
+              className={`group relative p-8 lg:p-10 rounded-2xl border border-navy-100 bg-gradient-to-b from-white to-navy-50/50 hover:border-marine-200 hover:shadow-[0_20px_40px_-15px_rgba(14,165,233,0.15)] transition-all duration-500 flex flex-col justify-between ${
+                i === 2 ? 'lg:col-span-2 lg:flex-row lg:items-center lg:gap-12' : ''
+              }`}
             >
-              <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-marine-50 text-marine-600 mb-6">
-                <card.icon className="h-7 w-7" />
+              <div className={`${i === 2 ? 'lg:w-1/3' : ''}`}>
+                <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-marine-50 text-marine-600 mb-6">
+                  <card.icon className="h-7 w-7" />
+                </div>
+                <p className="text-xs font-mono uppercase tracking-[0.25em] text-marine-600 mb-3 block">
+                  {card.label}
+                </p>
               </div>
-              <p className="text-xs font-mono uppercase tracking-[0.25em] text-marine-600 mb-3">
-                {card.label}
-              </p>
-              <h3 className="text-xl font-bold text-navy-900 mb-3">
-                {card.title}
-              </h3>
-              <p className="text-navy-600 leading-relaxed">
-                {card.description}
-              </p>
+              <div className={`${i === 2 ? 'lg:w-2/3' : 'mt-auto'}`}>
+                <h3 className={`font-bold text-navy-900 mb-3 ${i === 2 ? 'text-2xl lg:text-3xl lg:mb-4' : 'text-xl'}`}>
+                  {card.title}
+                </h3>
+                <p className={`text-navy-600 leading-relaxed ${i === 2 ? 'lg:text-lg' : ''}`}>
+                  {card.description}
+                </p>
+              </div>
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-marine-500 to-marine-500/0 opacity-0 group-hover:opacity-100 transition-opacity" />
             </motion.div>
           ))}
@@ -264,7 +265,7 @@ function OurEdge() {
     {
       icon: Compass,
       title: 'Integrity & Transparency',
-      description: 'As lifelong seafarers, we value trust, commitment, and honest communication. What we promise, we deliver — no surprises.',
+      description: 'As lifelong seafarers, we value trust, commitment, and honest communication. What we promise, we deliver with no surprises.',
     },
   ];
 
@@ -300,13 +301,8 @@ function OurEdge() {
 
           {/* Right — Content */}
           <div ref={ref}>
-            <TrigReveal direction="up" amplitude={20} duration={0.6}>
-              <span className="text-sm font-semibold tracking-[0.2em] uppercase text-marine-400">
-                Our Edge
-              </span>
-            </TrigReveal>
             <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
-              <h2 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
                 Hands-on expertise<br />
                 <span className="text-marine-400">beats shore theory.</span>
               </h2>
@@ -411,7 +407,7 @@ function WhatWeDo() {
                 Our Services
               </h2>
               <p className="mt-4 text-sm text-navy-600 leading-relaxed">
-                Bring your interior design vision to life. Each service is tailored to meet the unique needs of our clients, ensuring a seamless and satisfying experience.
+                Expert marine services tailored to meet the unique needs of our clients, ensuring operational efficiency and reliability in a seafarer's perspective.
               </p>
             </div>
 
@@ -427,8 +423,8 @@ function WhatWeDo() {
             </div>
           </div>
 
-          {/* Right Column — Services List */}
-          <div ref={ref} className="space-y-8">
+          {/* Right Column — Services Grid */}
+          <div ref={ref} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {services.map((service, i) => (
               <TrigReveal
                 key={service.title}
@@ -441,11 +437,15 @@ function WhatWeDo() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                   transition={{ duration: 0.5, delay: i * 0.08 }}
+                  className="p-5 rounded-2xl border border-navy-100 bg-navy-50/40 hover:bg-white hover:border-marine-200 hover:shadow-sm transition-all h-full flex flex-col justify-start"
                 >
-                  <h3 className="text-sm font-bold tracking-[0.1em] uppercase text-navy-900 mb-2">
+                  <div className="w-8 h-8 rounded-lg bg-marine-50 text-marine-600 flex items-center justify-center mb-3">
+                    <service.icon className="w-4 h-4" />
+                  </div>
+                  <h3 className="text-xs font-bold tracking-[0.08em] uppercase text-navy-900 mb-2">
                     {service.title}
                   </h3>
-                  <p className="text-sm text-navy-700 leading-relaxed">
+                  <p className="text-xs text-navy-600 leading-relaxed">
                     {service.description}
                   </p>
                 </motion.div>
@@ -526,12 +526,9 @@ function MeetThePrincipals() {
           className="text-center max-w-4xl mx-auto mb-16"
         >
           <TrigReveal direction="up" amplitude={20} duration={0.6}>
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-marine-500/10 border border-marine-500/20 mb-6">
-              <div className="w-2 h-2 rounded-full bg-marine-400" />
-              <span className="text-sm font-mono uppercase tracking-[0.3em] text-marine-400">
-                Leadership
-              </span>
-            </div>
+            <span className="block text-sm font-semibold tracking-[0.2em] uppercase text-marine-400 mb-4">
+              Leadership
+            </span>
           </TrigReveal>
           <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05] mb-6">
@@ -585,13 +582,8 @@ function Headquarters() {
       <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div ref={ref}>
-            <TrigReveal direction="up" amplitude={20} duration={0.6}>
-              <span className="text-sm font-semibold tracking-[0.2em] uppercase text-marine-600">
-                Headquarters
-              </span>
-            </TrigReveal>
             <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
-              <h2 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
                 Ernakulam, Kerala.<br />
                 <span className="text-marine-500">India's emerging maritime hub.</span>
               </h2>
@@ -693,7 +685,7 @@ function CTASection() {
           </TrigReveal>
           <TrigReveal direction="up" amplitude={15} delay={0.4} duration={0.6}>
             <p className="mt-6 text-xs text-navy-400 font-mono tracking-widest uppercase">
-              24 / 7 · operations@marevitamarine.com
+              24/7 Operations: operations@marevitamarine.com
             </p>
           </TrigReveal>
         </motion.div>

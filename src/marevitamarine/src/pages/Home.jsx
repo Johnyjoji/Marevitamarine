@@ -67,9 +67,8 @@ function HeroComposition({ scene }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-marine-950/60 border border-marine-400/30 text-marine-300 text-xs font-semibold tracking-[0.2em] uppercase backdrop-blur-md"
+          className="inline-flex items-center px-3 py-1 rounded-full bg-marine-950/60 border border-marine-400/30 text-marine-300 text-xs font-semibold tracking-[0.2em] uppercase backdrop-blur-md"
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-marine-400 animate-pulse" />
           {scene.eyebrow}
         </motion.div>
       </AnimatePresence>
@@ -158,11 +157,9 @@ function HeroComposition({ scene }) {
  * spread. Photographic backgrounds are out of scope until licensing is set,
  * so the cards use brand-toned geometric SVG illustrations instead.
  */
-function CaseStudyCard({ kind, name, meta, fact, href, index }) {
+function CaseStudyCard({ kind, name, meta, fact, href, index, className = '' }) {
   return (
     <motion.article
-      // Stagger + slight scale-down "settle" — feels like editorial covers being
-      // placed rather than boxes fading in. Keeps the section premium.
       initial={{ opacity: 0, y: 40, scale: 1.02 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, amount: 0.2 }}
@@ -171,12 +168,12 @@ function CaseStudyCard({ kind, name, meta, fact, href, index }) {
         delay: index * 0.14,
         ease: [0.2, 0.65, 0.3, 0.9],
       }}
-      className="group relative overflow-hidden rounded-sm bg-navy-950 text-white aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5]"
+      className={`group relative overflow-hidden rounded-2xl bg-navy-950 text-white ${className || 'aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5]'}`}
     >
       <CaseStudyIllustration kind={kind} />
 
       {/* Bottom-anchored caption — magazine-spread feel */}
-      <div className="absolute inset-0 flex flex-col justify-between p-7 sm:p-8">
+      <div className="absolute inset-0 flex flex-col justify-between p-7 sm:p-8 z-10">
         <div className="flex items-center gap-2 text-xs font-semibold tracking-[0.25em] uppercase text-marine-300">
           <span className="w-6 h-px bg-marine-400" />
           {kind}
@@ -193,10 +190,10 @@ function CaseStudyCard({ kind, name, meta, fact, href, index }) {
           </p>
           <Link
             to={href}
-            className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-marine-300 group-hover:translate-x-2 group-hover:scale-x-120 hover:text-white transition-colors"
+            className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-marine-300 group-hover:translate-x-2 transition-transform"
           >
-            Read the case
-            <ArrowRight className="h-4 w-4 group-hover:translate-x-2 group-hover:scale-120 transition-all" />
+            Learn more
+            <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>
@@ -367,24 +364,24 @@ function HomeContent() {
   const { heroRef } = useHeroScroll();
   const caseStudies = [
     {
-      kind: 'Vessel',
+      kind: 'Vessel Management',
       meta: 'MV NORTHERN STAR · BULK CARRIER · 82,000 DWT',
-      name: 'A six-week Atlantic crossing, single-point accountability.',
-      fact: 'Full technical, crew and commercial management for a Kamsarmax bulker — from Singapore charter to Rotterdam discharge. Zero off-hire, zero port-state detentions.',
+      name: 'Six-week Atlantic crossing with single-point accountability.',
+      fact: 'Full technical, crew, and commercial management from Singapore charter to Rotterdam discharge with zero off-hire time.',
       href: '/services',
     },
     {
-      kind: 'Port',
+      kind: 'Port Agency',
       meta: 'MUMBAI · JNPT · TURNAROUND 38 HOURS',
       name: 'Twelve cranes, one ship, a hundred moving parts.',
-      fact: 'Cargo, customs, crew change, bunkers, fresh provisions, surveys — coordinated around the clock for a container ship on a tight schedule.',
+      fact: 'Bunkers, provisions, customs clearance, and coordinated crew changes completed ahead of schedule.',
       href: '/services',
     },
     {
-      kind: 'Crew',
+      kind: 'Crewing Solutions',
       meta: 'CHIEF OFFICER · PLACEMENT · 72 HOURS',
-      name: 'The right rank, the right vessel, in three days.',
-      fact: 'When the previous Chief Officer signed off mid-voyage, we had a fully-certified replacement stepping off the helicopter in 72 hours. Sign-on, sign-off, sea-time continuity intact.',
+      name: 'The right rank and vessel endorsement in three days.',
+      fact: 'Rapid mobilization of certified deck officers ensuring continuous watchkeeping and sea-time compliance.',
       href: '/careers',
     },
   ];
@@ -469,28 +466,28 @@ function HomeContent() {
 
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
           <div className="max-w-3xl mb-16">
-            <TrigReveal direction="up" amplitude={20} duration={0.7}>
-              <span className="text-sm font-semibold tracking-[0.2em] uppercase text-marine-600">
-                Selected work
-              </span>
-            </TrigReveal>
-            <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
-              <h2 className="mt-4 text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
+            <TrigReveal direction="up" amplitude={30} duration={0.8}>
+              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
                 Three vessels, one harbor, one watch.
-                <span className="text-marine-500"> Right now, today.</span>
+                <span className="text-marine-500"> Real-world operations.</span>
               </h2>
             </TrigReveal>
-            <TrigReveal direction="up" amplitude={20} delay={0.2} duration={0.7}>
+            <TrigReveal direction="up" amplitude={20} delay={0.15} duration={0.7}>
               <p className="mt-6 text-lg text-navy-600 max-w-2xl">
-                We don't sell services — we run voyages. Three recent operations, the kind that go right because every moving part was owned by one accountable team.
+                We manage active voyages end-to-end. Here are recent operations where single-team ownership ensured seamless port calls and crossing success.
               </p>
             </TrigReveal>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            {caseStudies.map((c, i) => (
-              <CaseStudyCard key={c.meta} {...c} index={i} />
-            ))}
+          {/* Asymmetric Bento Layout: 1 prominent wide card + 2 complementary cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+            <div className="lg:col-span-2">
+              <CaseStudyCard {...caseStudies[0]} index={0} className="aspect-[16/10] sm:aspect-[16/9] lg:aspect-[16/10]" />
+            </div>
+            <div className="flex flex-col gap-6 lg:gap-8">
+              <CaseStudyCard {...caseStudies[1]} index={1} className="aspect-[4/3] flex-1" />
+              <CaseStudyCard {...caseStudies[2]} index={2} className="aspect-[4/3] flex-1" />
+            </div>
           </div>
         </div>
       </section>
@@ -569,56 +566,41 @@ function HomeContent() {
         />
 
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
-            <TrigParallax strength={-20} easing="sine">
-              <div>
-                <TrigReveal direction="left" amplitude={20} duration={0.6}>
-                  <span className="text-sm font-semibold tracking-[0.2em] uppercase text-marine-600">
-                    Why owners stay
-                  </span>
-                </TrigReveal>
-                <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
-                  <h2 className="mt-4 text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
-                    Four reasons operators sign long.
-                  </h2>
-                </TrigReveal>
-                <TrigReveal direction="up" amplitude={20} delay={0.2} duration={0.7}>
-                  <p className="mt-6 text-lg text-navy-600 max-w-xl">
-                    The maritime industry doesn't reward novelty. It rewards the quiet, methodical, never-anything-went-wrong kind of service. That's what we sell.
-                  </p>
-                </TrigReveal>
-              </div>
-            </TrigParallax>
+          <div className="max-w-3xl mb-16">
+            <TrigReveal direction="up" amplitude={30} duration={0.8}>
+              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
+                Why operators partner long term.
+              </h2>
+            </TrigReveal>
+            <TrigReveal direction="up" amplitude={20} delay={0.15} duration={0.7}>
+              <p className="mt-6 text-lg text-navy-600 max-w-2xl leading-relaxed">
+                The maritime industry rewards quiet, disciplined, and reliable service. We bring hands-on marine command directly into shore operations.
+              </p>
+            </TrigReveal>
+          </div>
 
-            <div className="space-y-8">
-              {differentiators.map((item, i) => (
-                <TrigReveal
-                  key={item.title}
-                  direction="right"
-                  amplitude={25}
-                  delay={i * 0.1}
-                  duration={0.6}
-                >
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.5, delay: i * 0.2 }}
-                    className="flex gap-5"
-                  >
-                    <div className="flex-shrink-0">
-                      <CheckCircle2 className="h-7 w-7 text-marine-500" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+            {differentiators.map((item, i) => (
+              <TrigReveal
+                key={item.title}
+                direction="up"
+                amplitude={25}
+                delay={i * 0.1}
+                duration={0.6}
+              >
+                <div className="p-8 rounded-2xl border border-navy-100 bg-navy-50/30 hover:border-marine-200 transition-colors">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-marine-50 text-marine-600 flex items-center justify-center flex-shrink-0">
+                      <CheckCircle2 className="h-5 w-5" />
                     </div>
-                    <div>
-                      <h3 className="text-xl font-semibold">{item.title}</h3>
-                      <p className="mt-2 text-navy-600 leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
-                  </motion.div>
-                </TrigReveal>
-              ))}
-            </div>
+                    <h3 className="text-xl font-bold text-navy-900">{item.title}</h3>
+                  </div>
+                  <p className="text-navy-600 leading-relaxed text-sm sm:text-base pl-14">
+                    {item.description}
+                  </p>
+                </div>
+              </TrigReveal>
+            ))}
           </div>
         </div>
       </section>
@@ -676,7 +658,7 @@ function HomeContent() {
                   to="/contact"
                   className="group inline-flex items-center gap-3 rounded-full bg-marine-500 pl-7 pr-5 py-4 text-sm font-semibold text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 hover:shadow-marine-500/40 transition-colors"
                 >
-                  Request a quote
+                  Contact our team
                   <motion.span
                     className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15"
                     whileHover={{ backgroundColor: 'rgba(255,255,255,0.25)' }}
@@ -696,7 +678,7 @@ function HomeContent() {
           </TrigReveal>
           <TrigReveal direction="up" amplitude={15} delay={0.4} duration={0.6}>
             <p className="mt-6 text-xs text-navy-400 font-mono tracking-widest uppercase">
-              24 / 7 · operations@marevitamarine.com
+              24/7 Support: operations@marevitamarine.com
             </p>
           </TrigReveal>
         </div>
