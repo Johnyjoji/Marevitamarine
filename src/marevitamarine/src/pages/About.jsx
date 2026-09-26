@@ -26,6 +26,16 @@ import {
   TrigFloating,
   TrigScrollRotate,
   TrigBackgroundWave,
+  TrigAmbientFloat,
+  TrigAmbientDrift,
+  TrigAmbientScale,
+  TrigAmbientRotate,
+  TrigAmbientGradientShift,
+  TrigHoverLift,
+  TrigHoverGlow,
+  TrigArrowSlide,
+  TrigCardHover,
+  MOTION,
 } from '../components/TrigScrollAnimations';
 import TeamShowcase from '../components/TeamShowcase';
 import StackedCardSection from '../components/StackedCardSection';
@@ -42,6 +52,16 @@ function AboutUsHero() {
 
   return (
     <section className="relative bg-white text-navy-900 overflow-hidden min-h-screen flex items-center">
+      {/* Subtle ambient gradient shift on background */}
+      <TrigAmbientGradientShift
+        amplitudeX={4}
+        amplitudeY={2}
+        period={MOTION.duration.ambientSlowest}
+        className="absolute inset-0 opacity-10"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-marine-50 via-white to-marine-100" />
+      </TrigAmbientGradientShift>
+
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -53,15 +73,30 @@ function AboutUsHero() {
           className="absolute bottom-20 left-10 w-96 h-96 bg-navy-500/5 rounded-full blur-3xl"
         />
 
-        {/* Floating decorative icons */}
-        <TrigFloating amplitude={18} period={6500} className="absolute top-32 right-1/4 w-10 h-10 text-marine-400/15">
+        {/* Floating decorative icons — refined ambient motion */}
+        <TrigAmbientDrift
+          amplitudeX={MOTION.amplitude.tiny}
+          amplitudeY={MOTION.amplitude.tiny}
+          periodX={MOTION.duration.ambientSlow}
+          periodY={MOTION.duration.ambientSlower}
+          className="absolute top-32 right-1/4 w-10 h-10 text-marine-400/15"
+        >
           <Compass className="w-full h-full" strokeWidth={1} />
-        </TrigFloating>
-        <TrigScrollRotate maxDegrees={12} easing="organic" className="absolute bottom-40 right-20 w-8 h-8 text-marine-400/15">
-          <TrigFloating amplitude={12} period={5500} horizontal>
+        </TrigAmbientDrift>
+        <TrigAmbientRotate
+          maxDegrees={3}
+          period={MOTION.duration.ambientSlowest}
+          className="absolute bottom-40 right-20 w-8 h-8 text-marine-400/15"
+        >
+          <TrigAmbientDrift
+            amplitudeX={MOTION.amplitude.micro}
+            amplitudeY={MOTION.amplitude.micro}
+            periodX={MOTION.duration.ambientSlow}
+            periodY={MOTION.duration.ambientSlower}
+          >
             <Anchor className="w-full h-full" strokeWidth={1} />
-          </TrigFloating>
-        </TrigScrollRotate>
+          </TrigAmbientDrift>
+        </TrigAmbientRotate>
       </div>
 
       <div className="mx-auto max-w-7xl px-6 py-20 lg:py-28 lg:px-8 relative z-10">
@@ -70,7 +105,7 @@ function AboutUsHero() {
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, ease: MOTION.ease.standard }}
             className="relative"
           >
             <div className="flex items-start gap-4 mb-8">
@@ -110,7 +145,7 @@ function AboutUsHero() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, delay: 0.2, ease: MOTION.ease.standard }}
             className="space-y-8"
           >
             <div className="space-y-6">
@@ -126,28 +161,39 @@ function AboutUsHero() {
               </p>
             </div>
 
-            {/* Image placeholder */}
-            <div className="relative rounded-2xl overflow-hidden border-2 border-navy-100 shadow-[0_20px_50px_-15px_rgba(15,23,42,0.2)]">
-              <div className="aspect-[16/10] relative">
-                <img
-                  src="/assets/aboutuspics/tientran0019-sea-5473257_1920.jpg"
-                  alt="Marevita Marine Company Overview"
-                  className="w-full h-full object-cover"
-                />
+            {/* Image placeholder with subtle ambient scale drift */}
+            <TrigAmbientScale
+              amplitude={MOTION.scale.ambient}
+              period={MOTION.duration.ambientSlowest}
+            >
+              <div className="relative rounded-2xl overflow-hidden border-2 border-navy-100 shadow-[0_20px_50px_-15px_rgba(15,23,42,0.2)]">
+                <div className="aspect-[16/10] relative">
+                  <img
+                    src="/assets/aboutuspics/tientran0019-sea-5473257_1920.jpg"
+                    alt="Marevita Marine Company Overview"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
-            </div>
+            </TrigAmbientScale>
 
             {/* CTA */}
             <div className="flex flex-wrap gap-4">
-              <a
-                href="#our-philosophy"
-                className="group inline-flex items-center gap-3 rounded-full bg-marine-500 pl-6 pr-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-marine-500/30 hover:bg-marine-600 hover:shadow-marine-600/40 transition-all"
-              >
-                Discover our philosophy
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-                  <ArrowRight className="h-4 w-4" />
-                </span>
-              </a>
+              <TrigHoverGlow className="inline-block">
+                <a
+                  href="#our-philosophy"
+                  className="group inline-flex items-center gap-3 rounded-full bg-marine-500 pl-6 pr-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-marine-500/30 hover:bg-marine-600 hover:shadow-marine-600/40 transition-all"
+                >
+                  Discover our philosophy
+                  <motion.span
+                    className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 group-hover:bg-white/30 transition-colors"
+                  >
+                    <TrigArrowSlide distance={3}>
+                      <ArrowRight className="h-4 w-4" />
+                    </TrigArrowSlide>
+                  </motion.span>
+                </a>
+              </TrigHoverGlow>
             </div>
           </motion.div>
         </div>
@@ -185,6 +231,16 @@ function OurPhilosophy() {
 
   return (
     <section id="our-philosophy" className="bg-white text-navy-900 relative overflow-hidden">
+      {/* Subtle ambient gradient shift on background */}
+      <TrigAmbientGradientShift
+        amplitudeX={3}
+        amplitudeY={2}
+        period={MOTION.duration.ambientSlowest}
+        className="absolute inset-0 opacity-10"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-marine-50 via-white to-marine-100" />
+      </TrigAmbientGradientShift>
+
       <TrigBackgroundWave
         className="opacity-40"
         baseColor="rgba(14, 165, 233, 0.04)"
@@ -211,16 +267,21 @@ function OurPhilosophy() {
 
         <div ref={ref} className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {cards.map((card, i) => (
-            <motion.div
+            <TrigCardHover
               key={card.label}
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="group relative p-8 rounded-2xl border border-navy-100 bg-gradient-to-b from-white to-navy-50/50 hover:border-marine-200 hover:shadow-[0_20px_40px_-15px_rgba(14,165,233,0.15)] transition-all duration-500"
+              className="relative p-8 rounded-2xl border border-navy-100 bg-gradient-to-b from-white to-navy-50/50"
             >
-              <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-marine-50 text-marine-600 mb-6">
-                <card.icon className="h-7 w-7" />
-              </div>
+              <TrigAmbientScale
+                amplitude={MOTION.scale.breath}
+                period={MOTION.duration.ambient + i * 1000}
+              >
+                <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-marine-50 text-marine-600 mb-6">
+                  <card.icon className="h-7 w-7" />
+                </div>
+              </TrigAmbientScale>
               <p className="text-xs font-mono uppercase tracking-[0.25em] text-marine-600 mb-3">
                 {card.label}
               </p>
@@ -231,7 +292,7 @@ function OurPhilosophy() {
                 {card.description}
               </p>
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-marine-500 to-marine-500/0 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </motion.div>
+            </TrigCardHover>
           ))}
         </div>
       </div>
@@ -270,32 +331,53 @@ function OurEdge() {
 
   return (
     <section className="bg-navy-900 text-white relative overflow-hidden">
-      {/* Floating decorative icons */}
-      <TrigFloating amplitude={22} period={7000} horizontal horizontalAmplitude={12} className="absolute top-20 right-10 w-12 h-12 text-marine-400/15 pointer-events-none">
+      {/* Subtle ambient gradient shift on background */}
+      <TrigAmbientGradientShift
+        amplitudeX={4}
+        amplitudeY={2}
+        period={MOTION.duration.ambientSlowest}
+        className="absolute inset-0"
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-950 via-navy-900 to-navy-950" />
+      </TrigAmbientGradientShift>
+
+      {/* Floating decorative icons — refined ambient motion */}
+      <TrigAmbientDrift
+        amplitudeX={MOTION.amplitude.tiny}
+        amplitudeY={MOTION.amplitude.tiny}
+        periodX={MOTION.duration.ambientSlow}
+        periodY={MOTION.duration.ambientSlower}
+        className="absolute top-20 right-10 w-12 h-12 text-marine-400/15 pointer-events-none"
+      >
         <Compass className="w-full h-full" strokeWidth={1} />
-      </TrigFloating>
+      </TrigAmbientDrift>
       <TrigParallax strength={-30} easing="sine" className="absolute bottom-32 left-10 w-10 h-10 text-marine-400/10 pointer-events-none">
         <Anchor className="w-full h-full" strokeWidth={0.5} />
       </TrigParallax>
 
       <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left — Image */}
+          {/* Left — Image with subtle ambient scale drift */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
             transition={{ duration: 0.8 }}
             className="relative"
           >
-            <div className="relative rounded-2xl overflow-hidden border-2 border-white/10 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)]">
-              <div className="aspect-[4/3] relative">
-                <img
-                  src="/assets/aboutuspics/wikimediaimages-arco-humber-883867_1920.jpg"
-                  alt="Marevita Marine Operations"
-                  className="w-full h-full object-cover"
-                />
+            <TrigAmbientScale
+              amplitude={MOTION.scale.ambient}
+              period={MOTION.duration.ambientSlowest}
+            >
+              <div className="relative rounded-2xl overflow-hidden border-2 border-white/10 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)]">
+                <div className="aspect-[4/3] relative">
+                  <img
+                    src="/assets/aboutuspics/wikimediaimages-arco-humber-883867_1920.jpg"
+                    alt="Marevita Marine Operations"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
-            </div>
+            </TrigAmbientScale>
           </motion.div>
 
           {/* Right — Content */}
@@ -326,20 +408,27 @@ function OurEdge() {
                   delay={i * 0.1}
                   duration={0.6}
                 >
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-                    transition={{ duration: 0.6, delay: i * 0.1 }}
-                    className="flex gap-5"
-                  >
-                    <div className="flex-shrink-0 flex h-12 w-12 items-center justify-center rounded-xl bg-navy-800 text-marine-400">
-                      <item.icon className="h-6 w-6" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-white">{item.title}</h3>
-                      <p className="mt-2 text-navy-300 leading-relaxed">{item.description}</p>
-                    </div>
-                  </motion.div>
+                  <TrigHoverLift lift={-2} scale={MOTION.scale.hover}>
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+                      transition={{ duration: 0.6, delay: i * 0.1 }}
+                      className="flex gap-5 p-4 rounded-xl bg-navy-800/50 border border-white/5 hover:border-marine-500/30 transition-all"
+                    >
+                      <TrigAmbientScale
+                        amplitude={MOTION.scale.breath}
+                        period={MOTION.duration.ambient + i * 1000}
+                      >
+                        <div className="flex-shrink-0 flex h-12 w-12 items-center justify-center rounded-xl bg-navy-800 text-marine-400">
+                          <item.icon className="h-6 w-6" />
+                        </div>
+                      </TrigAmbientScale>
+                      <div>
+                        <h3 className="text-lg font-semibold text-white">{item.title}</h3>
+                        <p className="mt-2 text-navy-300 leading-relaxed">{item.description}</p>
+                      </div>
+                    </motion.div>
+                  </TrigHoverLift>
                 </TrigReveal>
               ))}
             </div>
@@ -398,15 +487,40 @@ function MeetThePrincipals() {
 
   return (
     <section className="bg-navy-900 text-white relative overflow-hidden">
-      {/* Decorative floating anchors */}
-      <TrigScrollRotate maxDegrees={8} easing="organic" className="absolute top-16 left-1/4 w-10 h-10 text-marine-400/12 pointer-events-none">
-        <TrigFloating amplitude={18} period={7500} horizontal>
+      {/* Subtle ambient gradient shift on background */}
+      <TrigAmbientGradientShift
+        amplitudeX={4}
+        amplitudeY={2}
+        period={MOTION.duration.ambientSlowest}
+        className="absolute inset-0"
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-950 via-navy-900 to-navy-950" />
+      </TrigAmbientGradientShift>
+
+      {/* Decorative floating anchors — refined ambient motion */}
+      <TrigAmbientRotate
+        maxDegrees={2}
+        period={MOTION.duration.ambientSlowest}
+        className="absolute top-16 left-1/4 w-10 h-10 text-marine-400/12 pointer-events-none"
+      >
+        <TrigAmbientDrift
+          amplitudeX={MOTION.amplitude.micro}
+          amplitudeY={MOTION.amplitude.micro}
+          periodX={MOTION.duration.ambientSlow}
+          periodY={MOTION.duration.ambientSlower}
+        >
           <Compass className="w-full h-full" strokeWidth={1} />
-        </TrigFloating>
-      </TrigScrollRotate>
-      <TrigFloating amplitude={20} period={8000} className="absolute bottom-20 right-16 w-12 h-12 text-marine-400/10 pointer-events-none">
+        </TrigAmbientDrift>
+      </TrigAmbientRotate>
+      <TrigAmbientDrift
+        amplitudeX={MOTION.amplitude.tiny}
+        amplitudeY={MOTION.amplitude.tiny}
+        periodX={MOTION.duration.ambientSlower}
+        periodY={MOTION.duration.ambientSlow}
+        className="absolute bottom-20 right-16 w-12 h-12 text-marine-400/10 pointer-events-none"
+      >
         <Anchor className="w-full h-full" strokeWidth={0.5} />
-      </TrigFloating>
+      </TrigAmbientDrift>
 
       <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
         {/* Header */}
@@ -465,6 +579,16 @@ function Headquarters() {
 
   return (
     <section className="bg-white text-navy-900 relative overflow-hidden">
+      {/* Subtle ambient gradient shift on background */}
+      <TrigAmbientGradientShift
+        amplitudeX={3}
+        amplitudeY={2}
+        period={MOTION.duration.ambientSlowest}
+        className="absolute inset-0 opacity-10"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-marine-50 via-white to-marine-100" />
+      </TrigAmbientGradientShift>
+
       <TrigBackgroundWave
         className="opacity-35"
         baseColor="rgba(14, 165, 233, 0.04)"
@@ -502,32 +626,44 @@ function Headquarters() {
                   delay={i * 0.1}
                   duration={0.5}
                 >
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-                    transition={{ duration: 0.6, delay: i * 0.1 }}
-                    className="flex items-center gap-3 text-navy-700"
-                  >
-                    <item.icon className="h-5 w-5 text-marine-500 flex-shrink-0" />
-                    <span>{item.text}</span>
-                  </motion.div>
+                  <TrigHoverLift lift={-1} scale={MOTION.scale.hover}>
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                      transition={{ duration: 0.6, delay: i * 0.1 }}
+                      className="flex items-center gap-3 text-navy-700 p-3 rounded-lg hover:bg-navy-50 transition-colors"
+                    >
+                      <TrigAmbientScale
+                        amplitude={MOTION.scale.breath}
+                        period={MOTION.duration.ambient + i * 1000}
+                      >
+                        <item.icon className="h-5 w-5 text-marine-500 flex-shrink-0" />
+                      </TrigAmbientScale>
+                      <span>{item.text}</span>
+                    </motion.div>
+                  </TrigHoverLift>
                 </TrigReveal>
               ))}
             </div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.8 }}
-            className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-navy-200"
+          <TrigAmbientScale
+            amplitude={MOTION.scale.ambient}
+            period={MOTION.duration.ambientSlowest}
           >
-            <img
-              src="/assets/aboutuspics/papazachariasa-port-5349834_1920.jpg"
-              alt="Marevita Marine Headquarters Location"
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.8 }}
+              className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-navy-200"
+            >
+              <img
+                src="/assets/aboutuspics/papazachariasa-port-5349834_1920.jpg"
+                alt="Marevita Marine Headquarters Location"
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+          </TrigAmbientScale>
         </div>
       </div>
     </section>
@@ -542,15 +678,40 @@ function CTASection() {
 
   return (
     <section className="bg-navy-900 text-white relative overflow-hidden">
-      {/* Floating decorative elements */}
-      <TrigFloating amplitude={20} period={8000} className="absolute top-24 left-20 w-14 h-14 text-marine-400/12 pointer-events-none">
+      {/* Subtle ambient gradient shift on background */}
+      <TrigAmbientGradientShift
+        amplitudeX={5}
+        amplitudeY={3}
+        period={MOTION.duration.ambientSlowest}
+        className="absolute inset-0"
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-950 via-navy-900 to-navy-950" />
+      </TrigAmbientGradientShift>
+
+      {/* Floating decorative elements — refined ambient motion */}
+      <TrigAmbientDrift
+        amplitudeX={MOTION.amplitude.tiny}
+        amplitudeY={MOTION.amplitude.tiny}
+        periodX={MOTION.duration.ambientSlow}
+        periodY={MOTION.duration.ambientSlower}
+        className="absolute top-24 left-20 w-14 h-14 text-marine-400/12 pointer-events-none"
+      >
         <Ship className="w-full h-full" strokeWidth={0.5} />
-      </TrigFloating>
-      <TrigScrollRotate maxDegrees={12} easing="organic" className="absolute bottom-32 right-20 w-12 h-12 text-marine-400/12 pointer-events-none">
-        <TrigFloating amplitude={16} period={6500} horizontal>
+      </TrigAmbientDrift>
+      <TrigAmbientRotate
+        maxDegrees={2}
+        period={MOTION.duration.ambientSlowest}
+        className="absolute bottom-32 right-20 w-12 h-12 text-marine-400/12 pointer-events-none"
+      >
+        <TrigAmbientDrift
+          amplitudeX={MOTION.amplitude.micro}
+          amplitudeY={MOTION.amplitude.micro}
+          periodX={MOTION.duration.ambientSlow}
+          periodY={MOTION.duration.ambientSlower}
+        >
           <Compass className="w-full h-full" strokeWidth={0.5} />
-        </TrigFloating>
-      </TrigScrollRotate>
+        </TrigAmbientDrift>
+      </TrigAmbientRotate>
 
       <div className="mx-auto max-w-4xl px-6 py-24 lg:px-8 lg:py-32 text-center relative z-10">
         <motion.div
@@ -572,15 +733,21 @@ function CTASection() {
           </TrigReveal>
           <TrigReveal direction="up" amplitude={20} delay={0.3} duration={0.7}>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <a
-                href="/contact"
-                className="group inline-flex items-center gap-3 rounded-full bg-marine-500 pl-7 pr-5 py-4 text-sm font-semibold text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 hover:shadow-marine-500/40 transition-all"
-              >
-                Get in touch
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15 group-hover:bg-white/25 transition-colors">
-                  <ArrowRight className="h-4 w-4" />
-                </span>
-              </a>
+              <TrigHoverGlow className="inline-block">
+                <a
+                  href="/contact"
+                  className="group inline-flex items-center gap-3 rounded-full bg-marine-500 pl-7 pr-5 py-4 text-sm font-semibold text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 hover:shadow-marine-500/40 transition-all"
+                >
+                  Get in touch
+                  <motion.span
+                    className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15 group-hover:bg-white/25 transition-colors"
+                  >
+                    <TrigArrowSlide distance={3}>
+                      <ArrowRight className="h-4 w-4" />
+                    </TrigArrowSlide>
+                  </motion.span>
+                </a>
+              </TrigHoverGlow>
             </div>
           </TrigReveal>
           <TrigReveal direction="up" amplitude={15} delay={0.4} duration={0.6}>
