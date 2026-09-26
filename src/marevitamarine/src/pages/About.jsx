@@ -26,9 +26,6 @@ import {
   TrigFloating,
   TrigScrollRotate,
   TrigBackgroundWave,
-  TrigAmbientFloat,
-  TrigAmbientDrift,
-  TrigAmbientBreath,
 } from '../components/TrigScrollAnimations';
 import TeamShowcase from '../components/TeamShowcase';
 import StackedCardSection from '../components/StackedCardSection';
@@ -130,17 +127,15 @@ function AboutUsHero() {
             </div>
 
             {/* Image placeholder */}
-            <TrigAmbientScale amplitude={0.008} period={15000}>
-              <div className="relative rounded-2xl overflow-hidden border-2 border-navy-100 shadow-[0_20px_50px_-15px_rgba(15,23,42,0.2)]">
-                <div className="aspect-[16/10] relative">
-                  <img
-                    src="/assets/aboutuspics/tientran0019-sea-5473257_1920.jpg"
-                    alt="Marevita Marine Company Overview"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+            <div className="relative rounded-2xl overflow-hidden border-2 border-navy-100 shadow-[0_20px_50px_-15px_rgba(15,23,42,0.2)]">
+              <div className="aspect-[16/10] relative">
+                <img
+                  src="/assets/aboutuspics/tientran0019-sea-5473257_1920.jpg"
+                  alt="Marevita Marine Company Overview"
+                  className="w-full h-full object-cover"
+                />
               </div>
-            </TrigAmbientScale>
+            </div>
 
             {/* CTA */}
             <div className="flex flex-wrap gap-4">

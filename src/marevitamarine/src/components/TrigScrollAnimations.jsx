@@ -867,20 +867,4 @@ export function TrigAmbientScale({
   );
 }
 
-export default {
-  TrigParallax,
-  TrigReveal,
-  TrigFloating,
-  TrigWaveDivider,
-  TrigScrollRotate,
-  TrigScaleReveal,
-  TrigMorphingText,
-  TrigScrollIndicator,
-  TrigBackgroundWave,
-  TrigSectionWrapper,
-  TrigAmbientFloat,
-  TrigAmbientDrift,
-  TrigAmbientBreath,
-  TrigAmbientGlow,
-  TrigAmbientScale,
-};
+// All components are exported above as named exports
