@@ -460,7 +460,7 @@ function Headquarters() {
   const contactItems = [
     { icon: Globe, text: 'Ernakulam, Kochi, Kerala, India' },
     { icon: Mail, text: 'info@marevitamarine.com' },
-    { icon: Phone, text: '+91 (484) 2XX XXXX' },
+    { icon: Phone, text: '+91 91426 73145' },
   ];
 
   return (
