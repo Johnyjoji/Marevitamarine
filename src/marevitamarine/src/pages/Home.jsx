@@ -24,6 +24,9 @@ import {
   TrigScrollIndicator,
   TrigBackgroundWave,
   TrigSectionWrapper,
+  TrigAmbientFloat,
+  TrigAmbientDrift,
+  TrigAmbientBreath,
 } from '../components/TrigScrollAnimations';
 
 /**
@@ -432,6 +435,17 @@ function HomeContent() {
           <Compass className="w-full h-full" strokeWidth={1} />
         </TrigFloating>
       </TrigScrollRotate>
+
+      {/* Ambient floating elements in hero zone */}
+      <TrigAmbientFloat amplitude={2} period={25000} className="fixed top-1/3 left-8 w-8 h-8 text-marine-400/15 pointer-events-none z-0 hidden lg:block">
+        <Anchor className="w-full h-full" strokeWidth={1} />
+      </TrigAmbientFloat>
+      <TrigAmbientFloat amplitude={2} period={30000} horizontal horizontalAmplitude={2} className="fixed top-2/3 right-12 w-10 h-10 text-marine-400/10 pointer-events-none z-0 hidden lg:block">
+        <Waves className="w-full h-full" strokeWidth={1} />
+      </TrigAmbientFloat>
+      <TrigAmbientDrift amplitudeX={1} amplitudeY={1} periodX={20000} periodY={25000} className="fixed top-1/2 right-1/4 w-6 h-6 text-marine-400/15 pointer-events-none z-0 hidden lg:block">
+        <Compass className="w-full h-full" strokeWidth={1} />
+      </TrigAmbientDrift>
 
       {/* ===================== HERO with per-scene compositions ===================== */}
       <HeroVideoCarousel ref={heroRef}>

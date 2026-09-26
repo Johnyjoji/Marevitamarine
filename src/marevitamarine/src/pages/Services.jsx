@@ -10,6 +10,9 @@ import {
   TrigFloating,
   TrigScrollRotate,
   TrigBackgroundWave,
+  TrigAmbientFloat,
+  TrigAmbientDrift,
+  TrigAmbientBreath,
 } from '../components/TrigScrollAnimations';
 
 export default function Services() {
@@ -51,11 +54,13 @@ export default function Services() {
     <div>
       {/* Hero — Navy */}
       <section className="bg-navy-900 text-white relative overflow-hidden">
-        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
-          <span className="inline-block text-xs font-mono uppercase tracking-[0.25em] text-marine-400 mb-4">What we do</span>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-[-0.04em] leading-[0.95]">Services<br/><span className="text-marine-400">that move.</span></h1>
-          <p className="mt-6 text-lg text-navy-200 max-w-2xl">From the pilot to the port — one accountable team owns every moving part of your voyage.</p>
-        </div>
+        <TrigAmbientFloat amplitude={1} period={30000}>
+          <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
+            <span className="inline-block text-xs font-mono uppercase tracking-[0.25em] text-marine-400 mb-4">What we do</span>
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-[-0.04em] leading-[0.95]">Services<br/><span className="text-marine-400">that move.</span></h1>
+            <p className="mt-6 text-lg text-navy-200 max-w-2xl">From the pilot to the port — one accountable team owns every moving part of your voyage.</p>
+          </div>
+        </TrigAmbientFloat>
       </section>
 
       <SectionDivider fromColor="#0f1318" toColor="#ffffff" height={120} type="deep" />
@@ -85,15 +90,17 @@ export default function Services() {
               </div>
 
               {/* Decorative Image */}
-              <div className="relative rounded-2xl overflow-hidden">
-                <div className="aspect-[4/3]">
-                  <img
-                    src="/assets/aboutuspics/offshore-marine-service.jpg"
-                    alt="Marine Services"
-                    className="w-full h-full object-cover"
-                  />
+              <TrigAmbientFloat amplitude={1} period={25000}>
+                <div className="relative rounded-2xl overflow-hidden">
+                  <div className="aspect-[4/3]">
+                    <img
+                      src="/assets/aboutuspics/offshore-marine-service.jpg"
+                      alt="Marine Services"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
-              </div>
+              </TrigAmbientFloat>
             </div>
 
             {/* Right Column — Services List */}

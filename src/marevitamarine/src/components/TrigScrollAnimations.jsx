@@ -2,6 +2,21 @@ import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTrigScroll, useElementScrollProgress } from '../hooks/useTrigScroll';
 
+// Hook to respect prefers-reduced-motion
+const useReducedMotion = () => {
+  const [reducedMotion, setReducedMotion] = useState(false);
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReducedMotion(mediaQuery.matches);
+    // Check initially
+    update();
+    // Listen for changes
+    mediaQuery.addEventListener('change', update);
+    return () => mediaQuery.removeEventListener('change', update);
+  }, []);
+  return reducedMotion;
+};
+
 /**
  * TrigParallax - Parallax element with trig-based easing
  * Creates smooth, organic parallax motion using sine/cosine curves
@@ -595,6 +610,263 @@ export function TrigSectionWrapper({
   );
 }
 
+/**
+ * TrigAmbientFloat - Very slow floating animation for ambient motion
+ * Uses extremely long periods and small amplitudes for subtle movement
+ */
+export function TrigAmbientFloat({
+  children,
+  amplitude = 3,
+  period = 20000, // 20 seconds for one cycle
+  horizontal = false,
+  horizontalAmplitude = 2,
+  className = '',
+  style = {},
+}) {
+  const [transform, setTransform] = useState('');
+  const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (reducedMotion) {
+      setTransform('none');
+      return;
+    }
+
+    let rafId;
+    const startTime = Date.now();
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const verticalOffset = Math.sin((elapsed / period) * Math.PI * 2) * amplitude;
+      const horizontalOffset = horizontal
+        ? Math.cos((elapsed / period) * Math.PI * 2) * horizontalAmplitude
+        : 0;
+      setTransform(`translate3d(${horizontalOffset}px, ${verticalOffset}px, 0)`);
+      rafId = requestAnimationFrame(animate);
+    };
+
+    rafId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafId);
+  }, [amplitude, period, horizontal, horizontalAmplitude, reducedMotion]);
+
+  return (
+    <div
+      className={className}
+      style={{
+        ...style,
+        transform,
+        willChange: 'transform',
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/**
+ * TrigAmbientDrift - Very slow directional drift
+ * Creates almost imperceptible movement in a specific direction
+ */
+export function TrigAmbientDrift({
+  children,
+  amplitudeX = 1,
+  amplitudeY = 1,
+  periodX = 15000,
+  periodY = 20000,
+  className = '',
+  style = {},
+}) {
+  const [transform, setTransform] = useState('');
+  const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (reducedMotion) {
+      setTransform('none');
+      return;
+    }
+
+    let rafId;
+    const startTime = Date.now();
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const offsetX = Math.sin((elapsed / periodX) * Math.PI * 2) * amplitudeX;
+      const offsetY = Math.sin((elapsed / periodY) * Math.PI * 2) * amplitudeY;
+      setTransform(`translate3d(${offsetX}px, ${offsetY}px, 0)`);
+      rafId = requestAnimationFrame(animate);
+    };
+
+    rafId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafId);
+  }, [amplitudeX, amplitudeY, periodX, periodY, reducedMotion]);
+
+  return (
+    <div
+      className={className}
+      style={{
+        ...style,
+        transform,
+        willChange: 'transform',
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/**
+ * TrigAmbientBreath - Subtle scaling/opacity breathing
+ * Creates a gentle pulse effect
+ */
+export function TrigAmbientBreath({
+  children,
+  scaleAmplitude = 0.005, // 0.5% scale change
+  opacityAmplitude = 0.02, // 2% opacity change
+  period = 8000, // 8 seconds
+  className = '',
+  style = {},
+}) {
+  const [styles, setStyles] = useState({});
+  const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (reducedMotion) {
+      setStyles({ transform: 'none', opacity: 1 });
+      return;
+    }
+
+    let rafId;
+    const startTime = Date.now();
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const breath = Math.sin((elapsed / period) * Math.PI * 2);
+      const scale = 1 + breath * scaleAmplitude;
+      const opacity = 1 - Math.abs(breath) * opacityAmplitude;
+      setStyles({
+        transform: `scale(${scale})`,
+        opacity,
+      });
+      rafId = requestAnimationFrame(animate);
+    };
+
+    rafId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafId);
+  }, [scaleAmplitude, opacityAmplitude, period, reducedMotion]);
+
+  return (
+    <div
+      className={className}
+      style={{
+        ...style,
+        ...styles,
+        willChange: 'transform, opacity',
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/**
+ * TrigAmbientGlow - Subtle glow pulsing via opacity
+ * Works well with elements that have box-shadow or glow effects
+ */
+export function TrigAmbientGlow({
+  children,
+  amplitude = 0.15, // 15% opacity variation
+  period = 6000, // 6 seconds
+  className = '',
+  style = {},
+}) {
+  const [opacity, setOpacity] = useState(1);
+  const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (reducedMotion) {
+      setOpacity(1);
+      return;
+    }
+
+    let rafId;
+    const startTime = Date.now();
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const breath = Math.sin((elapsed / period) * Math.PI * 2);
+      // Oscillate between 1-amplitude and 1
+      const newOpacity = 1 - Math.abs(breath) * amplitude;
+      setOpacity(newOpacity);
+      rafId = requestAnimationFrame(animate);
+    };
+
+    rafId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafId);
+  }, [amplitude, period, reducedMotion]);
+
+  return (
+    <div
+      className={className}
+      style={{
+        ...style,
+        opacity,
+        willChange: 'opacity',
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/**
+ * TrigAmbientScale - Very slow scale pulsation
+ * Alternative to Breath with only scale changes
+ */
+export function TrigAmbientScale({
+  children,
+  amplitude = 0.01, // 1% scale variation
+  period = 12000, // 12 seconds
+  className = '',
+  style = {},
+}) {
+  const [transform, setTransform] = useState('');
+  const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (reducedMotion) {
+      setTransform('none');
+      return;
+    }
+
+    let rafId;
+    const startTime = Date.now();
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const breath = Math.sin((elapsed / period) * Math.PI * 2);
+      const scale = 1 + breath * amplitude;
+      setTransform(`scale(${scale})`);
+      rafId = requestAnimationFrame(animate);
+    };
+
+    rafId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafId);
+  }, [amplitude, period, reducedMotion]);
+
+  return (
+    <div
+      className={className}
+      style={{
+        ...style,
+        transform,
+        willChange: 'transform',
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 export default {
   TrigParallax,
   TrigReveal,
@@ -606,4 +878,9 @@ export default {
   TrigScrollIndicator,
   TrigBackgroundWave,
   TrigSectionWrapper,
+  TrigAmbientFloat,
+  TrigAmbientDrift,
+  TrigAmbientBreath,
+  TrigAmbientGlow,
+  TrigAmbientScale,
 };
