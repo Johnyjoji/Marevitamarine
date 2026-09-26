@@ -1,15 +1,50 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, Anchor, GraduationCap, Compass, CheckCircle2, Wrench, Users, Ship, Sparkles } from 'lucide-react';
 import SectionDivider from '../components/SectionDivider';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import {
+  TrigWaveDivider,
+  TrigReveal,
+  TrigParallax,
+  TrigFloating,
+  TrigScrollRotate,
+  TrigBackgroundWave,
+} from '../components/TrigScrollAnimations';
 
 export default function Services() {
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.15 });
   const services = [
-    { icon: Ship, title: 'Ship Management', desc: 'Full technical, crew, and operational management — from charter to discharge.' },
-    { icon: Users, title: 'Crew Management', desc: 'Recruitment, placement, and continuity across ranks and vessel types.' },
-    { icon: Anchor, title: 'Port Agency', desc: '24-hour coordination — berth, bunkers, customs, crew change, surveys.' },
-    { icon: Wrench, title: 'Technical Services', desc: 'Maintenance oversight, dry-dock planning, class compliance, audits.' },
-    { icon: GraduationCap, title: 'Maritime Training', desc: 'On-board, shore, and online competency development.' },
-    { icon: Shield, title: 'Safety & Compliance', desc: 'Zero-incident culture, IMO-aligned systems, full documentation.' },
+    {
+      icon: Users,
+      title: 'CREW MANNING',
+      description: 'Professional recruitment and placement of qualified seafarers across all ranks and vessel types.',
+    },
+    {
+      icon: Wrench,
+      title: 'TECHNICAL MANAGEMENT & GUIDANCE',
+      description: 'Expert oversight and technical support for vessel maintenance, dry-docking, and class compliance.',
+    },
+    {
+      icon: Ship,
+      title: 'VESSEL OPERATIONS & SUPPORT',
+      description: 'Streamlining operational efficiency for seamless voyages — from port planning to voyage optimization.',
+    },
+    {
+      icon: GraduationCap,
+      title: 'MARITIME TRAINING',
+      description: 'Comprehensive training solutions delivered on-board, ashore, and online for continuous competency.',
+    },
+    {
+      icon: ClipboardCheck,
+      title: 'MARINE CONSULTANCY & INSPECTIONS',
+      description: 'High-level advisory and rigorous vessel inspections for pre-purchase, condition, and class surveys.',
+    },
+    {
+      icon: CheckCircle2,
+      title: 'SAFETY, COMPLIANCE & DOCUMENTATION',
+      description: 'Ensuring full adherence to international maritime laws, flag state requirements, and safety standards.',
+    },
   ];
 
   return (
@@ -26,16 +61,66 @@ export default function Services() {
       <SectionDivider fromColor="#0f1318" toColor="#ffffff" height={120} type="deep" />
 
       {/* Services List — White */}
-      <section className="bg-white text-navy-900">
-        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((s) => (
-              <div key={s.title} className="group p-8 rounded-2xl border border-navy-100 hover:border-marine-200 hover:shadow-xl transition-all bg-gradient-to-b from-white to-navy-50/30">
-                <div className="h-12 w-12 rounded-xl bg-marine-50 text-marine-600 flex items-center justify-center mb-6"><s.icon className="h-6 w-6"/></div>
-                <h3 className="text-xl font-bold tracking-tight mb-2">{s.title}</h3>
-                <p className="text-navy-600 leading-relaxed text-sm">{s.desc}</p>
+      <section className="bg-white text-navy-900 relative overflow-hidden">
+        <TrigBackgroundWave
+          className="opacity-30"
+          baseColor="rgba(14, 165, 233, 0.04)"
+          amplitude={30}
+          frequency={0.3}
+          speed={0.00018}
+          layerCount={2}
+        />
+
+        <div className="mx-auto max-w-6xl px-6 py-20 lg:px-8 lg:py-24 relative z-10">
+          <div className="grid lg:grid-cols-[1fr,2fr] gap-12 lg:gap-16 items-start">
+            {/* Left Column — Heading + Image */}
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
+                  Our Services
+                </h2>
+                <p className="mt-4 text-sm text-navy-600 leading-relaxed">
+                  Bring your interior design vision to life. Each service is tailored to meet the unique needs of our clients, ensuring a seamless and satisfying experience.
+                </p>
               </div>
-            ))}
+
+              {/* Decorative Image */}
+              <div className="relative rounded-2xl overflow-hidden">
+                <div className="aspect-[4/3]">
+                  <img
+                    src="/assets/aboutuspics/offshore-marine-service.jpg"
+                    alt="Marine Services"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column — Services List */}
+            <div ref={ref} className="space-y-8">
+              {services.map((service, i) => (
+                <TrigReveal
+                  key={service.title}
+                  direction="up"
+                  amplitude={20}
+                  delay={i * 0.08}
+                  duration={0.6}
+                >
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    transition={{ duration: 0.5, delay: i * 0.08 }}
+                  >
+                    <h3 className="text-sm font-bold tracking-[0.1em] uppercase text-navy-900 mb-2">
+                      {service.title}
+                    </h3>
+                    <p className="text-sm text-navy-700 leading-relaxed">
+                      {service.description}
+                    </p>
+                  </motion.div>
+                </TrigReveal>
+              ))}
+            </div>
           </div>
         </div>
       </section>
