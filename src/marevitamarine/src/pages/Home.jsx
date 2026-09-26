@@ -696,7 +696,7 @@ function HomeContent() {
           </TrigReveal>
           <TrigReveal direction="up" amplitude={15} delay={0.4} duration={0.6}>
             <p className="mt-6 text-xs text-navy-400 font-mono tracking-widest uppercase">
-              24 / 7 · operations@marevitamarine.com
+              24 / 7 · info@marevitamarine.com
             </p>
           </TrigReveal>
         </div>

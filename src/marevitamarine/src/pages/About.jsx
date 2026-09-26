@@ -459,7 +459,7 @@ function Headquarters() {
 
   const contactItems = [
     { icon: Globe, text: 'Ernakulam, Kochi, Kerala, India' },
-    { icon: Mail, text: 'operations@marevitamarine.com' },
+    { icon: Mail, text: 'info@marevitamarine.com' },
     { icon: Phone, text: '+91 (484) 2XX XXXX' },
   ];
 
@@ -585,7 +585,7 @@ function CTASection() {
           </TrigReveal>
           <TrigReveal direction="up" amplitude={15} delay={0.4} duration={0.6}>
             <p className="mt-6 text-xs text-navy-400 font-mono tracking-widest uppercase">
-              24 / 7 · operations@marevitamarine.com
+              24 / 7 · info@marevitamarine.com
             </p>
           </TrigReveal>
         </motion.div>
