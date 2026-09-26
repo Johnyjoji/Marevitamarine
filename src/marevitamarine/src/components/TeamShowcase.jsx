@@ -121,7 +121,7 @@ function PhotoCard({ member, className, hoveredId, onHover }) {
 
       {/* Border highlight on active */}
       {isActive && (
-        <div className="absolute inset-0 ring-2 ring-marine-400 ring-offset-2 ring-offset-navy-900 rounded-xl pointer-events-none" />
+        <div className="absolute inset-0 ring-2 ring-marine-400 ring-offset-1 ring-offset-navy-900 rounded-xl pointer-events-none" />
       )}
     </motion.div>
   );
