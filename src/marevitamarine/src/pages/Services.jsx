@@ -88,7 +88,7 @@ export default function Services() {
               <div className="relative rounded-2xl overflow-hidden">
                 <div className="aspect-[4/3]">
                   <img
-                    src="/assets/about/hero.jpg"
+                    src="/assets/aboutuspics/offshore-marine-service.jpg"
                     alt="Marine Services"
                     className="w-full h-full object-cover"
                   />
