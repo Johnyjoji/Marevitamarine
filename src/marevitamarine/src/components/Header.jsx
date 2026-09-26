@@ -10,7 +10,7 @@ const NAV = [
   { name: 'Fleet', href: '/fleet' },
   { name: 'Safety', href: '/safety' },
   { name: 'Careers', href: '/careers' },
-  { name: 'News', href: '/news' },
+  { name: 'News & Insights', href: '/news' },
 ];
 
 export default function Header() {
