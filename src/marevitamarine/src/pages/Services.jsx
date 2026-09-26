@@ -16,7 +16,36 @@ export default function Services() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.15 });
   const services = [
     {
-];
+      icon: Users,
+      title: 'CREW MANNING',
+      description: 'Professional recruitment and placement of qualified seafarers across all ranks and vessel types.',
+    },
+    {
+      icon: Wrench,
+      title: 'TECHNICAL MANAGEMENT & GUIDANCE',
+      description: 'Expert oversight and technical support for vessel maintenance, dry-docking, and class compliance.',
+    },
+    {
+      icon: Ship,
+      title: 'VESSEL OPERATIONS & SUPPORT',
+      description: 'Streamlining operational efficiency for seamless voyages — from port planning to voyage optimization.',
+    },
+    {
+      icon: GraduationCap,
+      title: 'MARITIME TRAINING',
+      description: 'Comprehensive training solutions delivered on-board, ashore, and online for continuous competency.',
+    },
+    {
+      icon: ClipboardCheck,
+      title: 'MARINE CONSULTANCY & INSPECTIONS',
+      description: 'High-level advisory and rigorous vessel inspections for pre-purchase, condition, and class surveys.',
+    },
+    {
+      icon: CheckCircle2,
+      title: 'SAFETY, COMPLIANCE & DOCUMENTATION',
+      description: 'Ensuring full adherence to international maritime laws, flag state requirements, and safety standards.',
+    },
+  ];
 
   return (
     <div>

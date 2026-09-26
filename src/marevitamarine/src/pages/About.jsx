@@ -351,12 +351,6 @@ function OurEdge() {
 }
 
 /**
- * WhatWeDo — Services section inspired by aboutUs.webp reference
- * Left side: heading and description
- * Right side: services list with icons and descriptions
- */
-
-/**
  * MeetThePrincipals — Leadership section inspired by aboutUs.webp reference
  * Uses the TeamShowcase component from myteam reference
  */
@@ -615,7 +609,7 @@ function CTASection() {
  * while lower sections slide gracefully on top, creating a tactile 3D layer stack.
  */
 export default function About() {
-  const TOTAL_SECTIONS = 7;
+  const TOTAL_SECTIONS = 6;
 
   return (
     <div className="relative bg-navy-950 text-white">
@@ -670,30 +664,9 @@ export default function About() {
         />
       </StackedCardSection>
 
-      {/* 3. What We Do (Light) */}
+      {/* 3. Meet The Principals (Dark) */}
       <StackedCardSection
         index={3}
-        total={TOTAL_SECTIONS}
-        targetScale={0.88}
-        cardClassName="bg-white shadow-[0_-35px_80px_rgba(0,0,0,0.35)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-navy-100"
-      >
-        <WhatWeDo />
-        <TrigWaveDivider
-          fromColor="white"
-          toColor="#0f1318"
-          height={100}
-          baseSpeed={1.3}
-          flip={true}
-          layers={[
-            { frequency: 1.1, amplitude: 19, speed: 0.012, phaseOffset: 0, opacity: 1.0 },
-            { frequency: 2.3, amplitude: 12, speed: 0.025, phaseOffset: 1.5, opacity: 0.55 },
-          ]}
-        />
-      </StackedCardSection>
-
-      {/* 4. Meet The Principals (Dark) */}
-      <StackedCardSection
-        index={4}
         total={TOTAL_SECTIONS}
         targetScale={0.88}
         cardClassName="bg-navy-900 shadow-[0_-35px_80px_rgba(0,0,0,0.55)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-white/10"
@@ -712,9 +685,9 @@ export default function About() {
         />
       </StackedCardSection>
 
-      {/* 5. Headquarters (Light) */}
+      {/* 4. Headquarters (Light) */}
       <StackedCardSection
-        index={5}
+        index={4}
         total={TOTAL_SECTIONS}
         targetScale={0.88}
         cardClassName="bg-white shadow-[0_-35px_80px_rgba(0,0,0,0.35)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-navy-100"
@@ -733,9 +706,9 @@ export default function About() {
         />
       </StackedCardSection>
 
-      {/* 6. CTA Section (Dark - Final Card) */}
+      {/* 5. CTA Section (Dark - Final Card) */}
       <StackedCardSection
-        index={6}
+        index={5}
         total={TOTAL_SECTIONS}
         cardClassName="bg-navy-900 shadow-[0_-35px_80px_rgba(0,0,0,0.6)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-white/10"
       >
