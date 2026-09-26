@@ -130,7 +130,7 @@ function AboutUsHero() {
             <div className="relative rounded-2xl overflow-hidden border-2 border-navy-100 shadow-[0_20px_50px_-15px_rgba(15,23,42,0.2)]">
               <div className="aspect-[16/10] relative">
                 <img
-                  src="/assets/placeholder.png"
+                  src="/assets/aboutuspics/tientran0019-sea-5473257_1920.jpg"
                   alt="Marevita Marine Company Overview"
                   className="w-full h-full object-cover"
                 />
@@ -290,7 +290,7 @@ function OurEdge() {
             <div className="relative rounded-2xl overflow-hidden border-2 border-white/10 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)]">
               <div className="aspect-[4/3] relative">
                 <img
-                  src="/assets/placeholder.png"
+                  src="/assets/aboutuspics/wikimediaimages-arco-humber-883867_1920.jpg"
                   alt="Marevita Marine Operations"
                   className="w-full h-full object-cover"
                 />
@@ -523,7 +523,7 @@ function Headquarters() {
             className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-navy-200"
           >
             <img
-              src="/assets/placeholder.png"
+              src="/assets/aboutuspics/papazachariasa-port-5349834_1920.jpg"
               alt="Marevita Marine Headquarters Location"
               className="w-full h-full object-cover"
             />
