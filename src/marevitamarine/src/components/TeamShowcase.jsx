@@ -89,7 +89,7 @@ function PhotoCard({ member, className, hoveredId, onHover }) {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{
         opacity: isDimmed ? 0.6 : 1,
-        scale: isActive ? 1.02 : 1,
+        scale: isActive ? 1.01 : 1,
       }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
     >
@@ -121,7 +121,7 @@ function PhotoCard({ member, className, hoveredId, onHover }) {
 
       {/* Border highlight on active */}
       {isActive && (
-        <div className="absolute inset-0 ring-2 ring-marine-400 ring-offset-1 ring-offset-navy-900 rounded-xl pointer-events-none" />
+        <div className="absolute inset-0 ring-1 ring-marine-400 rounded-xl pointer-events-none" />
       )}
     </motion.div>
   );
