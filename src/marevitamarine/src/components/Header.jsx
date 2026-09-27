@@ -1,8 +1,8 @@
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, X, Navigation } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { motion, AnimatePresence, useMotionValueEvent } from 'framer-motion';
-import { useHeroScroll } from '../context/HeroScrollContext';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useScrollState } from '../hooks/useScrollState';
 
 const NAV = [
   { name: 'About', href: '/about' },
@@ -15,48 +15,33 @@ const NAV = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isManuallyExpanded, setIsManuallyExpanded] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(true);
   const location = useLocation();
-  const { scrollYProgress } = useHeroScroll();
+  const isHeroPage = location.pathname === '/' || location.pathname === '/about';
+  const [isExpanded, setIsExpanded] = useState(!isHeroPage); // collapsed on hero pages, expanded elsewhere
+  const { direction, isAtTop } = useScrollState({ directionThreshold: 12, topThreshold: 10 });
 
-  const isHomePage = location.pathname === '/';
-
-  // On home page mount, start collapsed. On inner pages, start expanded.
+  // Scroll direction logic: down = collapse, up = expand
   useEffect(() => {
-    if (isHomePage) {
-      setIsManuallyExpanded(false);
+    // On hero pages at top: stay collapsed (cinematic hero)
+    if (isHeroPage && isAtTop) {
+      return;
+    }
+    // On inner pages at top: always expand
+    if (isAtTop) {
+      setIsExpanded(true);
+      return;
+    }
+
+    if (direction === 'down' && isExpanded) {
       setIsExpanded(false);
-    } else {
-      setIsManuallyExpanded(false);
+    } else if (direction === 'up' && !isExpanded) {
       setIsExpanded(true);
     }
-  }, [isHomePage]);
-
-  // Track hero scroll progress
-  useMotionValueEvent(scrollYProgress, 'change', (progress) => {
-    if (!isHomePage) return;
-    if (progress > 0.5) {
-      // Past the hero midpoint: always expand (whether triggered by scroll or click)
-      setIsExpanded(true);
-    } else if (progress <= 0.5) {
-      // Back in the top half of the hero: collapse, and reset the manual
-      // expansion flag so future scroll-ups re-collapse and future scroll-downs
-      // re-expand as normal.
-      setIsExpanded(false);
-      setIsManuallyExpanded(false);
-    }
-  });
-
-  // Close mobile sheet on route change
-  useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [location.pathname]);
+  }, [direction, isAtTop, isExpanded, isHeroPage]);
 
   const handlePillClick = () => {
     if (!isExpanded) {
       setIsExpanded(true);
-      setIsManuallyExpanded(true);
     }
   };
 
