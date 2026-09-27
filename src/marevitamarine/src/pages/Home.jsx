@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   Anchor,
   ArrowRight,
@@ -55,103 +55,67 @@ const HEADLINE_STYLE = {
 
 /**
  * HeroComposition — Renders the per-scene typography inside the safe band.
- * Crossfades eyebrow, headline, body, and CTA in lockstep with the video.
+ * No enter/exit animations — the full card flip handles transitions.
  */
-function HeroComposition({ scene }) {
+function HeroComposition({ scene, isExiting = false }) {
+  // No animations needed — the parent card flips as a unit
   return (
     <div
       className={`flex flex-col gap-5 ${COMPOSITION_ALIGN[scene.composition]} ${COMPOSITION_WIDTH[scene.composition]}`}
     >
       {/* Eyebrow — small, all caps, tracks the scene */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={scene.id + '-eyebrow'}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-marine-950/60 border border-marine-400/30 text-marine-300 text-xs font-semibold tracking-[0.2em] uppercase backdrop-blur-md"
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-marine-400 animate-pulse" />
-          {scene.eyebrow}
-        </motion.div>
-      </AnimatePresence>
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-marine-950/60 border border-marine-400/30 text-marine-300 text-xs font-semibold tracking-[0.2em] uppercase backdrop-blur-md">
+        <span className="w-1.5 h-1.5 rounded-full bg-marine-400 animate-pulse" />
+        {scene.eyebrow}
+      </div>
 
       {/* Headline — the editorial centerpiece */}
-      <AnimatePresence mode="wait">
-        <motion.h1
-          key={scene.id + '-headline'}
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -16 }}
-          transition={{ duration: 0.6, ease: [0.2, 0.65, 0.3, 0.9] }}
-          className={`erica-one text-white drop-shadow-md text-4xl sm:text-6xl lg:text-7xl ${HEADLINE_STYLE[scene.composition]}`}
-        >
-          {scene.headline.map((line, i) => (
-            <span key={i} className="block">
-              {i === scene.headline.length - 1 ? (
-                <span className="text-marine-400 erica-one">{line}</span>
-              ) : (
-                line
-              )}
-            </span>
-          ))}
-        </motion.h1>
-      </AnimatePresence>
+      <h1 className={`erica-one text-white drop-shadow-md text-4xl sm:text-6xl lg:text-7xl ${HEADLINE_STYLE[scene.composition]}`}>
+        {scene.headline.map((line, i) => (
+          <span key={i} className="block">
+            {i === scene.headline.length - 1 ? (
+              <span className="text-marine-400 erica-one">{line}</span>
+            ) : (
+              line
+            )}
+          </span>
+        ))}
+      </h1>
 
       {/* Body — the proof */}
-      <AnimatePresence mode="wait">
-        <motion.p
-          key={scene.id + '-body'}
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.5, delay: 0.4, ease: 'easeOut' }}
-          className="text-base prompt sm:text-lg text-slate-200 leading-relaxed max-w-xl font-light drop-shadow"
-        >
-          {scene.body}
-        </motion.p>
-      </AnimatePresence>
+      <p className="text-base prompt sm:text-lg text-slate-200 leading-relaxed max-w-xl font-light drop-shadow">
+        {scene.body}
+      </p>
 
       {/* Single primary CTA per scene — spring hover/tap for a premium tactile feel */}
-      <AnimatePresence mode="wait">
+      <div className="mt-4">
         <motion.div
-          key={scene.id + '-cta'}
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.5, delay: 0.4, ease: 'easeOut' }}
-          className="mt-4"
+          whileHover={{ y: -2, scale: 1.02 }}
+          whileTap={{ scale: 0.97, y: 0 }}
+          transition={{ type: 'spring', damping: 18, stiffness: 320 }}
+          className="inline-block"
         >
-          <motion.div
-            whileHover={{ y: -2, scale: 1.02 }}
-            whileTap={{ scale: 0.97, y: 0 }}
-            transition={{ type: 'spring', damping: 18, stiffness: 320 }}
-            className="inline-block"
+          <Link
+            to={scene.cta.href}
+            className="group inline-flex items-center gap-3 rounded-full bg-marine-500 pl-5 pr-3 py-3 text-sm text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 hover:shadow-marine-500/40 transition-colors"
           >
-            <Link
-              to={scene.cta.href}
-              className="group inline-flex items-center gap-3 rounded-full bg-marine-500 pl-5 pr-3 py-3 text-sm text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 hover:shadow-marine-500/40 transition-colors"
+            {scene.cta.label}
+            <motion.span
+              className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15"
+              whileHover={{ backgroundColor: 'rgba(255,255,255,0.25)' }}
             >
-              {scene.cta.label}
               <motion.span
-                className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15"
-                // Inner chevron glides on hover
-                whileHover={{ backgroundColor: 'rgba(255,255,255,0.25)' }}
+                className="inline-flex"
+                initial={{ x: 0 }}
+                whileHover={{ x: 3 }}
+                transition={{ type: 'spring', damping: 18, stiffness: 320 }}
               >
-                <motion.span
-                  className="inline-flex"
-                  initial={{ x: 0 }}
-                  whileHover={{ x: 3 }}
-                  transition={{ type: 'spring', damping: 18, stiffness: 320 }}
-                >
-                  <ArrowRight className="h-4 w-4" />
-                </motion.span>
+                <ArrowRight className="h-4 w-4" />
               </motion.span>
-            </Link>
-          </motion.div>
+            </motion.span>
+          </Link>
         </motion.div>
-      </AnimatePresence>
+      </div>
     </div>
   );
 }
@@ -449,10 +413,8 @@ function HomeContent() {
 
       {/* ===================== HERO with per-scene compositions ===================== */}
       <HeroVideoCarousel ref={heroRef}>
-        {({ scene }) => (
-          <HeroText>
-            <HeroComposition scene={scene} />
-          </HeroText>
+        {({ scene, isExiting }) => (
+          <HeroComposition scene={scene} isExiting={isExiting} />
         )}
       </HeroVideoCarousel>
 

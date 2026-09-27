@@ -2,16 +2,9 @@ import { useEffect, useRef, useState, forwardRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /**
- * HeroVideoCarousel — Sequential video carousel with per-scene editorial compositions.
- *
- * Each scene declares its own copy (eyebrow, headline, body, cta) and its own
- * composition (alignment, scale, motion). Consumers pass a render function as
- * children; it receives `{ scene, isTransitioning }` and renders the typography
- * for the current scene. The carousel crossfades the video AND the typography
- * in lockstep, so the hero reads as three different editorial covers — not one
- * paragraph floating over three ambient clips.
- *
- * Accepts a ref via forwardRef to allow scroll tracking from Header component.
+ * HeroVideoCarousel — Full-card 3D flip using AnimatePresence for proper exit/enter.
+ * Exiting card: 0° → -90° (rotates away)
+ * Entering card: +90° → 0° (rotates in)
  */
 
 export const SCENES = [
@@ -32,7 +25,7 @@ export const SCENES = [
     label: 'Open Sea',
     subtitle: 'Mid-voyage',
     eyebrow: 'Currently at sea',
-    headline: ['The world’s fleets,', 'in safe hands.'],
+    headline: ['The world\'s fleets,', 'in safe hands.'],
     body: 'Full technical, crew and operational management — across flag states, class societies, and every trade route that matters.',
     cta: { label: 'See a voyage', href: '/services' },
     composition: 'center',
@@ -50,35 +43,35 @@ export const SCENES = [
   },
 ];
 
-const CROSSFADE_DURATION = 1.0; // seconds — matches the video fade for an in-lockstep handoff
+const FLIP_DURATION = 0.6;
+const FLIP_EASE = [0.23, 1, 0.32, 1];
 
 export default forwardRef(function HeroVideoCarousel({ children, className = '' }, ref) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [flipDirection, setFlipDirection] = useState(1);
   const videoRefs = useRef([]);
 
-  // Preload every video up front so the first cycle has no buffer starvation.
   useEffect(() => {
     SCENES.forEach((_, i) => {
       if (videoRefs.current[i]) videoRefs.current[i].load();
     });
   }, []);
 
-  // Advance to the next scene when the current video ends.
   const handleEnded = (index) => {
     const next = (index + 1) % SCENES.length;
+    setFlipDirection(1);
     setCurrentIndex(next);
-    setTimeout(() => {
-      const nextVideo = videoRefs.current[next];
-      if (nextVideo) {
-        nextVideo.currentTime = 0;
-        nextVideo.play().catch(() => {});
-      }
-    }, 50);
+    const nextVideo = videoRefs.current[next];
+    if (nextVideo) {
+      nextVideo.currentTime = 0;
+      nextVideo.play().catch(() => {});
+    }
   };
 
-  // Allow the user to pin a specific scene manually.
   const selectScene = (index) => {
     if (index === currentIndex) return;
+    const direction = index > currentIndex ? 1 : -1;
+    setFlipDirection(direction);
     setCurrentIndex(index);
     const nextVideo = videoRefs.current[index];
     if (nextVideo) {
@@ -87,60 +80,124 @@ export default forwardRef(function HeroVideoCarousel({ children, className = '' 
     }
   };
 
-  // Pause on tab hidden, resume on visible. Saves bandwidth on backgrounded tabs.
   useEffect(() => {
     const handleVisibilityChange = () => {
       const activeVideo = videoRefs.current[currentIndex];
       if (!activeVideo) return;
-      if (document.hidden) {
-        activeVideo.pause();
-      } else {
-        activeVideo.play().catch(() => {});
-      }
+      if (document.hidden) activeVideo.pause();
+      else activeVideo.play().catch(() => {});
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [currentIndex]);
 
+  const prevIndex = (currentIndex - 1 + SCENES.length) % SCENES.length;
+  const prevScene = SCENES[prevIndex];
+  const currScene = SCENES[currentIndex];
+
+  const gradientStyles = {
+    vignette: {
+      position: 'absolute',
+      inset: 0,
+      background: 'linear-gradient(to right, rgb(15 19 24 / 0.5) 0%, transparent 40%, rgb(15 19 24 / 0.1) 100%)',
+    },
+    bottomFade: {
+      position: 'absolute',
+      inset: 0,
+      background: 'linear-gradient(to bottom, rgb(15 19 24 / 0.1) 0%, transparent 50%, rgb(15 19 24 / 0.85) 100%)',
+    },
+  };
+
+  const cardStyle = {
+    position: 'absolute',
+    inset: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: '4rem 1.5rem 6rem',
+    transformStyle: 'preserve-3d',
+    backfaceVisibility: 'hidden',
+    transformOrigin: 'center center',
+  };
+
+  const videoStyle = {
+    position: 'absolute',
+    inset: 0,
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    objectPosition: 'center',
+    zIndex: -10,
+    backfaceVisibility: 'hidden',
+  };
+
   return (
     <div
       ref={ref}
       className={`relative w-full min-h-[640px] lg:min-h-[720px] xl:min-h-[800px] overflow-hidden bg-navy-950 ${className}`}
+      style={{ perspective: 1000, transformStyle: 'preserve-3d' }}
     >
-      {/* Video layer — all scenes stacked, only the current is visible */}
-      {SCENES.map((scene, i) => (
-        <motion.video
-          key={scene.id}
-          ref={(el) => {
-            videoRefs.current[i] = el;
-          }}
-          src={scene.src}
-          autoPlay={i === 0}
-          muted
-          loop={false}
-          playsInline
-          disablePictureInPicture
-          preload="auto"
-          onEnded={() => handleEnded(i)}
-          className="absolute inset-0 w-full h-full object-cover object-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: i === currentIndex ? 1 : 0 }}
-          transition={{ duration: CROSSFADE_DURATION, ease: 'easeInOut' }}
-        />
-      ))}
+      {/* 3D Flip Container */}
+      <div className="absolute inset-0" style={{ transformStyle: 'preserve-3d' }}>
+        {/* AnimatePresence handles exit animation of previous card */}
+        <AnimatePresence mode="wait" initial={false}>
+          {/* PREVIOUS CARD — exits by rotating to -90° */}
+          <motion.div
+            key={`prev-${prevScene.id}`}
+            style={cardStyle}
+            initial={false}
+            animate={{ rotateY: 0, opacity: 1 }}
+            exit={{ rotateY: flipDirection * -90, opacity: 0 }}
+            transition={{ duration: FLIP_DURATION, ease: FLIP_EASE }}
+          >
+            <video
+              ref={(el) => { videoRefs.current[prevIndex] = el; }}
+              src={prevScene.src}
+              autoPlay
+              muted
+              loop={false}
+              playsInline
+              disablePictureInPicture
+              preload="auto"
+              style={videoStyle}
+            />
+            <div style={gradientStyles.vignette} />
+            <div style={gradientStyles.bottomFade} />
+            <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8">
+              {children({ scene: prevScene, index: prevIndex, isExiting: true })}
+            </div>
+          </motion.div>
+        </AnimatePresence>
 
-      {/* Editorial overlays.
-          Left-side dim for the safe text band, full-frame top/bottom vignette,
-          and a deep navy at the very bottom to seat the scene picker. */}
-      <div className="absolute inset-0 bg-gradient-to-r from-navy-950/50 via-navy-transparent via-40% to-navy-950/10" />
-      <div className="absolute inset-0 bg-gradient-to-b from-navy-950/10 via-transparent to-navy-950/85" />
-
-      {/* Content layer — the consumer renders the typography per scene. */}
-      <div className="relative z-10 w-full h-full">
-        {children({ scene: SCENES[currentIndex], index: currentIndex })}
+        {/* CURRENT CARD — enters by rotating from +90° to 0° */}
+        <motion.div
+          key={`curr-${currScene.id}`}
+          style={cardStyle}
+          initial={{ rotateY: flipDirection * 90, opacity: 0 }}
+          animate={{ rotateY: 0, opacity: 1 }}
+          transition={{ duration: FLIP_DURATION, ease: FLIP_EASE }}
+        >
+          <video
+            ref={(el) => { videoRefs.current[currentIndex] = el; }}
+            src={currScene.src}
+            autoPlay
+            muted
+            loop={false}
+            playsInline
+            disablePictureInPicture
+            preload="auto"
+            onEnded={() => handleEnded(currentIndex)}
+            style={videoStyle}
+          />
+          <div style={gradientStyles.vignette} />
+          <div style={gradientStyles.bottomFade} />
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8">
+            {children({ scene: currScene, index: currentIndex, isExiting: false })}
+          </div>
+        </motion.div>
       </div>
 
-      {/* Scene picker at the bottom — the "table of contents" for the carousel. */}
+      {/* Scene picker — outside 3D flip */}
       <div className="absolute bottom-6 right-6 z-20 flex items-center sm:gap-2 bg-navy-950/60 backdrop-blur-md px-3 py-2 rounded-full border border-white/10">
         {SCENES.map((scene, i) => {
           const isActive = i === currentIndex;
@@ -165,10 +222,6 @@ export default forwardRef(function HeroVideoCarousel({ children, className = '' 
   );
 });
 
-/**
- * HeroText — Layout container helper for hero content.
- * Sets the minimum height and the centered safe-band column.
- */
 export function HeroText({ className = '', children, ...props }) {
   return (
     <div
