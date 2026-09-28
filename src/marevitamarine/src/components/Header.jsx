@@ -1,6 +1,6 @@
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Menu, X, Navigation } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollState } from '../hooks/useScrollState';
 
@@ -18,10 +18,15 @@ export default function Header() {
   const location = useLocation();
   const isHeroPage = location.pathname === '/' || location.pathname === '/about';
   const [isExpanded, setIsExpanded] = useState(!isHeroPage); // collapsed on hero pages, expanded elsewhere
+  const [ignoreScroll, setIgnoreScroll] = useState(false);
+  const ignoreScrollTimeoutRef = useRef(null);
   const { direction, isAtTop } = useScrollState({ directionThreshold: 12, topThreshold: 10 });
 
   // Scroll direction logic: down = collapse, up = expand
   useEffect(() => {
+    if (ignoreScroll) {
+      return;
+    }
     // On hero pages at top: stay collapsed (cinematic hero)
     if (isHeroPage && isAtTop) {
       return;
@@ -37,13 +42,29 @@ export default function Header() {
     } else if (direction === 'up' && !isExpanded) {
       setIsExpanded(true);
     }
-  }, [direction, isAtTop, isExpanded, isHeroPage]);
+  }, [direction, isAtTop, isExpanded, isHeroPage, ignoreScroll]);
 
   const handlePillClick = () => {
-    if (!isExpanded) {
-      setIsExpanded(true);
+    setIsExpanded(!isExpanded);
+    setIgnoreScroll(true);
+    // Clear existing timeout
+    if (ignoreScrollTimeoutRef.current) {
+      clearTimeout(ignoreScrollTimeoutRef.current);
     }
+    // Set new timeout
+    ignoreScrollTimeoutRef.current = setTimeout(() => {
+      setIgnoreScroll(false);
+    }, 4000);
   };
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (ignoreScrollTimeoutRef.current) {
+        clearTimeout(ignoreScrollTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <header className="fixed inset-x-0 top-4 sm:top-6 z-50 px-4 sm:px-6">
@@ -201,9 +222,7 @@ export default function Header() {
                 exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
                 transition={{ type: 'spring', damping: 18, stiffness: 300 }}
               >
-              {isExpanded && (
-                <Menu className="h-[18px] w-[18px]" strokeWidth={2.25} />
-              )}
+              <Menu className="h-[18px] w-[18px]" strokeWidth={2.25} />
               </motion.div>
             )}
           </AnimatePresence>
