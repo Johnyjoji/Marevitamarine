@@ -1,144 +1,383 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Shield, Anchor, GraduationCap, Compass, CheckCircle2, Wrench, Users, Ship, Sparkles, ClipboardCheck } from 'lucide-react';
-import SectionDivider from '../components/SectionDivider';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { ArrowRight, Shield, Anchor, GraduationCap, Compass, CheckCircle2, Wrench, Users, Ship, Sparkles, ClipboardCheck, ServerCog, RefreshCw, Briefcase, ShieldCheck, ChevronDown } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {
   TrigWaveDivider,
   TrigReveal,
-  TrigParallax,
   TrigFloating,
   TrigScrollRotate,
   TrigBackgroundWave,
   TrigAmbientFloat,
   TrigAmbientDrift,
   TrigAmbientBreath,
+  TrigAmbientScale,
+  TrigAmbientRotate,
+  TrigCardHover,
+  MOTION,
 } from '../components/TrigScrollAnimations';
 
 export default function Services() {
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.15 });
-  const services = [
+  const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [coreRef, coreInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [extendedRef, extendedInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [diffRef, diffInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+
+  const coreServices = [
     {
       icon: Users,
       title: 'CREW MANNING',
-      description: 'Professional recruitment and placement of qualified seafarers across all ranks and vessel types.',
+      desc: 'Professional recruitment and placement of qualified seafarers across all ranks and vessel types.',
+      eyebrow: 'People'
     },
     {
       icon: Wrench,
       title: 'TECHNICAL MANAGEMENT & GUIDANCE',
-      description: 'Expert oversight and technical support for vessel maintenance, dry-docking, and class compliance.',
+      desc: 'Expert oversight and technical support for vessel maintenance, dry-docking, and class compliance.',
+      eyebrow: 'Engineering'
     },
     {
       icon: Ship,
       title: 'VESSEL OPERATIONS & SUPPORT',
-      description: 'Streamlining operational efficiency for seamless voyages — from port planning to voyage optimization.',
+      desc: 'Streamlining operational efficiency for seamless voyages — from port planning to voyage optimization.',
+      eyebrow: 'Operations'
     },
     {
       icon: GraduationCap,
       title: 'MARITIME TRAINING',
-      description: 'Comprehensive training solutions delivered on-board, ashore, and online for continuous competency.',
+      desc: 'Comprehensive training solutions delivered on-board, ashore, and online for continuous competency.',
+      eyebrow: 'Training'
     },
     {
       icon: ClipboardCheck,
       title: 'MARINE CONSULTANCY & INSPECTIONS',
-      description: 'High-level advisory and rigorous vessel inspections for pre-purchase, condition, and class surveys.',
+      desc: 'High-level advisory and rigorous vessel inspections for pre-purchase, condition, and class surveys.',
+      eyebrow: 'Consultancy'
     },
     {
       icon: CheckCircle2,
       title: 'SAFETY, COMPLIANCE & DOCUMENTATION',
-      description: 'Ensuring full adherence to international maritime laws, flag state requirements, and safety standards.',
+      desc: 'Ensuring full adherence to international maritime laws, flag state requirements, and safety standards.',
+      eyebrow: 'Safety'
     },
+  ];
+
+  const enhancedServices = [
+    {
+      icon: ServerCog,
+      title: 'DIGITAL SOLUTIONS & MONITORING',
+      desc: 'Advanced fleet monitoring, predictive maintenance scheduling, and data-driven operational insights.',
+      eyebrow: 'Digital'
+    },
+    {
+      icon: RefreshCw,
+      title: 'LIFECYCLE SUPPORT',
+      desc: 'End-to-end vessel management from acquisition through operation to responsible recycling.',
+      eyebrow: 'Lifecycle'
+    },
+    {
+      icon: Briefcase,
+      title: 'PROJECT MANAGEMENT',
+      desc: 'Guaranteed safe, timely, regulation‑compliant project completion with experienced teams.',
+      eyebrow: 'Projects'
+    },
+    {
+      icon: ShieldCheck,
+      title: '24/7 EMERGENCY RESPONSE',
+      desc: 'Round-the-clock support for critical situations, crisis management, and immediate assistance.',
+      eyebrow: 'Response'
+    },
+  ];
+
+  const differentiators = [
+    { icon: Shield, title: '24/7 Global Support', desc: 'Round-the-clock monitoring across all time zones.' },
+    { icon: Users, title: 'Experienced Team', desc: 'Certified professionals with decades of combined expertise.' },
+    { icon: CheckCircle2, title: 'Cost Efficiency', desc: 'Optimized processes delivering measurable savings.' },
   ];
 
   return (
     <div>
       {/* Hero — Navy */}
-      <section className="bg-navy-900 text-white relative overflow-hidden">
-        <TrigAmbientFloat amplitude={1} period={30000}>
-          <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
-            <span className="inline-block text-xs font-mono uppercase tracking-[0.25em] text-marine-400 mb-4">What we do</span>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-[-0.04em] leading-[0.95]">Services<br/><span className="text-marine-400">that move.</span></h1>
-            <p className="mt-6 text-lg text-navy-200 max-w-2xl">From the pilot to the port — one accountable team owns every moving part of your voyage.</p>
+      <section ref={heroRef} className="bg-navy-900 text-white relative overflow-hidden min-h-[640px] lg:min-h-[720px] flex items-center">
+        <TrigAmbientFloat amplitude={2} period={30000}>
+          <div className="mx-auto max-w-7xl px-6 lg:px-8 py-24 lg:py-32 relative z-10 w-full">
+            <div className="max-w-4xl">
+              <TrigReveal direction="up" amplitude={20} duration={0.7}>
+                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-marine-500/10 border border-marine-400/20 text-xs font-mono font-semibold tracking-[0.2em] uppercase text-marine-400 mb-8">
+                  <span className="w-1.5 h-1.5 rounded-full bg-marine-400 animate-pulse" />
+                  Our Expertise
+                </span>
+              </TrigReveal>
+              <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
+                <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-[-0.05em] leading-[0.9]">
+                  Comprehensive Marine Services<br/><span className="text-marine-400">for Every Voyage</span>
+                </h1>
+              </TrigReveal>
+              <TrigReveal direction="up" amplitude={20} delay={0.2} duration={0.7}>
+                <p className="mt-8 text-lg lg:text-xl text-navy-200 max-w-2xl leading-relaxed">
+                  From technical management to crew solutions, we provide accountable, end-to-end marine services that ensure safe, efficient, and compliant operations.
+                </p>
+              </TrigReveal>
+            </div>
           </div>
         </TrigAmbientFloat>
       </section>
 
-      <SectionDivider fromColor="#0f1318" toColor="#ffffff" height={120} type="deep" />
+      <TrigWaveDivider fromColor="#0f1318" toColor="#ffffff" height={120} type="deep" />
 
-      {/* Services List — White */}
-      <section className="bg-white text-navy-900 relative overflow-hidden">
+      {/* Core Services — White */}
+      <section ref={coreRef} className="bg-white text-navy-900 relative overflow-hidden">
         <TrigBackgroundWave
-          className="opacity-30"
-          baseColor="rgba(14, 165, 233, 0.04)"
-          amplitude={30}
-          frequency={0.3}
-          speed={0.00018}
+          className="opacity-20"
+          baseColor="rgba(14, 165, 233, 0.03)"
+          amplitude={25}
+          frequency={0.4}
+          speed={0.00015}
           layerCount={2}
         />
 
-        <div className="mx-auto max-w-6xl px-6 py-20 lg:px-8 lg:py-24 relative z-10">
-          <div className="grid lg:grid-cols-[1fr,2fr] gap-12 lg:gap-16 items-start">
-            {/* Left Column — Heading + Image */}
-            <div className="space-y-6">
-              <div>
-                <h2 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight">
-                  Our Services
-                </h2>
-                <p className="mt-4 text-sm text-navy-600 leading-relaxed">
-                  Bring your interior design vision to life. Each service is tailored to meet the unique needs of our clients, ensuring a seamless and satisfying experience.
-                </p>
-              </div>
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-20 lg:py-24 relative z-10">
+          <div className="mb-12 text-center">
+            <TrigReveal direction="up" amplitude={20} duration={0.7}>
+              <span className="text-sm font-semibold tracking-[0.2em] uppercase text-marine-600">
+                Core Services
+              </span>
+            </TrigReveal>
+            <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
+              <h2 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
+                The Foundation of Our Expertise<br/><span className="text-marine-400">What We Do Best</span>
+              </h2>
+            </TrigReveal>
+            <TrigReveal direction="up" amplitude={20} delay={0.2} duration={0.7}>
+              <p className="mt-6 text-lg text-navy-600 max-w-xl">
+                These services form the backbone of Marevita Marine's offerings, refined through years of industry experience and client partnerships.
+              </p>
+            </TrigReveal>
+          </div>
 
-              {/* Decorative Image */}
-              <TrigAmbientFloat amplitude={1} period={25000}>
-                <div className="relative rounded-2xl overflow-hidden">
-                  <div className="aspect-[4/3]">
-                    <img
-                      src="/assets/aboutuspics/offshore-marine-service.jpg"
-                      alt="Marine Services"
-                      className="w-full h-full object-cover"
-                    />
+          <div className="grid gap-8 lg:grid-cols-3">
+            {coreServices.map((service, i) => (
+              <TrigCardHover
+                key={service.title}
+                initial={{ opacity: 0, y: 30 }}
+                animate={coreInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
+                className="group relative bg-white rounded-xl border border-navy-100/50 p-6 hover:border-navy-200/75 overflow-hidden"
+              >
+                <div className="flex items-center justify-start mb-4">
+                  <div className="h-10 w-10 rounded-full bg-marine-500 flex items-center justify-center mb-3">
+                    <service.icon className="h-6 w-6 text-white" />
                   </div>
+                  <h3 className="text-xl font-semibold text-navy-900">{service.title}</h3>
                 </div>
-              </TrigAmbientFloat>
+                <p className="text-navy-700 leading-relaxed mb-6">{service.desc}</p>
+                <Link to="/contact" className="inline-flex items-center gap-2 text-sm font-medium text-marine-600 hover:text-marine-500 transition-colors">
+                  Learn More
+                  <ArrowRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              </TrigCardHover>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <TrigWaveDivider fromColor="#ffffff" toColor="#0f1318" height={120} type="coast" flip />
+
+      {/* Enhanced Services — Navy */}
+      <section ref={extendedRef} className="bg-navy-900 text-white relative overflow-hidden">
+        <TrigBackgroundWave
+          className="opacity-15"
+          baseColor="rgba(56, 189, 248, 0.02)"
+          amplitude={20}
+          frequency={0.3}
+          speed={0.0001}
+          layerCount={3}
+        />
+
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-20 lg:py-24 relative z-10">
+          <div className="mb-12 text-center">
+            <TrigReveal direction="up" amplitude={20} duration={0.7}>
+              <span className="text-sm font-semibold tracking-[0.2em] uppercase text-marine-400">
+                Extended Capabilities
+              </span>
+            </TrigReveal>
+            <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
+              <h2 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
+                Comprehensive Marine Solutions<br/><span className="text-marine-400">Beyond the Basics</span>
+              </h2>
+            </TrigReveal>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-4">
+            {enhancedServices.map((service, i) => (
+              <TrigCardHover
+                key={service.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={extendedInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.5, delay: i * 0.06 }}
+                className="group relative bg-navy-800/50 backdrop-blur-sm rounded-xl border border-navy-600/20 p-6 hover:bg-navy-800/75 overflow-hidden"
+              >
+                <div className="flex items-center justify-start mb-3">
+                  <div className="h-8 w-8 rounded-full bg-marine-500/20 flex items-center justify-center">
+                    <service.icon className="h-5 w-5 text-marine-400" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-white">{service.title}</h3>
+                </div>
+                <p className="text-navy-200 text-sm leading-relaxed">{service.desc}</p>
+              </TrigCardHover>
+            ))}
+          </div>
+
+          <div className="mt-12 pt-8 border-t border-navy-800/20">
+            <TrigReveal direction="up" amplitude={25} duration={0.7}>
+              <div className="text-center">
+                <p className="text-navy-300 text-base max-w-xl mx-auto">
+                  Ready to enhance your maritime operations with our full suite of services?
+                </p>
+                <Link to="/contact" className="inline-flex items-center gap-3 rounded-full bg-marine-500 pl-7 pr-5 py-4 text-sm font-semibold text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 transition-colors mt-6">
+                  Get a Custom Solution
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </TrigReveal>
+          </div>
+        </div>
+      </section>
+
+      <TrigWaveDivider fromColor="#0f1318" toColor="#ffffff" height={120} type="ripple" />
+
+      {/* Differentiators — White */}
+      <section ref={diffRef} className="bg-white text-navy-900 relative overflow-hidden">
+        <TrigBackgroundWave
+          className="opacity-10"
+          baseColor="rgba(14, 165, 233, 0.02)"
+          amplitude={15}
+          frequency={0.5}
+          speed={0.0002}
+          layerCount={2}
+        />
+
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-20 lg:py-24 relative z-10">
+          <div className="space-y-12">
+            <div className="text-center">
+              <TrigReveal direction="up" amplitude={20} duration={0.6}>
+                <span className="text-sm font-semibold tracking-[0.2em] uppercase text-marine-600">
+                  Why Marevita Marine
+                </span>
+              </TrigReveal>
+              <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
+                <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-[-0.02em] leading-[1.05]">
+                  The Marevita Difference<br/><span className="text-marine-400">What Sets Us Apart</span>
+                </h2>
+              </TrigReveal>
             </div>
 
-            {/* Right Column — Services List */}
-            <div ref={ref} className="space-y-8">
-              {services.map((service, i) => (
-                <TrigReveal
-                  key={service.title}
-                  direction="up"
-                  amplitude={20}
-                  delay={i * 0.08}
-                  duration={0.6}
+            <div className="grid gap-8 lg:grid-cols-3">
+              {/* 24/7 Global Support */}
+              <TrigReveal key="support" direction="up" amplitude={15} delay={0.1} duration={0.5}>
+                <TrigCardHover
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={diffInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  transition={{ duration: 0.5, delay: 0 }}
+                  className="flex flex-col items-start text-left p-6 border border-navy-100/50 rounded-xl hover:border-navy-200/75 transition-all duration-500"
                 >
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                    transition={{ duration: 0.5, delay: i * 0.08 }}
-                  >
-                    <h3 className="text-sm font-bold tracking-[0.1em] uppercase text-navy-900 mb-2">
-                      {service.title}
-                    </h3>
-                    <p className="text-sm text-navy-700 leading-relaxed">
-                      {service.description}
-                    </p>
-                  </motion.div>
-                </TrigReveal>
-              ))}
+                  <TrigAmbientBreath scaleAmplitude={0.008} opacityAmplitude={0.05} period={4000}>
+                    <Anchor className="h-10 w-10 text-marine-500" />
+                  </TrigAmbientBreath>
+                  <h3 className="mt-4 text-lg font-semibold text-navy-900">24/7 Global Support</h3>
+                  <p className="mt-2 text-sm text-navy-600 max-w-xs leading-relaxed">
+                    Round-the-clock monitoring and immediate response capability across all time zones.
+                  </p>
+                </TrigCardHover>
+              </TrigReveal>
+
+              {/* Experienced Team */}
+              <TrigReveal key="experience" direction="up" amplitude={15} delay={0.2} duration={0.5}>
+                <TrigCardHover
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={diffInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="flex flex-col items-start text-left p-6 border border-navy-100/50 rounded-xl hover:border-navy-200/75 transition-all duration-500"
+                >
+                  <TrigAmbientFloat amplitude={1} period={5000}>
+                    <Users className="h-10 w-10 text-marine-500" />
+                  </TrigAmbientFloat>
+                  <h3 className="mt-4 text-lg font-semibold text-navy-900">Experienced Team</h3>
+                  <p className="mt-2 text-sm text-navy-600 max-w-xs leading-relaxed">
+                    Certified maritime professionals with decades of combined industry expertise.
+                  </p>
+                </TrigCardHover>
+              </TrigReveal>
+
+              {/* Cost Efficiency */}
+              <TrigReveal key="efficiency" direction="up" amplitude={15} delay={0.3} duration={0.5}>
+                <TrigCardHover
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={diffInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="flex flex-col items-start text-left p-6 border border-navy-100/50 rounded-xl hover:border-navy-200/75 transition-all duration-500"
+                >
+                  <TrigAmbientDrift amplitudeX={1} amplitudeY={1} periodX={8000} periodY={12000}>
+                    <CheckCircle2 className="h-10 w-10 text-marine-500" />
+                  </TrigAmbientDrift>
+                  <h3 className="mt-4 text-lg font-semibold text-navy-900">Cost Efficiency</h3>
+                  <p className="mt-2 text-sm text-navy-600 max-w-xs leading-relaxed">
+                    Optimized processes delivering measurable operational savings.
+                  </p>
+                </TrigCardHover>
+              </TrigReveal>
             </div>
           </div>
         </div>
       </section>
 
-      <SectionDivider fromColor="#ffffff" toColor="#0f1318" height={120} type="coast" flip />
+      <TrigWaveDivider fromColor="#ffffff" toColor="#0f1318" height={120} type="rugged" flip />
 
-      {/* CTA — Navy */}
+      {/* Final CTA — Navy */}
       <section className="bg-navy-900 text-white">
-        <div className="mx-auto max-w-3xl px-6 py-24 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-5xl font-bold tracking-[-0.02em]">Need a service?<br/><span className="text-marine-400">Start with a quote.</span></h2>
-          <Link to="/contact" className="inline-flex items-center gap-3 rounded-full bg-marine-500 pl-7 pr-5 py-4 text-sm font-semibold text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 transition-colors mt-8"><span>Request a quote</span><ArrowRight className="h-4 w-4"/></Link>
+        <div className="mx-auto max-w-4xl px-6 lg:px-8 py-24 lg:py-32 text-center relative overflow-hidden">
+          <TrigAmbientFloat amplitude={1.5} period={25000}>
+            <TrigReveal direction="up" amplitude={30} duration={0.8}>
+              <h2 className="text-3xl sm:text-5xl font-bold tracking-[-0.02em]">
+                Partner with Marevita Marine<br/><span className="text-marine-400">for Complete Maritime Solutions</span>
+              </h2>
+            </TrigReveal>
+            <TrigReveal direction="up" amplitude={20} delay={0.15} duration={0.7}>
+              <p className="mt-6 text-lg text-navy-200 max-w-2xl mx-auto">
+                Our comprehensive service portfolio ensures every aspect of your maritime operation is handled with expertise, accountability, and the highest standards of service.
+              </p>
+            </TrigReveal>
+            <TrigReveal direction="up" amplitude={20} delay={0.3} duration={0.7}>
+              <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+                <motion.div
+                  whileHover={{ y: -2, scale: 1.02 }}
+                  whileTap={{ scale: 0.97, y: 0 }}
+                  transition={{ type: 'spring', damping: 18, stiffness: 320 }}
+                  className="inline-block"
+                >
+                  <Link
+                    to="/contact"
+                    className="group inline-flex items-center gap-3 rounded-full bg-marine-500 pl-7 pr-5 py-4 text-sm font-semibold text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 hover:shadow-marine-500/40 transition-colors"
+                  >
+                    Request a Proposal
+                    <motion.span
+                      className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15"
+                      whileHover={{ backgroundColor: 'rgba(255,255,255,0.25)' }}
+                    >
+                      <motion.span
+                        className="inline-flex"
+                        initial={{ x: 0 }}
+                        whileHover={{ x: 3 }}
+                        transition={{ type: 'spring', damping: 18, stiffness: 320 }}
+                      >
+                        <ArrowRight className="h-4 w-4" />
+                      </motion.span>
+                    </motion.span>
+                  </Link>
+                </motion.div>
+              </div>
+            </TrigReveal>
+          </TrigAmbientFloat>
         </div>
       </section>
     </div>

@@ -1,0 +1,2 @@
+- [Services Page Improvement](services-page-improvement.md) — Successfully rebuilt the Services page fixing JavaScript crash and improving content organization
+- [Services Page Anti-Slop & Divider Fix](services-page-anti-slop-divider-fix.md) — Applied impeccable and taste skills to reduce AI-slop appearance: simplified differentiators, removed generic phrasing, replaced SectionDivider with animated TrigWaveDivider for organic section transitions, and tightened content to avoid generic AI patterns while maintaining marine-services professionalism.
