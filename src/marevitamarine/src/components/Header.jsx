@@ -74,7 +74,6 @@ export default function Header() {
           width: isExpanded ? 'min(100%, 80rem)' : '4rem',
         }}
         transition={{ type: 'spring', damping: 22, stiffness: 280 }}
-        onClick={handlePillClick}
         className={`relative mx-auto flex items-center overflow-hidden rounded-full border border-black/5 bg-white/95 backdrop-blur-xl ${
           isExpanded ? 'h-14 sm:h-16 px-2' : 'h-12 sm:h-14 px-0'
         } ${
