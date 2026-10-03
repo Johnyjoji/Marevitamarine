@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Shield, Anchor, GraduationCap, Compass, CheckCircle2, Wrench, Users, Ship, Sparkles, ClipboardCheck, ServerCog, RefreshCw, Briefcase, ShieldCheck, ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import {
   TrigWaveDivider,
@@ -18,10 +19,19 @@ import {
 } from '../components/TrigScrollAnimations';
 
 export default function Services() {
+  const navigate = useNavigate();
   const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [coreRef, coreInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [extendedRef, extendedInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [diffRef, diffInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+
+  // Enable smooth scroll behavior for anchor links
+  useEffect(() => {
+    document.documentElement.style.scrollBehavior = 'smooth';
+    return () => {
+      document.documentElement.style.scrollBehavior = 'auto';
+    };
+  }, []);
 
   const coreServices = [
     {
@@ -156,27 +166,35 @@ export default function Services() {
           </div>
 
           <div className="grid gap-8 lg:grid-cols-3">
-            {coreServices.map((service, i) => (
-              <TrigCardHover
-                key={service.title}
-                initial={{ opacity: 0, y: 30 }}
-                animate={coreInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="group relative bg-white rounded-xl border border-navy-100/50 p-6 hover:border-navy-200/75 overflow-hidden"
-              >
-                <div className="flex items-center justify-start mb-4">
-                  <div className="h-10 w-10 rounded-full bg-marine-500 flex items-center justify-center mb-3">
-                    <service.icon className="h-6 w-6 text-white" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-navy-900">{service.title}</h3>
-                </div>
-                <p className="text-navy-700 leading-relaxed mb-6">{service.desc}</p>
-                <Link to="/contact" className="inline-flex items-center gap-2 text-sm font-medium text-marine-600 hover:text-marine-500 transition-colors">
-                  Learn More
-                  <ArrowRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
+            {coreServices.map((service, i) => {
+              const slug = service.title.toLowerCase().replace(/\s+/g, '-');
+              return (
+                <Link key={service.title} to={`/services#${slug}`} className="block">
+                  <TrigCardHover
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={coreInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                    transition={{ duration: 0.6, delay: i * 0.1 }}
+                    className="group relative bg-white rounded-xl border border-navy-100/50 p-6 hover:border-navy-200/75 overflow-hidden"
+                  >
+                    {/* Image placeholder */}
+                    <div className="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg mb-4 overflow-hidden">
+                      <img
+                        src="/content/placeholder-crew.jpg"
+                        alt={`${service.title} illustration`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="flex items-center justify-start mb-4">
+                      <div className="h-10 w-10 rounded-full bg-marine-500 flex items-center justify-center mb-3">
+                        <service.icon className="h-6 w-6 text-white" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-navy-900">{service.title}</h3>
+                    </div>
+                    <p className="text-navy-700 leading-relaxed mb-6">{service.desc}</p>
+                  </TrigCardHover>
                 </Link>
-              </TrigCardHover>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -327,6 +345,45 @@ export default function Services() {
                 </TrigCardHover>
               </TrigReveal>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Core Service Details — Human, worthy */}
+      <section className="bg-[#060d1a] text-[#f2f0eb] relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#0f1318] to-transparent pointer-events-none" />
+        <div className="absolute -top-24 -right-24 w-[28rem] h-[28rem] rounded-full bg-[#0ea5e9]/[0.07] blur-[5rem] pointer-events-none" />
+        <div className="mx-auto max-w-6xl px-6 lg:px-8 py-28 lg:py-36 relative z-10">
+          <div className="max-w-2xl mb-16">
+            <span className="inline-block text-[11px] font-medium tracking-[0.25em] uppercase text-[#7ab3d6] mb-4">Service Details</span>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[0.95] tracking-[-0.04em] text-[#f2f0eb]">Inside Each <span className="italic font-serif text-[#8fbde0]">Service</span></h2>
+            <p className="mt-6 text-[#a8b8c8] text-lg leading-relaxed">What we deliver, how we do it, and the people behind it — not a brochure, just the real substance.</p>
+          </div>
+          <div className="grid gap-14 lg:grid-cols-2">
+            {coreServices.map((s, i) => {
+              const slug = s.title.toLowerCase().replace(/\s+/g, '-');
+              return (
+                <section key={s.title} id={slug} className="group scroll-mt-28 bg-white/5 border border-white/10 rounded-2xl p-7 lg:p-8 hover:border-white/20 transition-colors">
+                  <div className="flex items-start gap-6 mb-6">
+                    {/* Image placeholder */}
+                    <div className="flex-shrink-0 aspect-w-16 aspect-h-9 bg-gray-200 rounded-xl overflow-hidden">
+                      <img
+                        src={`/content/placeholder-${slug}.jpg`}
+                        alt={`${s.title} illustration`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold tracking-tight">{s.title}</h3>
+                      <span className="inline-block mt-1 text-xs font-medium text-marine-400 tracking-widest uppercase">{s.eyebrow}</span>
+                    </div>
+                  </div>
+                  <p className="text-navy-200 leading-relaxed mb-4">{s.desc}</p>
+                  <p className="text-sm text-navy-300 leading-relaxed mb-5">Our approach pairs deep technical expertise with rigorous compliance checking. Each engagement begins with a structured needs assessment, followed by tailored delivery, continuous reporting, and post-completion review — ensuring measurable results and long-term operational improvement.</p>
+                                    <div className="mt-8 h-px bg-gradient-to-r from-marine-400/30 via-white/10 to-transparent" />
+                </section>
+              );
+            })}
           </div>
         </div>
       </section>

@@ -23,7 +23,7 @@ export function HeroScrollProvider({ children }) {
   const { scrollYProgress } = useScroll(
     heroEl
       ? { target: heroRef, offset: ['start start', 'end start'] }
-      : {},
+      : { offset: ['start start', 'end start'] },
   );
 
   return (
