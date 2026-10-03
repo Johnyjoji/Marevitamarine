@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 export const SCENES = [
   {
     id: 'departure',
-    src: '',
+    src: 'https://media.marevitamarine.com/harbor1.mp4',
     label: 'Departure',
     subtitle: 'Setting COURSE',
     eyebrow: 'Marevita Marine · New era of marine services',
@@ -21,7 +21,7 @@ export const SCENES = [
   },
   {
     id: 'open-sea',
-    src: '',
+    src: 'https://media.marevitamarine.com/harbor2.mp4',
     label: 'Open Sea',
     subtitle: 'Mid-voyage',
     eyebrow: 'Currently at sea',
@@ -32,7 +32,7 @@ export const SCENES = [
   },
   {
     id: 'arrival',
-    src: '',
+    src: 'https://media.marevitamarine.com/hero-ship-video.mp4',
     label: 'Arrival',
     subtitle: 'Port operations',
     eyebrow: 'In port · worldwide',
