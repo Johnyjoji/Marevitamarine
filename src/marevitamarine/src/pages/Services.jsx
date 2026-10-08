@@ -18,6 +18,7 @@ import {
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
+import GlyphPortal from '../components/ui/GlyphPortal';
 import {
   TrigWaveDivider,
   TrigReveal,
@@ -35,7 +36,6 @@ import {
 
 export default function Services() {
   const navigate = useNavigate();
-  const [heroRef, heroInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [coreRef, coreInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [extendedRef, extendedInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [diffRef, diffInView] = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -123,29 +123,38 @@ export default function Services() {
   return (
     <div>
       {/* Hero — Navy */}
-      <section ref={heroRef} className="bg-navy-900 text-white relative overflow-hidden min-h-[640px] lg:min-h-[720px] flex items-center">
-        <TrigAmbientFloat amplitude={2} period={30000}>
-          <div className="mx-auto max-w-7xl px-6 lg:px-8 py-24 lg:py-32 relative z-10 w-full">
-            <div className="max-w-4xl">
-              <TrigReveal direction="up" amplitude={20} duration={0.7}>
-                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-marine-500/10 border border-marine-400/20 text-xs font-mono font-semibold tracking-[0.2em] uppercase text-marine-400 mb-8">
-                  <span className="w-1.5 h-1.5 rounded-full bg-marine-400 animate-pulse" />
-                  Our Expertise
-                </span>
-              </TrigReveal>
-              <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
-                <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-[-0.05em] leading-[0.9]">
-                  Comprehensive Marine Services<br/><span className="text-marine-400">for Every Voyage</span>
-                </h1>
-              </TrigReveal>
-              <TrigReveal direction="up" amplitude={20} delay={0.2} duration={0.7}>
-                <p className="mt-8 text-lg lg:text-xl text-navy-200 max-w-2xl leading-relaxed">
-                  From technical management to crew solutions, we provide accountable, end-to-end marine services that ensure safe, efficient, and compliant operations.
-                </p>
-              </TrigReveal>
-            </div>
+      <section className="bg-navy-900 text-white relative overflow-hidden min-h-[640px] lg:min-h-[720px] flex items-center">
+        <GlyphPortal
+          word="MAREVITA"
+          interactive={false}
+          scrollLength={2.4}
+          className="mx-auto max-w-7xl px-6 lg:px-8 py-24 lg:py-32 relative z-10 w-full"
+          style={{
+            '--gp-paper': '#0f1318',
+            '--gp-ink': '#ffffff',
+            '--gp-field': '#0ea5e9',
+            '--gp-foreground': '#f2f0eb',
+          }}
+        >
+          <div className="max-w-4xl">
+            <TrigReveal direction="up" amplitude={20} duration={0.7}>
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-marine-500/10 border border-marine-400/20 text-xs font-mono font-semibold tracking-[0.2em] uppercase text-marine-400 mb-8">
+                <span className="w-1.5 h-1.5 rounded-full bg-marine-400 animate-pulse" />
+                Our Expertise
+              </span>
+            </TrigReveal>
+            <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
+              <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-[-0.065em] leading-[0.88] lg:tracking-[-0.07em]">
+                Comprehensive Marine Services<br/><span className="text-marine-400">for Every Voyage</span>
+              </h1>
+            </TrigReveal>
+            <TrigReveal direction="up" amplitude={20} delay={0.2} duration={0.7}>
+              <p className="mt-8 text-lg lg:text-xl text-navy-200 max-w-2xl leading-relaxed">
+                From technical management to crew solutions, we provide accountable, end-to-end marine services that ensure safe, efficient, and compliant operations.
+              </p>
+            </TrigReveal>
           </div>
-        </TrigAmbientFloat>
+        </GlyphPortal>
       </section>
 
       <TrigWaveDivider fromColor="#0f1318" toColor="#ffffff" height={120} type="deep" />
