@@ -134,7 +134,7 @@ export default function Services() {
                 </span>
               </TrigReveal>
               <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
-                <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-[-0.05em] leading-[0.9]">
+                <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-[-0.065em] leading-[0.88] lg:tracking-[-0.07em]">
                   Comprehensive Marine Services<br/><span className="text-marine-400">for Every Voyage</span>
                 </h1>
               </TrigReveal>
@@ -180,14 +180,14 @@ export default function Services() {
             </TrigReveal>
           </div>
 
-          <div className="grid gap-8 lg:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-1 lg:grid-cols-3">
             {coreServices.map((service, i) => {
               const slug = service.title.toLowerCase().replace(/\s+/g, '-');
               return (
                 <Link key={service.title} to={`/services#${slug}`} className="block">
                   <TrigCardHover
                     initial={{ opacity: 0, y: 30 }}
-                    animate={coreInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                    animate={coreInView ? { opacity: 1, y: 0, transition: { type: 'spring', damping: 20, stiffness: 180 } } : { opacity: 0, y: 30 }}
                     transition={{ duration: 0.6, delay: i * 0.1 }}
                     className="group relative bg-white rounded-xl border border-navy-100/50 p-6 hover:border-navy-200/75 overflow-hidden"
                   >
@@ -246,7 +246,7 @@ export default function Services() {
               <TrigCardHover
                 key={service.title}
                 initial={{ opacity: 0, y: 20 }}
-                animate={extendedInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                animate={extendedInView ? { opacity: 1, y: 0, transition: { type: 'spring', damping: 20, stiffness: 180 } } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: i * 0.06 }}
                 className="group relative bg-navy-800/50 backdrop-blur-sm rounded-xl border border-navy-600/20 p-6 hover:bg-navy-800/75 overflow-hidden"
               >
@@ -305,7 +305,7 @@ export default function Services() {
               </TrigReveal>
             </div>
 
-            <div className="grid gap-8 lg:grid-cols-3">
+            <div className="grid gap-8 md:grid-cols-1 lg:grid-cols-3">
               {/* 24/7 Global Support */}
               <TrigReveal key="support" direction="up" amplitude={15} delay={0.1} duration={0.5}>
                 <TrigCardHover
@@ -378,7 +378,7 @@ export default function Services() {
             {coreServices.map((s, i) => {
               const slug = s.title.toLowerCase().replace(/\s+/g, '-');
               return (
-                <section key={s.title} id={slug} className="group scroll-mt-28 bg-white/5 border border-white/10 rounded-2xl p-7 lg:p-8 hover:border-white/20 transition-colors">
+                <section key={s.title} id={slug} className="group scroll-mt-28 bg-gradient-to-b from-white/[0.07] to-transparent border border-white/10 rounded-2xl p-7 lg:p-8 hover:border-white/20 transition-all duration-500">
                   <div className="flex items-start gap-6 mb-6">
                     {/* Image placeholder */}
                     <div className="flex-shrink-0 aspect-w-16 aspect-h-9 bg-gray-200 rounded-xl overflow-hidden">
