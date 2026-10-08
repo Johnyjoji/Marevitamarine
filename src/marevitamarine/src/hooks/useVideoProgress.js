@@ -9,8 +9,7 @@ export function useVideoProgress(videoRef, isActive) {
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || !isActive) {
-      if (!isActive) setProgress(0);
+    if (!video) {
       return;
     }
 
@@ -32,11 +31,19 @@ export function useVideoProgress(videoRef, isActive) {
       setProgress(video.currentTime / video.duration);
     }
 
+    // Cleanup function
     return () => {
       video.removeEventListener('timeupdate', onTimeUpdate);
       video.removeEventListener('ended', onEnded);
     };
-  }, [videoRef, isActive]);
+  }, [videoRef]);
+
+  // Reset progress when video becomes inactive
+  useEffect(() => {
+    if (!isActive) {
+      setProgress(0);
+    }
+  }, [isActive]);
 
   return progress;
 }
