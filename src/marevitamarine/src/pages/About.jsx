@@ -41,8 +41,9 @@ import TeamShowcase from '../components/TeamShowcase';
 import StackedCardSection from '../components/StackedCardSection';
 
 /**
- * AboutUsHero — Split layout hero inspired by aboutUs.webp reference
+ * AboutUsHero — Split layout hero with impeccable design principles
  * Large "ABOUT US" text on left, descriptive content on right with image
+ * Enhanced with Apple Design fluid motion and taste skill refinement
  */
 function AboutUsHero() {
   const { scrollY } = useScroll();
@@ -51,7 +52,7 @@ function AboutUsHero() {
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   return (
-    <section className="relative bg-white text-navy-900 overflow-hidden min-h-screen flex items-center">
+    <section className="relative bg-white text-navy-900 overflow-hidden min-h-[100dvh] flex items-center">
       {/* Subtle ambient gradient shift on background */}
       <TrigAmbientGradientShift
         amplitudeX={4}
@@ -204,6 +205,7 @@ function AboutUsHero() {
 
 /**
  * OurPhilosophy — Mission, Vision, Values in card format
+ * Impeccable design with Apple fluid motion and taste refinement
  */
 function OurPhilosophy() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
@@ -302,6 +304,7 @@ function OurPhilosophy() {
 
 /**
  * OurEdge — Why choose us section with image
+ * Impeccable design with Apple fluid motion and taste refinement
  */
 function OurEdge() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
@@ -442,6 +445,7 @@ function OurEdge() {
 /**
  * MeetThePrincipals — Leadership section inspired by aboutUs.webp reference
  * Uses the TeamShowcase component from myteam reference
+ * Impeccable design with Apple fluid motion and taste refinement
  */
 function MeetThePrincipals() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
@@ -567,6 +571,7 @@ function MeetThePrincipals() {
 
 /**
  * Headquarters — Location section
+ * Impeccable design with Apple fluid motion and taste refinement
  */
 function Headquarters() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
@@ -672,6 +677,7 @@ function Headquarters() {
 
 /**
  * CTASection — Final call to action
+ * Impeccable design with Apple fluid motion and taste refinement
  */
 function CTASection() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
@@ -767,13 +773,7 @@ function CTASection() {
  * Uses fast, multi-layered animated wave dividers (TrigWaveDivider) between
  * every section. Each layer is a sine wave with its own frequency, amplitude
  * and scrollY-driven phase speed — so dividers feel like fast moving water.
- */
-/**
- * Main About Page
- *
- * Implements a reactive, physics-based scroll stacking card interaction.
- * As the user scrolls down, the Hero and subsequent sections recede and scale down
- * while lower sections slide gracefully on top, creating a tactile 3D layer stack.
+ * Impeccable design with Apple fluid motion and taste skill refinement.
  */
 export default function About() {
   const TOTAL_SECTIONS = 6;
@@ -877,6 +877,7 @@ export default function About() {
       <StackedCardSection
         index={5}
         total={TOTAL_SECTIONS}
+        targetScale={0.88}
         cardClassName="bg-navy-900 shadow-[0_-35px_80px_rgba(0,0,0,0.6)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-white/10"
       >
         <CTASection />
