@@ -123,41 +123,45 @@ export default function Services() {
   return (
     <div>
       {/* Hero — Navy */}
-      <section className="bg-navy-900 text-white relative overflow-hidden min-h-[640px] lg:min-h-[720px] flex items-center">
-        <GlyphPortal
-          word="MAREVITA"
-          interactive={true}
-          scrollLength={2.4}
-          className="mx-auto max-w-7xl px-6 lg:px-8 py-24 lg:py-32 relative z-10 w-full"
-          style={{
-            '--gp-paper': '#0f1318',
-            '--gp-ink': '#ffffff',
-            '--gp-field': '#0ea5e9',
-            '--gp-foreground': '#f2f0eb',
-          }}
-        >
-          <div className="max-w-4xl">
-            <TrigReveal direction="up" amplitude={20} duration={0.7}>
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-marine-500/10 border border-marine-400/20 text-xs font-mono font-semibold tracking-[0.2em] uppercase text-marine-400 mb-8">
-                <span className="w-1.5 h-1.5 rounded-full bg-marine-400 animate-pulse" />
-                Our Expertise
-              </span>
-            </TrigReveal>
-            <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
-              <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-[-0.065em] leading-[0.88] lg:tracking-[-0.07em]">
-                Comprehensive Marine Services<br/><span className="text-marine-400">for Every Voyage</span>
-              </h1>
-            </TrigReveal>
-            <TrigReveal direction="up" amplitude={20} delay={0.2} duration={0.7}>
-              <p className="mt-8 text-lg lg:text-xl text-navy-200 max-w-2xl leading-relaxed">
-                From technical management to crew solutions, we provide accountable, end-to-end marine services that ensure safe, efficient, and compliant operations.
-              </p>
-            </TrigReveal>
+      <GlyphPortal
+        word="MAREVITA"
+        interactive={true}
+        scrollLength={2.4}
+        className="bg-navy-900 text-white relative w-full"
+        style={{
+          '--gp-paper': '#0f1318',
+          '--gp-ink': '#ffffff',
+          '--gp-field': '#0ea5e9',
+          '--gp-foreground': '#f2f0eb',
+        }}
+        front={
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-6">
+            <div className="max-w-4xl text-center">
+              <TrigReveal direction="up" amplitude={20} duration={0.7}>
+                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-marine-500/10 border border-marine-400/20 text-xs font-mono font-semibold tracking-[0.2em] uppercase text-marine-400 mb-8 mt-12 w-auto mx-auto justify-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-marine-400 animate-pulse" />
+                  Our Expertise
+                </span>
+              </TrigReveal>
+              <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
+                <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-[-0.065em] leading-[0.88] lg:tracking-[-0.07em]">
+                  Comprehensive Marine Services<br/><span className="text-marine-400">for Every Voyage</span>
+                </h1>
+              </TrigReveal>
+            </div>
           </div>
-        </GlyphPortal>
-      </section>
+        }
+      >
+        <div className="max-w-4xl mx-auto px-6 py-24 text-center">
+          <TrigReveal direction="up" amplitude={20} delay={0.2} duration={0.7}>
+            <p className="mt-8 text-lg lg:text-xl text-white max-w-2xl mx-auto leading-relaxed">
+              From technical management to crew solutions, we provide accountable, end-to-end marine services that ensure safe, efficient, and compliant operations.
+            </p>
+          </TrigReveal>
+        </div>
+      </GlyphPortal>
 
-      <TrigWaveDivider fromColor="#0f1318" toColor="#ffffff" height={120} type="deep" />
+      <TrigWaveDivider fromColor="#0ea5e9" toColor="#ffffff" height={120} type="deep" />
 
       {/* Core Services — White */}
       <section ref={coreRef} className="bg-white text-navy-900 relative overflow-hidden">
@@ -379,7 +383,7 @@ export default function Services() {
         <div className="absolute -top-24 -right-24 w-[28rem] h-[28rem] rounded-full bg-[#0ea5e9]/[0.07] blur-[5rem] pointer-events-none" />
         <div className="mx-auto max-w-6xl px-6 lg:px-8 py-28 lg:py-36 relative z-10">
           <div className="max-w-2xl mb-16">
-            <span className="inline-block text-[11px] font-medium tracking-[0.25em] uppercase text-[#7ab3d6] mb-4">Service Details</span>
+            <span className="inline-block text-xs font-medium tracking-[0.25em] uppercase text-[#7ab3d6] mb-4">Service Details</span>
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[0.95] tracking-[-0.04em] text-[#f2f0eb]">Inside Each <span className="italic font-serif text-[#8fbde0]">Service</span></h2>
             <p className="mt-6 text-[#a8b8c8] text-lg leading-relaxed">What we deliver, how we do it, and the people behind it — not a brochure, just the real substance.</p>
           </div>
