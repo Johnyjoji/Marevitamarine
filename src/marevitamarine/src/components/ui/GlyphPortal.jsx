@@ -123,8 +123,6 @@ export default function GlyphPortal({
     const computedFamily = getComputedStyle(glyph).fontFamily;
     const families = computedFamily.match(/(?:[^,"']+|"[^"]*"|'[^']*')+/g) ?? [];
     const available = families.filter((family) => {
-      // In many browsers, document.fonts.check fails for generic fallbacks like sans-serif
-      // or system fonts not explicitly loaded. We don't want this to stall the camera.
       try { return document.fonts.check(`${weight} 100px ${family.trim()}`, text); }
       catch { return false; }
     });
