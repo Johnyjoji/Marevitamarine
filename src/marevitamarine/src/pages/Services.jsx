@@ -126,7 +126,7 @@ export default function Services() {
       <section className="bg-navy-900 text-white relative overflow-hidden min-h-[640px] lg:min-h-[720px] flex items-center">
         <GlyphPortal
           word="MAREVITA"
-          interactive={false}
+          interactive={true}
           scrollLength={2.4}
           className="mx-auto max-w-7xl px-6 lg:px-8 py-24 lg:py-32 relative z-10 w-full"
           style={{
