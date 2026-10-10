@@ -127,8 +127,8 @@ export default function GlyphPortal({
       catch { return false; }
     });
     glyph.style.fontFamily = [...available, DEFAULT_FONT].join(",");
-    // Do not stall on missing web fonts if fallback is acceptable
-    stalled = false;
+    // A pending requested face may also hold WebKit's render loop. Keep that mount static.
+    stalled = available.length < families.length;
 
     const readInk = () => {
       if (!context) return false;
@@ -162,6 +162,17 @@ export default function GlyphPortal({
         });
         const found = interior(context, char, scanFont);
         if (found) candidates.push({ ...found, x: found.x + advances[offset], index: offset });
+        else {
+          // Fallback: use bounding box center as approximate interior
+          const advance = advances[offset];
+          const m = context.measureText(char);
+          candidates.push({
+            x: advance - m.actualBoundingBoxLeft + m.width / 2,
+            y: -m.actualBoundingBoxAscent + m.height / 2,
+            radius: Math.min(m.width, m.height) / 2,
+            index: offset
+          });
+        }
         offset += char.length;
       }
       target = candidates.find((candidate) => candidate.index === requested) ?? [...candidates].sort((a, b) => b.radius - a.radius || Math.abs(a.x - center.x) - Math.abs(b.x - center.x))[0] ?? null;
@@ -274,7 +285,7 @@ export default function GlyphPortal({
       if (disposed) return;
       if (time !== undefined && !browserFrameSeen) {
         browserFrameSeen = true;
-        stalled = stalled || (performance.now() - mountedAt > 2500);
+        stalled ||= performance.now() - mountedAt > 2500;
         dirty = true;
       }
       if (dirty) { dirty = false; layout(); }
