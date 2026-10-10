@@ -6,6 +6,7 @@
  * A scroll-driven camera through live type. Keep this notice with copies.
  */
 import { useId, useLayoutEffect, useRef, CSSProperties, ReactNode } from "react";
+import type { HTMLAttributes } from "react";
 
 export type GlyphPortalStyle = CSSProperties & {
   "--gp-paper"?: string;
