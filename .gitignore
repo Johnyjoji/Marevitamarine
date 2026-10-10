@@ -13,6 +13,7 @@ dist/
 .cursor/
 .impeccable/
 .playwright-mcp
+.freebuff/
 
 # Local Settings
 *.local.json
@@ -30,3 +31,5 @@ Thumbs.db
 # Extensions
 kickbacks-v2.vsix
 palette-comparison.html
+
+generate-images.sh
