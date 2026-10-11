@@ -1,13 +1,11 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   ArrowRight,
-  Shield,
   Anchor,
   Users,
   Ship,
   CheckCircle2,
   Wrench,
-  Compass,
   GraduationCap,
   ClipboardCheck,
   ServerCog,
@@ -22,20 +20,14 @@ import GlyphPortal from '../components/ui/GlyphPortal';
 import {
   TrigWaveDivider,
   TrigReveal,
-  TrigFloating,
-  TrigScrollRotate,
   TrigBackgroundWave,
   TrigAmbientFloat,
   TrigAmbientDrift,
   TrigAmbientBreath,
-  TrigAmbientScale,
-  TrigAmbientRotate,
   TrigCardHover,
-  MOTION,
 } from '../components/TrigScrollAnimations';
 
 export default function Services() {
-  const navigate = useNavigate();
   const [coreRef, coreInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [extendedRef, extendedInView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [diffRef, diffInView] = useInView({ triggerOnce: true, threshold: 0.1 });
@@ -112,12 +104,6 @@ export default function Services() {
       desc: 'Round-the-clock support for critical situations, crisis management, and immediate assistance.',
       eyebrow: 'Response'
     },
-  ];
-
-  const differentiators = [
-    { icon: Shield, title: '24/7 Global Support', desc: 'Round-the-clock monitoring across all time zones.' },
-    { icon: Users, title: 'Experienced Team', desc: 'Certified professionals with decades of combined expertise.' },
-    { icon: CheckCircle2, title: 'Cost Efficiency', desc: 'Optimized processes delivering measurable savings.' },
   ];
 
   return (
@@ -204,16 +190,8 @@ export default function Services() {
                     transition={{ duration: 0.6, delay: i * 0.1 }}
                     className="group relative bg-white rounded-xl border border-navy-100/50 p-6 hover:border-navy-200/75 overflow-hidden"
                   >
-                    {/* Image placeholder */}
-                    <div className="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg mb-4 overflow-hidden">
-                      <img
-                        src="/content/placeholder-crew.jpg"
-                        alt={`${service.title} illustration`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
                     <div className="flex items-center justify-start mb-4">
-                      <div className="h-10 w-10 rounded-full bg-marine-500 flex items-center justify-center mb-3">
+                      <div className="h-10 w-10 rounded-full bg-marine-500 flex items-center justify-center">
                         <service.icon className="h-6 w-6 text-white" />
                       </div>
                       <h3 className="text-xl font-semibold text-navy-900">{service.title}</h3>
@@ -383,23 +361,18 @@ export default function Services() {
         <div className="absolute -top-24 -right-24 w-[28rem] h-[28rem] rounded-full bg-[#0ea5e9]/[0.07] blur-[5rem] pointer-events-none" />
         <div className="mx-auto max-w-6xl px-6 lg:px-8 py-28 lg:py-36 relative z-10">
           <div className="max-w-2xl mb-16">
-            <span className="inline-block text-[11px] font-medium tracking-[0.25em] uppercase text-[#7ab3d6] mb-4">Service Details</span>
+            <span className="inline-block text-sm font-medium tracking-[0.25em] uppercase text-[#7ab3d6] mb-4">Service Details</span>
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[0.95] tracking-[-0.04em] text-[#f2f0eb]">Inside Each <span className="italic font-serif text-[#8fbde0]">Service</span></h2>
             <p className="mt-6 text-[#a8b8c8] text-lg leading-relaxed">What we deliver, how we do it, and the people behind it — not a brochure, just the real substance.</p>
           </div>
           <div className="grid gap-14 lg:grid-cols-2">
-            {coreServices.map((s, i) => {
+            {coreServices.map((s) => {
               const slug = s.title.toLowerCase().replace(/\s+/g, '-');
               return (
                 <section key={s.title} id={slug} className="group scroll-mt-28 bg-white/5 border border-white/10 rounded-2xl p-7 lg:p-8 hover:border-white/20 transition-colors">
                   <div className="flex items-start gap-6 mb-6">
-                    {/* Image placeholder */}
-                    <div className="flex-shrink-0 aspect-w-16 aspect-h-9 bg-gray-200 rounded-xl overflow-hidden">
-                      <img
-                        src={`/content/placeholder-${slug}.jpg`}
-                        alt={`${s.title} illustration`}
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-marine-500 flex items-center justify-center">
+                      <s.icon className="h-6 w-6 text-white" />
                     </div>
                     <div>
                       <h3 className="text-xl font-bold tracking-tight">{s.title}</h3>

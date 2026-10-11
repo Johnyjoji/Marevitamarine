@@ -67,7 +67,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="fixed inset-x-0 top-4 sm:top-6 z-50 px-4 sm:px-6">
+    <header className="fixed inset-x-0 top-4 sm:top-6 z-100 px-4 sm:px-6">
       <motion.nav
         initial={false}
         animate={{
