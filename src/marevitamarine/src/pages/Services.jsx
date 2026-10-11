@@ -19,7 +19,6 @@ import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import GlyphPortal from '../components/ui/GlyphPortal';
-import StackedCardSection from '../components/StackedCardSection';
 import {
   TrigWaveDivider,
   TrigReveal,
@@ -34,6 +33,7 @@ import {
   TrigCardHover,
   MOTION,
 } from '../components/TrigScrollAnimations';
+import StackedCardSection from '../components/StackedCardSection';
 
 export default function Services() {
   const navigate = useNavigate();
@@ -123,7 +123,7 @@ export default function Services() {
 
   return (
     <div>
-      {/* Hero — Navy */}
+      {/* Hero — Navy (Standalone - NOT wrapped) */}
       <GlyphPortal
         word="MAREVITA"
         interactive={true}
@@ -134,6 +134,7 @@ export default function Services() {
           '--gp-ink': '#ffffff',
           '--gp-field': '#0ea5e9',
           '--gp-foreground': '#f2f0eb',
+          zIndex: 60
         }}
         front={
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-6">
@@ -162,10 +163,13 @@ export default function Services() {
         </div>
       </GlyphPortal>
 
-      <TrigWaveDivider fromColor="#0f1318" toColor="#ffffff" height={120} type="deep" />
-
-      {/* Core Services — White */}
-      <StackedCardSection index={0} total={5} targetScale={0.92} cardClassName="bg-white text-navy-900">
+      {/* Core Services — White (index=0 of stacked deck) */}
+      <StackedCardSection
+        index={0}
+        total={5}
+        targetScale={0.92}
+        cardClassName="bg-white shadow-[0_-35px_80px_rgba(0,0,0,0.35)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-navy-100"
+      >
         <section ref={coreRef} className="relative overflow-hidden">
           <TrigBackgroundWave
             className="opacity-20"
@@ -230,10 +234,25 @@ export default function Services() {
         </section>
       </StackedCardSection>
 
-      <TrigWaveDivider fromColor="#ffffff" toColor="#0f1318" height={120} type="coast" flip />
+      <TrigWaveDivider
+        fromColor="#ffffff"
+        toColor="#0f1318"
+        height={100}
+        baseSpeed={1.5}
+        flip={true}
+        layers={[
+          { frequency: 1.4, amplitude: 18, speed: 0.014, phaseOffset: 0, opacity: 1.0 },
+          { frequency: 2.1, amplitude: 12, speed: 0.026, phaseOffset: 1.2, opacity: 0.55 },
+        ]}
+      />
 
-      {/* Enhanced Services — Navy */}
-      <StackedCardSection index={1} total={5} targetScale={0.92} cardClassName="bg-navy-900 text-white">
+      {/* Enhanced Services — Navy (index=1 of stacked deck) */}
+      <StackedCardSection
+        index={1}
+        total={5}
+        targetScale={0.92}
+        cardClassName="bg-navy-900 shadow-[0_-35px_80px_rgba(0,0,0,0.55)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-white/10"
+      >
         <section ref={extendedRef} className="relative overflow-hidden">
           <TrigBackgroundWave
             className="opacity-15"
@@ -295,10 +314,25 @@ export default function Services() {
         </section>
       </StackedCardSection>
 
-      <TrigWaveDivider fromColor="#0f1318" toColor="#ffffff" height={120} type="ripple" />
+      <TrigWaveDivider
+        fromColor="#0f1318"
+        toColor="#ffffff"
+        height={100}
+        baseSpeed={1.2}
+        flip={true}
+        layers={[
+          { frequency: 1.0, amplitude: 17, speed: 0.011, phaseOffset: 0, opacity: 1.0 },
+          { frequency: 2.5, amplitude: 11, speed: 0.023, phaseOffset: 1.6, opacity: 0.55 },
+        ]}
+      />
 
-      {/* Differentiators — White */}
-      <StackedCardSection index={2} total={5} targetScale={0.92} cardClassName="bg-white text-navy-900">
+      {/* Differentiators — White (index=2 of stacked deck) */}
+      <StackedCardSection
+        index={2}
+        total={5}
+        targetScale={0.92}
+        cardClassName="bg-white shadow-[0_-35px_80px_rgba(0,0,0,0.35)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-navy-100"
+      >
         <section ref={diffRef} className="relative overflow-hidden">
           <TrigBackgroundWave
             className="opacity-10"
@@ -384,10 +418,25 @@ export default function Services() {
         </section>
       </StackedCardSection>
 
-      <TrigWaveDivider fromColor="#ffffff" toColor="#0f1318" height={120} type="rugged" flip />
+      <TrigWaveDivider
+        fromColor="#ffffff"
+        toColor="#0f1318"
+        height={100}
+        baseSpeed={1.5}
+        flip={true}
+        layers={[
+          { frequency: 1.4, amplitude: 18, speed: 0.014, phaseOffset: 0, opacity: 1.0 },
+          { frequency: 2.1, amplitude: 12, speed: 0.026, phaseOffset: 1.2, opacity: 0.55 },
+        ]}
+      />
 
-      {/* Core Service Details — Human, worthy */}
-      <StackedCardSection index={3} total={5} targetScale={0.92} cardClassName="bg-[#060d1a] text-[#f2f0eb]">
+      {/* Core Service Details — Human, worthy (index=3 of stacked deck) */}
+      <StackedCardSection
+        index={3}
+        total={5}
+        targetScale={0.92}
+        cardClassName="bg-[#060d1a] text-[#f2f0eb]"
+      >
         <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#0f1318] to-transparent pointer-events-none" />
         <div className="absolute -top-24 -right-24 w-[28rem] h-[28rem] rounded-full bg-[#0ea5e9]/[0.07] blur-[5rem] pointer-events-none" />
         <div className="mx-auto max-w-6xl px-6 lg:px-8 py-28 lg:py-36 relative z-10">
@@ -425,10 +474,25 @@ export default function Services() {
         </div>
       </StackedCardSection>
 
-      <TrigWaveDivider fromColor="#0f1318" toColor="#ffffff" height={120} type="rugged" flip />
+      <TrigWaveDivider
+        fromColor="#0f1318"
+        toColor="#ffffff"
+        height={100}
+        baseSpeed={1.2}
+        flip={true}
+        layers={[
+          { frequency: 1.1, amplitude: 16, speed: 0.012, phaseOffset: 0, opacity: 1.0 },
+          { frequency: 2.4, amplitude: 11, speed: 0.024, phaseOffset: 1.4, opacity: 0.55 },
+        ]}
+      />
 
-      {/* Final CTA — Navy */}
-      <StackedCardSection index={4} total={5} targetScale={0.92} cardClassName="bg-navy-900 text-white">
+      {/* Final CTA — Navy (index=4 of stacked deck) */}
+      <StackedCardSection
+        index={4}
+        total={5}
+        targetScale={0.92}
+        cardClassName="bg-navy-900 text-white"
+      >
         <div className="mx-auto max-w-4xl px-6 lg:px-8 py-24 lg:py-32 text-center relative overflow-hidden">
           <TrigAmbientFloat amplitude={1.5} period={25000}>
             <TrigReveal direction="up" amplitude={30} duration={0.8}>
