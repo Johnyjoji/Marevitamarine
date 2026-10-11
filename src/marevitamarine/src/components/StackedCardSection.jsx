@@ -17,44 +17,39 @@ function useReducedMotion() {
 }
 
 /**
- * useViewportHeight — tracks window.innerHeight for layout math.
- */
-function useViewportHeight() {
-  const [vh, setVh] = useState(() =>
-    typeof window !== 'undefined' ? window.innerHeight : 800
-  );
-
-  useEffect(() => {
-    const update = () => setVh(window.innerHeight);
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, []);
-
-  return vh;
-}
-
-/**
  * StackedCardSection
  * ------------------
- * Deck-of-cards scroll stacking where every section's full content is
- * reachable — even when taller than the viewport.
+ * A section that scrolls like a deck-of-cards transition, with all of its
+ * content reachable by the user. The effect is created by:
  *
- *   1. Sticky window is always exactly one viewport tall (overflow hidden).
- *      The inner content is the section's natural height and translates up
- *      as the user scrolls, so every line passes through the sticky window.
+ *   1. The container is `contentHeight + 100vh` tall. The OUTER sticky
+ *      element is exactly `100vh` tall (one viewport) and pins to the
+ *      top of the viewport. The INNER element is the full `contentHeight`
+ *      tall and is translated up as the user scrolls, so every line of
+ *      the section passes through the sticky window — the user can read
+ *      all of the content.
  *
- *   2. Container height = contentHeight + 100vh (content scroll + release).
- *      During the last 100vh the card scales/dims while the next card's
- *      sticky slides up from the bottom.
+ *   2. Cards stack vertically: each container starts where the previous
+ *      one ended (no negative margin). During the last `100vh` of a
+ *      container, the next card's sticky slides up from the bottom of
+ *      the viewport into view — that's the deck-of-cards transition.
+ *      The previous card plays a release animation (scale, opacity,
+ *      border-radius, brightness) during that same window.
  *
- *   3. Non-first cards use marginTop: -100vh so their sticky overlaps the
- *      previous card's release zone — the visible deck-of-cards handoff.
+ *   3. Z-index increases per card so the new card paints on top once
+ *      the two stickies meet at the top of the viewport.
  *
- *   4. Z-index increases per card so the incoming card paints on top.
+ * The transforms (translate, scale, opacity, border-radius, filter) live
+ * on the inner motion.div, NOT on the sticky element. Putting `transform`
+ * on the same element as `position: sticky` would create a new containing
+ * block and break sticky behavior — so we keep them on separate layers.
  *
- * Transforms live on the inner motion.div, never on the sticky element
- * (transform on sticky creates a containing block and breaks pinning).
+ * Why two phases? We need the content's natural height to lay out the
+ * sticky (container height, translate distance, release timing all
+ * depend on it), but the content can only be measured after a real
+ * render. Solution: render the children once in a hidden, in-flow
+ * measurement div BEFORE committing to the sticky layout. Once we know
+ * the natural content height, the sticky render uses that height.
  */
 export function StackedCardSection({
   children,
@@ -65,33 +60,32 @@ export function StackedCardSection({
   className = '',
 }) {
   const containerRef = useRef(null);
-  const contentRef = useRef(null);
+  const measureRef = useRef(null);
   const isReducedMotion = useReducedMotion();
-  const vh = useViewportHeight();
-  const isFirst = index === 0;
-  const isLast = index === total - 1;
 
+  // Measured natural height of the content (in px). Starts at 0 (un-measured).
+  // The first render uses the hidden measurement div to compute this; once
+  // it's set, the real (sticky) layout renders.
   const [contentHeight, setContentHeight] = useState(0);
 
-  // Measure the content's natural height. offsetHeight/scrollHeight report
-  // the full box even when a sticky ancestor clips with overflow:hidden.
+  // Phase 1: measure the content's natural height by rendering it offscreen
+  // in a hidden, in-flow div. We then commit to the sticky layout.
   useLayoutEffect(() => {
-    const el = contentRef.current;
-    if (!el) return;
-
+    if (!measureRef.current) return;
     const measure = () => {
-      if (!contentRef.current) return;
-      const h = Math.max(
-        contentRef.current.scrollHeight,
-        contentRef.current.offsetHeight
-      );
-      if (h > 0) {
-        setContentHeight((prev) => (Math.abs(prev - h) > 0.5 ? h : prev));
+      // Guard: ref can be null if the observer fires during the
+      // measurement → sticky render swap (we just unmounted the
+      // measurement div by setting contentHeight).
+      if (!measureRef.current) return;
+      const h = measureRef.current.getBoundingClientRect().height;
+      if (h > 0 && Math.abs(h - contentHeight) > 0.5) {
+        setContentHeight(h);
       }
     };
-
     measure();
 
+    // Debounce to next frame so a burst of resize events (e.g. devtools
+    // opening) only schedules one measurement.
     let rafId = null;
     const schedule = () => {
       if (rafId != null) return;
@@ -102,11 +96,7 @@ export function StackedCardSection({
     };
 
     const ro = new ResizeObserver(schedule);
-    ro.observe(el);
-    // Images / fonts can change height after first paint.
-    el.querySelectorAll?.('img').forEach((img) => {
-      if (!img.complete) img.addEventListener('load', schedule, { once: true });
-    });
+    ro.observe(measureRef.current);
     window.addEventListener('resize', schedule);
 
     return () => {
@@ -114,15 +104,22 @@ export function StackedCardSection({
       window.removeEventListener('resize', schedule);
       if (rafId != null) cancelAnimationFrame(rafId);
     };
-  }, [children]);
+    // contentHeight intentionally omitted: we only want to re-measure on
+    // content change, not in response to our own state update.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  // Track scroll progress of this section's container.
+  // The 'end start' means: progress = 1 when container bottom hits viewport top,
+  // which lines up with the sticky element releasing after its full content.
+  // We only start measuring once the sticky layout has rendered (i.e.
+  // contentHeight > 0); before that, the container is the placeholder height.
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
   });
 
-  // Direct progress for content scrubbing (1:1 with scroll — reading content
-  // should not lag). Spring only on the release polish transforms.
+  // Smooth the scroll progress with a spring for an organic, physics feel
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 110,
     damping: 26,
@@ -130,90 +127,111 @@ export function StackedCardSection({
     restDelta: 0.001,
   });
 
+  // Transforms applied to the inner element as the user scrolls.
+  //
+  // The container is contentHeight + 100vh tall. Of that, the first
+  // (contentHeight - 100vh) / containerHeight portion of scrollYProgress
+  // is the "content scroll" — during it, we translate the content up
+  // inside the sticky so the user can read every line. The last
+  // 100vh / containerHeight portion is the "release" — the content sits
+  // at its bottom position, and we apply scale/opacity/border-radius to
+  // shrink the card while the next card slides up from below.
+  //
+  // These hooks MUST run on every render in the same order — including
+  // before the content height is known — so the hook order stays stable
+  // through the measurement → sticky layout transition.
+  const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
   const releaseZone = vh;
-  // Layout height is at least one viewport so short cards still get a full
-  // pin + release cycle.
-  const layoutHeight = Math.max(contentHeight || vh, vh);
-  const containerHeight = isLast ? layoutHeight : layoutHeight + releaseZone;
+  const hasMeasured = contentHeight > 0;
+  const containerHeight = hasMeasured ? contentHeight + releaseZone : releaseZone;
+  // Progress at which the content has finished scrolling and the release begins.
+  // For contentHeight <= 100vh, this clamps to 0 and the content never translates.
+  const contentScrollEnd = Math.max(
+    0,
+    Math.min(1, (contentHeight - releaseZone) / containerHeight)
+  );
+  // Distance the content translates up. 0 when contentHeight <= 100vh.
+  const contentTranslate = -(Math.max(0, contentHeight - releaseZone));
+  // Release range: the last 100vh of the container.
+  const releaseStart = contentHeight / containerHeight;
 
-  // Derived scroll geometry. Kept in refs so useTransform function
-  // callbacks always read the latest measured values (array-range
-  // useTransform can stale-close over the pre-measure 0-height state).
-  const geometryRef = useRef({
-    layoutHeight,
-    containerHeight,
-    contentHeight: contentHeight || 0,
-    releaseZone,
-    isLast,
-    targetScale,
+  const contentY = useTransform(
+    smoothProgress,
+    [0, contentScrollEnd],
+    [0, contentTranslate],
+    { clamp: true }
+  );
+  // Scale the card down to targetScale during the release.
+  const scale = useTransform(smoothProgress, [releaseStart, 1], [1, targetScale], {
+    clamp: true,
   });
-  geometryRef.current = {
-    layoutHeight,
-    containerHeight,
-    contentHeight: contentHeight || 0,
-    releaseZone,
-    isLast,
-    targetScale,
-  };
-
-  // Content scrub: translate 1:1 with scroll so every line is readable.
-  const contentY = useTransform(scrollYProgress, (p) => {
-    const g = geometryRef.current;
-    const scrollable = Math.max(0, g.contentHeight - g.releaseZone);
-    if (scrollable <= 0 || g.containerHeight <= 0) return 0;
-    const contentScrollEnd = scrollable / g.containerHeight;
-    const t = Math.min(1, Math.max(0, p / Math.max(contentScrollEnd, 0.0001)));
-    return -scrollable * t;
-  });
-
-  // Release polish: scale / dim / round during the last 100vh of pin.
-  const scale = useTransform(smoothProgress, (p) => {
-    const g = geometryRef.current;
-    if (g.isLast || g.containerHeight <= 0) return 1;
-    const start = Math.max(0, (g.layoutHeight - g.releaseZone) / g.containerHeight);
-    const end = Math.min(1, g.layoutHeight / g.containerHeight);
-    if (end <= start) return 1;
-    const t = Math.min(1, Math.max(0, (p - start) / (end - start)));
-    return 1 + (g.targetScale - 1) * t;
-  });
-  const opacity = useTransform(smoothProgress, (p) => {
-    const g = geometryRef.current;
-    if (g.isLast || g.containerHeight <= 0) return 1;
-    const start = Math.max(0, (g.layoutHeight - g.releaseZone) / g.containerHeight);
-    const end = Math.min(1, g.layoutHeight / g.containerHeight);
-    if (end <= start) return 1;
-    const t = Math.min(1, Math.max(0, (p - start) / (end - start)));
-    if (t < 0.5) return 1 + (0.92 - 1) * (t / 0.5);
-    return 0.92 + (0.7 - 0.92) * ((t - 0.5) / 0.5);
-  });
-  const brightness = useTransform(smoothProgress, (p) => {
-    const g = geometryRef.current;
-    if (g.isLast || g.containerHeight <= 0) return 1;
-    const start = Math.max(0, (g.layoutHeight - g.releaseZone) / g.containerHeight);
-    const end = Math.min(1, g.layoutHeight / g.containerHeight);
-    if (end <= start) return 1;
-    const t = Math.min(1, Math.max(0, (p - start) / (end - start)));
-    return 1 + (0.78 - 1) * t;
-  });
-  const borderRadius = useTransform(smoothProgress, (p) => {
-    const g = geometryRef.current;
-    if (g.isLast || g.containerHeight <= 0) return '0px';
-    const start = Math.max(0, (g.layoutHeight - g.releaseZone) / g.containerHeight);
-    const end = Math.min(1, g.layoutHeight / g.containerHeight);
-    if (end <= start) return '0px';
-    const t = Math.min(1, Math.max(0, (p - start) / (end - start)));
-    if (t < 0.1) {
-      const u = t / 0.1;
-      return `${20 * u}px`;
-    }
-    const u = (t - 0.1) / 0.9;
-    return `${20 + (32 - 20) * u}px`;
-  });
+  const opacity = useTransform(
+    smoothProgress,
+    [releaseStart, releaseStart + 0.6, 1],
+    [1, 0.92, 0.7],
+    { clamp: true }
+  );
+  const brightness = useTransform(
+    smoothProgress,
+    [releaseStart, 1],
+    [1, 0.78],
+    { clamp: true }
+  );
+  const borderRadius = useTransform(
+    smoothProgress,
+    [releaseStart, releaseStart + 0.1, 1],
+    ['0px', '20px', '32px'],
+    { clamp: true }
+  );
   const filter = useTransform(brightness, (b) => `brightness(${b})`);
 
+  // Reduced motion: render a normal, non-stacking section. Content height
+  // flows naturally so the user still scrolls through everything.
   if (isReducedMotion) {
     return <section className={className}>{children}</section>;
   }
+
+  // Phase 1: render the content in a hidden, in-flow div to measure its
+  // natural height. We use position: absolute off the top of the page with
+  // a real width matching the parent, so the content lays out as it would
+  // in the sticky parent. The cardClassName is intentionally omitted here
+  // so we measure content height without the rounded-top border/shadow
+  // affecting the height (it doesn't actually affect height, but keeping
+  // the measurement minimal is cleaner). After the first useLayoutEffect
+  // run, we re-render in the sticky layout below.
+  if (!hasMeasured) {
+    return (
+      <div
+        className={className}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          visibility: 'hidden',
+          pointerEvents: 'none',
+        }}
+      >
+        <div ref={measureRef}>{children}</div>
+      </div>
+    );
+  }
+
+  // Phase 2: real sticky layout. The container is contentHeight + 100vh
+  // tall. The sticky is exactly 100vh tall with overflow:hidden, so the
+  // content (which is contentHeight tall) overflows the sticky and we
+  // translate it up as the user scrolls to reveal every line.
+  //
+  // During the first (contentHeight - 100vh) pixels of container scroll,
+  // the content translates from translateY(0) to translateY(-(contentHeight
+  // - 100vh)), exposing the bottom of the content. During the last 100vh
+  // pixels, the content stays at its bottom position and we apply the
+  // release animation (scale, opacity, border-radius, brightness) so the
+  // card shrinks while the next card slides up from below.
+  //
+  // No negative margin: cards stack vertically, each container starts
+  // right after the previous one ends. The next card's sticky naturally
+  // slides up from the bottom of the viewport during the release.
 
   return (
     <div
@@ -221,18 +239,22 @@ export function StackedCardSection({
       className={`relative ${className}`}
       style={{
         height: `${containerHeight}px`,
-        // Pull each non-first card up so its sticky overlaps the previous
-        // card's release zone (deck-of-cards handoff).
-        marginTop: isFirst ? 0 : `-${releaseZone}px`,
         zIndex: (index + 1) * 10,
       }}
     >
+      {/* Outer sticky element — 100vh tall, overflow hidden, NO transforms
+          on this element so sticky works. The content overflows below and
+          is pulled up by the inner motion.div. */}
       <div
         className={`sticky top-0 w-full overflow-hidden ${cardClassName}`}
         style={{ height: `${releaseZone}px` }}
       >
+        {/* Inner element receives the transforms. transformOrigin: top center
+            keeps the top edge of the card visually pinned while the rest
+            scales during the release. The motion.div is contentHeight tall
+            — taller than the sticky — so the content can scroll up through
+            the sticky window as the user scrolls the page. */}
         <motion.div
-          ref={contentRef}
           style={{
             y: contentY,
             scale,
@@ -240,10 +262,8 @@ export function StackedCardSection({
             filter,
             borderRadius,
             transformOrigin: 'top center',
+            height: `${contentHeight}px`,
             width: '100%',
-            // Natural content height; falls back to auto until measured.
-            minHeight: contentHeight ? undefined : '100%',
-            height: contentHeight ? `${contentHeight}px` : 'auto',
           }}
         >
           {children}
