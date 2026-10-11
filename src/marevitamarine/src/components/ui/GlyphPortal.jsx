@@ -62,7 +62,7 @@ export default function GlyphPortal({
   background,
   front,
   children,
-  scrollLength = 2.4,
+  scrollLength = 1.9,
   fontFamily = DEFAULT_FONT,
   fontWeight = 900,
   annotations = false,
