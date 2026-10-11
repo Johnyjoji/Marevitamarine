@@ -18,7 +18,7 @@ export default function Safety() {
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
           <span className="inline-block text-xs font-mono uppercase tracking-[0.25em] text-marine-400 mb-4">Our Commitment</span>
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-[-0.04em] leading-[0.95]">Safety<br/><span className="text-marine-400">and quality.</span></h1>
-          <p className="mt-6 text-lg text-navy-200 max-w-2xl">Safety is not luck — it’s a system we own, audit, and improve every single day.</p>
+          <p className="mt-6 text-lg text-navy-200 max-w-2xl">Safety is not luck - it's a system we own, audit, and improve every single day.</p>
         </div>
       </section>
 

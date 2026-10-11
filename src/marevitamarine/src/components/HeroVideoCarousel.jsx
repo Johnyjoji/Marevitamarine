@@ -25,9 +25,9 @@ export const SCENES = [
     label: 'Open Sea',
     subtitle: 'Mid-voyage',
     eyebrow: 'Currently at sea',
-    headline: [‘The world\’s fleets,’, ‘in safe hands.’],
-    body: ‘Full technical, crew and operational management across flag states, class societies, and key global routes.’,
-    cta: { label: ‘Explore services’, href: ‘/services’ },
+    headline: ['The world\'s fleets,', 'in safe hands.'],
+    body: 'Full technical, crew and operational management across flag states, class societies, and key global routes.',
+    cta: { label: 'Explore services', href: '/services' },
     composition: 'center',
   },
   {
