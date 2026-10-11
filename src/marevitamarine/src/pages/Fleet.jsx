@@ -32,6 +32,7 @@ import {
   TrigCardHover,
   MOTION,
 } from '../components/TrigScrollAnimations';
+import { StackedCardSection } from '../components/StackedCardSection';
 
 export default function Fleet() {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -184,189 +185,345 @@ export default function Fleet() {
     },
   ];
 
+  const TOTAL_SECTIONS = 5;
+
   return (
-    <div className="bg-navy-900 text-white min-h-screen">
+    <div className="relative bg-navy-950 text-white min-h-screen">
+      {/* Scroll progress indicator */}
+      <TrigWaveDivider fromColor="#0f1318" toColor="#ffffff" height={0} />
+
       {/* ============================================================
-          SECTION 1: HERO (Dark #0f1318)
+          1 / HERO (Dark #0f1318)
           ============================================================ */}
-      <section className="relative bg-navy-900 text-white overflow-hidden pt-28 pb-20 lg:pt-36 lg:pb-28">
-        {/* Ambient background glow */}
-        <TrigAmbientGradientShift
-          amplitudeX={4}
-          amplitudeY={2}
-          period={MOTION.duration.ambientSlowest}
-          className="absolute inset-0 opacity-15 pointer-events-none"
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-marine-600/30 via-transparent to-marine-900/40" />
-        </TrigAmbientGradientShift>
-
-        {/* Ambient floating decorative icons */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <TrigAmbientDrift
-            amplitudeX={MOTION.amplitude.small}
-            amplitudeY={MOTION.amplitude.small}
-            periodX={MOTION.duration.ambientSlow}
-            periodY={MOTION.duration.ambientSlower}
-            className="absolute top-24 right-12 w-14 h-14 text-marine-400/10 hidden md:block"
-          >
-            <Compass className="w-full h-full" strokeWidth={1} />
-          </TrigAmbientDrift>
-          <TrigAmbientRotate
-            maxDegrees={5}
+      <StackedCardSection index={0} total={TOTAL_SECTIONS} targetScale={0.88} cardClassName="bg-navy-950">
+        <section className="relative bg-navy-900 text-white overflow-hidden pt-28 pb-20 lg:pt-36 lg:pb-28">
+          {/* Ambient background glow */}
+          <TrigAmbientGradientShift
+            amplitudeX={4}
+            amplitudeY={2}
             period={MOTION.duration.ambientSlowest}
-            className="absolute bottom-20 left-10 w-12 h-12 text-marine-400/10 hidden md:block"
+            className="absolute inset-0 opacity-15 pointer-events-none"
           >
-            <Anchor className="w-full h-full" strokeWidth={1} />
-          </TrigAmbientRotate>
-        </div>
+            <div className="absolute inset-0 bg-gradient-to-br from-marine-600/30 via-transparent to-marine-900/40" />
+          </TrigAmbientGradientShift>
 
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-8 z-10">
-          <TrigAmbientFloat amplitude={1.5} period={25000}>
-            <div className="inline-flex items-center gap-2 rounded-full bg-marine-500/10 border border-marine-400/20 px-4 py-1.5 text-xs font-mono tracking-widest text-marine-300 uppercase mb-6 backdrop-blur-sm">
-              <Ship className="h-3.5 w-3.5 text-marine-400" />
-              <span>Marevita Fleet Portfolio</span>
-            </div>
+          {/* Ambient floating decorative icons */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <TrigAmbientDrift
+              amplitudeX={MOTION.amplitude.small}
+              amplitudeY={MOTION.amplitude.small}
+              periodX={MOTION.duration.ambientSlow}
+              periodY={MOTION.duration.ambientSlower}
+              className="absolute top-24 right-12 w-14 h-14 text-marine-400/10 hidden md:block"
+            >
+              <Compass className="w-full h-full" strokeWidth={1} />
+            </TrigAmbientDrift>
+            <TrigAmbientRotate
+              maxDegrees={5}
+              period={MOTION.duration.ambientSlowest}
+              className="absolute bottom-20 left-10 w-12 h-12 text-marine-400/10 hidden md:block"
+            >
+              <Anchor className="w-full h-full" strokeWidth={1} />
+            </TrigAmbientRotate>
+          </div>
 
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] text-white">
-              Our Fleet <br />
-              <span className="text-marine-400">
-                Manned With Precision.
-              </span>
-            </h1>
+          <div className="relative mx-auto max-w-7xl px-6 lg:px-8 z-10">
+            <TrigAmbientFloat amplitude={1.5} period={25000}>
+              <div className="inline-flex items-center gap-2 rounded-full bg-marine-500/10 border border-marine-400/20 px-4 py-1.5 text-xs font-mono tracking-widest text-marine-300 uppercase mb-6 backdrop-blur-sm">
+                <Ship className="h-3.5 w-3.5 text-marine-400" />
+                <span>Marevita Fleet Portfolio</span>
+              </div>
 
-            <p className="mt-6 text-lg sm:text-xl text-navy-200 max-w-3xl leading-relaxed">
-              Our fleet support encompasses modern and well-maintained vessels operated with a strong focus on safety, operational efficiency, reliability, and environmental responsibility. We supply qualified, vetted, and certified crew across key global maritime sectors.
-            </p>
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] text-white">
+                Our Fleet <br />
+                <span className="text-marine-400">
+                  Manned With Precision.
+                </span>
+              </h1>
 
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <a
-                href="#fleet-categories"
-                className="inline-flex items-center gap-2 rounded-full bg-marine-500 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-marine-950/60 hover:bg-marine-400 transition-all"
-              >
-                <span>Explore Vessel Categories</span>
-                <ChevronRight className="h-4 w-4" />
-              </a>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-all backdrop-blur-sm"
-              >
-                <span>Request Crew Manning</span>
-              </Link>
-            </div>
-          </TrigAmbientFloat>
-        </div>
-      </section>
+              <p className="mt-6 text-lg sm:text-xl text-navy-200 max-w-3xl leading-relaxed">
+                Our fleet support encompasses modern and well-maintained vessels operated with a strong focus on safety, operational efficiency, reliability, and environmental responsibility. We supply qualified, vetted, and certified crew across key global maritime sectors.
+              </p>
+
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <a
+                  href="#fleet-categories"
+                  className="inline-flex items-center gap-2 rounded-full bg-marine-500 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-marine-950/60 hover:bg-marine-400 transition-all"
+                >
+                  <span>Explore Vessel Categories</span>
+                  <ChevronRight className="h-4 w-4" />
+                </a>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-all backdrop-blur-sm"
+                >
+                  <span>Request Crew Manning</span>
+                </Link>
+              </div>
+            </TrigAmbientFloat>
+          </div>
+        </section>
+      </StackedCardSection>
 
       {/* Organic Divider: Navy to White */}
-      <TrigWaveDivider fromColor="#0f1318" toColor="#ffffff" height={110} type="rugged" />
+      <div className="relative z-20">
+        <TrigWaveDivider fromColor="#0f1318" toColor="#ffffff" height={110} type="rugged" />
+      </div>
 
       {/* ============================================================
-          SECTION 2: FLEET CATEGORIES (Light #ffffff)
+          2 / FLEET CATEGORIES (Light #ffffff)
           ============================================================ */}
-      <section id="fleet-categories" className="bg-white text-navy-900 py-20 lg:py-32 relative">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-            <div>
-              <div className="inline-flex items-center gap-2 text-xs font-mono font-bold tracking-widest text-marine-600 uppercase mb-3">
-                <Filter className="h-3.5 w-3.5" />
-                <span>Vessel Types We Provide Crew For</span>
+      <StackedCardSection index={1} total={TOTAL_SECTIONS} targetScale={0.88} cardClassName="bg-white text-navy-900 shadow-[0_-35px_80px_rgba(0,0,0,0.35)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-navy-100">
+        <section id="fleet-categories" className="bg-white text-navy-900 py-20 lg:py-32 relative">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+              <div>
+                <div className="inline-flex items-center gap-2 text-xs font-mono font-bold tracking-widest text-marine-600 uppercase mb-3">
+                  <Filter className="h-3.5 w-3.5" />
+                  <span>Vessel Types We Provide Crew For</span>
+                </div>
+                <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-navy-900">
+                  Specialized Fleet Sectors
+                </h2>
+                <p className="mt-3 text-base text-navy-600 max-w-xl">
+                  Select a category to view vessel specifications, crewing profiles, and regulatory compliance standards.
+                </p>
               </div>
-              <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-navy-900">
-                Specialized Fleet Sectors
+
+              {/* Category Filter Pills */}
+              <div className="flex flex-wrap gap-2">
+                {categories.map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+                      activeCategory === cat.id
+                        ? 'bg-navy-900 text-white shadow-md'
+                        : 'bg-navy-100/80 text-navy-700 hover:bg-navy-200'
+                    }`}
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Cards Grid: 3 Cols on Desktop */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <AnimatePresence mode="popLayout">
+                {filteredVessels.map((vessel) => {
+                  const IconComponent = vessel.icon;
+                  return (
+                    <motion.div
+                      key={vessel.id}
+                      layout
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.35 }}
+                      className="flex flex-col bg-navy-50/50 border border-navy-100 rounded-2xl p-7 hover:border-marine-300 hover:shadow-xl hover:shadow-marine-900/5 transition-all group"
+                    >
+                      {/* Header */}
+                      <div className="flex items-start justify-between gap-4 mb-5">
+                        <div className="h-14 w-14 rounded-xl bg-marine-500/10 border border-marine-500/20 text-marine-600 flex items-center justify-center group-hover:bg-marine-500 group-hover:text-white transition-colors">
+                          <IconComponent className="h-7 w-7" />
+                        </div>
+                        <span className="inline-block text-[11px] font-mono uppercase tracking-wider font-bold bg-white px-2.5 py-1 rounded-md text-marine-700 border border-navy-100 shadow-2xs">
+                          {vessel.highlight}
+                        </span>
+                      </div>
+
+                      <h3 className="text-xl font-bold tracking-tight text-navy-900 mb-1">
+                        {vessel.type}
+                      </h3>
+                      <p className="text-xs font-mono font-medium text-marine-600 mb-4">
+                        {vessel.fullName}
+                      </p>
+
+                      <p className="text-sm text-navy-600 leading-relaxed mb-6 flex-1">
+                        {vessel.shortDesc}
+                      </p>
+
+                      {/* Crewing Key Roles Tags */}
+                      <div className="mb-6 pt-4 border-t border-navy-200/60">
+                        <span className="block text-xs font-bold uppercase tracking-wider text-navy-400 mb-2">
+                          Key Positions Deployed
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {vessel.crewingFocus.slice(0, 3).map((role, idx) => (
+                            <span
+                              key={idx}
+                              className="inline-block text-[11px] bg-white text-navy-700 px-2.5 py-1 rounded-md border border-navy-200/70"
+                            >
+                              {role}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Action Button */}
+                      <button
+                        onClick={() => setSelectedVessel(vessel)}
+                        className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-white border border-navy-200 py-3 text-xs font-bold text-navy-900 hover:bg-navy-900 hover:text-white hover:border-navy-900 transition-all cursor-pointer shadow-2xs"
+                      >
+                        <span>View Vessel Profile & Specs</span>
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </button>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </div>
+          </div>
+        </section>
+      </StackedCardSection>
+
+      {/* Organic Divider: White to Navy */}
+      <div className="relative z-20">
+        <TrigWaveDivider fromColor="#ffffff" toColor="#0f1318" height={110} type="coast" flip />
+      </div>
+
+      {/* ============================================================
+          3 / COMMITMENT & SAFETY STANDARDS (Dark #0f1318)
+          ============================================================ */}
+      <StackedCardSection index={2} total={TOTAL_SECTIONS} targetScale={0.88} cardClassName="bg-navy-900 text-white shadow-[0_-35px_80px_rgba(0,0,0,0.55)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-white/10">
+        <section className="bg-navy-900 text-white py-24 lg:py-32 relative overflow-hidden">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="max-w-3xl mb-16">
+              <span className="text-xs font-mono uppercase tracking-widest text-marine-400 font-bold">
+                Our Safety Standards
+              </span>
+              <h2 className="text-3xl sm:text-5xl font-black tracking-tight mt-3">
+                Built on Safety. <br />
+                <span className="text-marine-400">Driven by Maritime Excellence.</span>
               </h2>
-              <p className="mt-3 text-base text-navy-600 max-w-xl">
-                Select a category to view vessel specifications, crewing profiles, and regulatory compliance standards.
+              <p className="mt-5 text-base sm:text-lg text-navy-200 leading-relaxed">
+                Every vessel in our management and manning network is backed by certified marine professionals who uphold the highest global standards of safety, environmental stewardship, and vessel care.
               </p>
             </div>
 
-            {/* Category Filter Pills */}
-            <div className="flex flex-wrap gap-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
-                    activeCategory === cat.id
-                      ? 'bg-navy-900 text-white shadow-md'
-                      : 'bg-navy-100/80 text-navy-700 hover:bg-navy-200'
-                  }`}
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {commitments.map((c, i) => (
+                <div
+                  key={i}
+                  className="bg-white/5 border border-white/10 rounded-2xl p-7 hover:border-marine-400/40 hover:bg-white/8 transition-all flex flex-col justify-between"
                 >
-                  {cat.label}
-                </button>
+                  <div>
+                    <div className="h-12 w-12 rounded-xl bg-marine-500/20 text-marine-400 flex items-center justify-center mb-6">
+                      <c.icon className="h-6 w-6" />
+                    </div>
+                    <h3 className="text-lg font-bold tracking-tight text-white mb-3">
+                      {c.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-navy-300 leading-relaxed">
+                      {c.desc}
+                    </p>
+                  </div>
+                  <div className="mt-6 pt-4 border-t border-white/10 flex items-center text-[11px] font-mono text-marine-400">
+                    <span className="inline-block w-2 h-2 rounded-full bg-marine-400 mr-2" />
+                    Verified Standard
+                  </div>
+                </div>
               ))}
             </div>
           </div>
+        </section>
+      </StackedCardSection>
 
-          {/* Cards Grid: 3 Cols on Desktop */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <AnimatePresence mode="popLayout">
-              {filteredVessels.map((vessel) => {
-                const IconComponent = vessel.icon;
-                return (
-                  <motion.div
-                    key={vessel.id}
-                    layout
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.35 }}
-                    className="flex flex-col bg-navy-50/50 border border-navy-100 rounded-2xl p-7 hover:border-marine-300 hover:shadow-xl hover:shadow-marine-900/5 transition-all group"
-                  >
-                    {/* Header */}
-                    <div className="flex items-start justify-between gap-4 mb-5">
-                      <div className="h-14 w-14 rounded-xl bg-marine-500/10 border border-marine-500/20 text-marine-600 flex items-center justify-center group-hover:bg-marine-500 group-hover:text-white transition-colors">
-                        <IconComponent className="h-7 w-7" />
-                      </div>
-                      <span className="inline-block text-[11px] font-mono uppercase tracking-wider font-bold bg-white px-2.5 py-1 rounded-md text-marine-700 border border-navy-100 shadow-2xs">
-                        {vessel.highlight}
-                      </span>
-                    </div>
+      {/* Organic Divider: Navy to White */}
+      <div className="relative z-20">
+        <TrigWaveDivider fromColor="#0f1318" toColor="#ffffff" height={110} type="deep" />
+      </div>
 
-                    <h3 className="text-xl font-bold tracking-tight text-navy-900 mb-1">
-                      {vessel.type}
-                    </h3>
-                    <p className="text-xs font-mono font-medium text-marine-600 mb-4">
-                      {vessel.fullName}
-                    </p>
+      {/* ============================================================
+          4 / OPERATIONAL HIGHLIGHTS (Light #ffffff)
+          ============================================================ */}
+      <StackedCardSection index={3} total={TOTAL_SECTIONS} targetScale={0.88} cardClassName="bg-white text-navy-900 shadow-[0_-35px_80px_rgba(0,0,0,0.35)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-navy-100">
+        <section className="bg-white text-navy-900 py-20 lg:py-28 relative">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <span className="text-xs font-mono uppercase tracking-widest text-marine-600 font-bold">
+                Global Scale
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-navy-900 mt-2">
+                Fleet Coverage & Key Metrics
+              </h2>
+              <p className="mt-3 text-sm text-navy-600">
+                Reliable, end-to-end maritime crewing and technical support spanning primary maritime corridors.
+              </p>
+            </div>
 
-                    <p className="text-sm text-navy-600 leading-relaxed mb-6 flex-1">
-                      {vessel.shortDesc}
-                    </p>
-
-                    {/* Crewing Key Roles Tags */}
-                    <div className="mb-6 pt-4 border-t border-navy-200/60">
-                      <span className="block text-xs font-bold uppercase tracking-wider text-navy-400 mb-2">
-                        Key Positions Deployed
-                      </span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {vessel.crewingFocus.slice(0, 3).map((role, idx) => (
-                          <span
-                            key={idx}
-                            className="inline-block text-[11px] bg-white text-navy-700 px-2.5 py-1 rounded-md border border-navy-200/70"
-                          >
-                            {role}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Action Button */}
-                    <button
-                      onClick={() => setSelectedVessel(vessel)}
-                      className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-white border border-navy-200 py-3 text-xs font-bold text-navy-900 hover:bg-navy-900 hover:text-white hover:border-navy-900 transition-all cursor-pointer shadow-2xs"
-                    >
-                      <span>View Vessel Profile & Specs</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </button>
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              {stats.map((stat, idx) => (
+                <div
+                  key={idx}
+                  className="bg-navy-50/70 border border-navy-100 rounded-2xl p-6 sm:p-8 text-center hover:border-marine-300 transition-all shadow-2xs"
+                >
+                  <div className="text-4xl sm:text-5xl font-black text-navy-900 tracking-tight mb-2">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm font-bold text-navy-800 mb-1">
+                    {stat.label}
+                  </div>
+                  <div className="text-xs font-mono text-marine-600">
+                    {stat.sub}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </StackedCardSection>
 
-      {/* Detail Modal / Drawer */}
+      {/* Organic Divider: White to Navy */}
+      <div className="relative z-20">
+        <TrigWaveDivider fromColor="#ffffff" toColor="#0f1318" height={110} type="ripple" flip />
+      </div>
+
+      {/* ============================================================
+          5 / CTA (Dark #0f1318)
+          ============================================================ */}
+      <StackedCardSection index={4} total={TOTAL_SECTIONS} targetScale={0.88} cardClassName="bg-navy-900 text-white shadow-[0_-35px_80px_rgba(0,0,0,0.55)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-white/10">
+        <section className="bg-navy-900 text-white py-24 lg:py-32 relative overflow-hidden text-center">
+          <div className="mx-auto max-w-4xl px-6 lg:px-8 relative z-10">
+            <TrigAmbientFloat amplitude={1.5} period={25000}>
+              <span className="inline-block text-xs font-mono uppercase tracking-[0.25em] text-marine-400 mb-4 font-bold">
+                Crew Your Fleet
+              </span>
+              <h2 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+                Looking for Qualified Crew <br />
+                <span className="text-marine-400">
+                  for Your Vessel Operations?
+                </span>
+              </h2>
+              <p className="mt-6 text-base sm:text-lg text-navy-200 max-w-2xl mx-auto leading-relaxed">
+                Whether you operate container ships, bulk carriers, product tankers, or specialized offshore support vessels, Marevita Marine delivers certified, experienced, and dependable crews.
+              </p>
+
+              <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-3 rounded-full bg-marine-500 pl-8 pr-6 py-4 text-sm font-semibold text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 transition-all"
+                >
+                  <span>Request Manning Proposal</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  to="/careers"
+                  className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-7 py-4 text-sm font-semibold text-white hover:bg-white/20 transition-all"
+                >
+                  <span>Join As Seafarer</span>
+                </Link>
+              </div>
+            </TrigAmbientFloat>
+          </div>
+        </section>
+      </StackedCardSection>
+
+      {/* ============================================================
+          VESSEL PROFILE MODAL — mounted outside the stack so fixed
+          positioning isn't trapped by the sticky parent's transform.
+          ============================================================ */}
       <AnimatePresence>
         {selectedVessel && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-navy-950/70 backdrop-blur-sm">
@@ -450,136 +607,6 @@ export default function Fleet() {
           </div>
         )}
       </AnimatePresence>
-
-      {/* Organic Divider: White to Navy */}
-      <TrigWaveDivider fromColor="#ffffff" toColor="#0f1318" height={110} type="coast" flip />
-
-      {/* ============================================================
-          SECTION 3: COMMITMENT & SAFETY STANDARDS (Dark #0f1318)
-          ============================================================ */}
-      <section className="bg-navy-900 text-white py-24 lg:py-32 relative overflow-hidden">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="max-w-3xl mb-16">
-            <span className="text-xs font-mono uppercase tracking-widest text-marine-400 font-bold">
-              Our Safety Standards
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tight mt-3">
-              Built on Safety. <br />
-              <span className="text-marine-400">Driven by Maritime Excellence.</span>
-            </h2>
-            <p className="mt-5 text-base sm:text-lg text-navy-200 leading-relaxed">
-              Every vessel in our management and manning network is backed by certified marine professionals who uphold the highest global standards of safety, environmental stewardship, and vessel care.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {commitments.map((c, i) => (
-              <div
-                key={i}
-                className="bg-white/5 border border-white/10 rounded-2xl p-7 hover:border-marine-400/40 hover:bg-white/8 transition-all flex flex-col justify-between"
-              >
-                <div>
-                  <div className="h-12 w-12 rounded-xl bg-marine-500/20 text-marine-400 flex items-center justify-center mb-6">
-                    <c.icon className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-lg font-bold tracking-tight text-white mb-3">
-                    {c.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-navy-300 leading-relaxed">
-                    {c.desc}
-                  </p>
-                </div>
-                <div className="mt-6 pt-4 border-t border-white/10 flex items-center text-[11px] font-mono text-marine-400">
-                  <span className="inline-block w-2 h-2 rounded-full bg-marine-400 mr-2" />
-                  Verified Standard
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Organic Divider: Navy to White */}
-      <TrigWaveDivider fromColor="#0f1318" toColor="#ffffff" height={110} type="deep" />
-
-      {/* ============================================================
-          SECTION 4: OPERATIONAL HIGHLIGHTS (Light #ffffff)
-          ============================================================ */}
-      <section className="bg-white text-navy-900 py-20 lg:py-28 relative">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-xs font-mono uppercase tracking-widest text-marine-600 font-bold">
-              Global Scale
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-navy-900 mt-2">
-              Fleet Coverage & Key Metrics
-            </h2>
-            <p className="mt-3 text-sm text-navy-600">
-              Reliable, end-to-end maritime crewing and technical support spanning primary maritime corridors.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {stats.map((stat, idx) => (
-              <div
-                key={idx}
-                className="bg-navy-50/70 border border-navy-100 rounded-2xl p-6 sm:p-8 text-center hover:border-marine-300 transition-all shadow-2xs"
-              >
-                <div className="text-4xl sm:text-5xl font-black text-navy-900 tracking-tight mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-sm font-bold text-navy-800 mb-1">
-                  {stat.label}
-                </div>
-                <div className="text-xs font-mono text-marine-600">
-                  {stat.sub}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Organic Divider: White to Navy */}
-      <TrigWaveDivider fromColor="#ffffff" toColor="#0f1318" height={110} type="ripple" flip />
-
-      {/* ============================================================
-          SECTION 5: CTA (Dark #0f1318)
-          ============================================================ */}
-      <section className="bg-navy-900 text-white py-24 lg:py-32 relative overflow-hidden text-center">
-        <div className="mx-auto max-w-4xl px-6 lg:px-8 relative z-10">
-          <TrigAmbientFloat amplitude={1.5} period={25000}>
-            <span className="inline-block text-xs font-mono uppercase tracking-[0.25em] text-marine-400 mb-4 font-bold">
-              Crew Your Fleet
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-              Looking for Qualified Crew <br />
-              <span className="text-marine-400">
-                for Your Vessel Operations?
-              </span>
-            </h2>
-            <p className="mt-6 text-base sm:text-lg text-navy-200 max-w-2xl mx-auto leading-relaxed">
-              Whether you operate container ships, bulk carriers, product tankers, or specialized offshore support vessels, Marevita Marine delivers certified, experienced, and dependable crews.
-            </p>
-
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-3 rounded-full bg-marine-500 pl-8 pr-6 py-4 text-sm font-semibold text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 transition-all"
-              >
-                <span>Request Manning Proposal</span>
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                to="/careers"
-                className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-7 py-4 text-sm font-semibold text-white hover:bg-white/20 transition-all"
-              >
-                <span>Join As Seafarer</span>
-              </Link>
-            </div>
-          </TrigAmbientFloat>
-        </div>
-      </section>
     </div>
   );
 }

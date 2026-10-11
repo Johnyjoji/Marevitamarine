@@ -32,6 +32,7 @@ import {
   TrigAmbientGradientShift,
   MOTION,
 } from '../components/TrigScrollAnimations';
+import { StackedCardSection } from '../components/StackedCardSection';
 
 // ============================================================
 // Data
@@ -157,81 +158,85 @@ export default function Careers() {
   const [activeDept, setActiveDept] = useState('all');
   const [selectedPosition, setSelectedPosition] = useState(null);
 
+  const TOTAL_SECTIONS = 5;
+
   const filtered = activeDept === 'all'
     ? positions
     : positions.filter((p) => p.dept === activeDept);
 
   return (
-    <div className="bg-navy-900 text-white min-h-screen">
+    <div className="relative">
       {/* ============================================================
           SECTION 1: HERO (Dark #0f1318)
           ============================================================ */}
-      <section className="relative bg-navy-900 text-white overflow-hidden pt-28 pb-20 lg:pt-36 lg:pb-28">
-        {/* Ambient background glow */}
-        <TrigAmbientGradientShift
-          amplitudeX={4}
-          amplitudeY={2}
-          period={MOTION.duration.ambientSlowest}
-          className="absolute inset-0 opacity-15 pointer-events-none"
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-marine-600/25 via-transparent to-navy-950/60" />
-        </TrigAmbientGradientShift>
-
-        {/* Decorative ambient icons */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <TrigAmbientDrift
-            amplitudeX={MOTION.amplitude.small}
-            amplitudeY={MOTION.amplitude.small}
-            periodX={MOTION.duration.ambientSlow}
-            periodY={MOTION.duration.ambientSlower}
-            className="absolute top-24 right-16 w-16 h-16 text-marine-400/10 hidden lg:block"
-          >
-            <Anchor className="w-full h-full" strokeWidth={1} />
-          </TrigAmbientDrift>
-          <TrigAmbientRotate
-            maxDegrees={5}
+      <StackedCardSection index={0} total={TOTAL_SECTIONS} targetScale={0.88} cardClassName="bg-navy-950">
+        <section className="relative bg-navy-900 text-white overflow-hidden pt-28 pb-20 lg:pt-36 lg:pb-28">
+          {/* Ambient background glow */}
+          <TrigAmbientGradientShift
+            amplitudeX={4}
+            amplitudeY={2}
             period={MOTION.duration.ambientSlowest}
-            className="absolute bottom-24 left-14 w-10 h-10 text-marine-400/10 hidden lg:block"
+            className="absolute inset-0 opacity-15 pointer-events-none"
           >
-            <Ship className="w-full h-full" strokeWidth={1} />
-          </TrigAmbientRotate>
-        </div>
+            <div className="absolute inset-0 bg-gradient-to-br from-marine-600/25 via-transparent to-navy-950/60" />
+          </TrigAmbientGradientShift>
 
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-8 z-10">
-          <TrigAmbientFloat amplitude={1.5} period={25000}>
-            {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2 rounded-full bg-marine-500/10 border border-marine-400/20 px-4 py-1.5 text-xs font-mono font-bold tracking-widest text-marine-300 uppercase mb-6 backdrop-blur-sm">
-              <Anchor className="h-3.5 w-3.5 text-marine-400" />
-              <span>Marevita Marine — Careers at Sea</span>
-            </div>
+          {/* Decorative ambient icons */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <TrigAmbientDrift
+              amplitudeX={MOTION.amplitude.small}
+              amplitudeY={MOTION.amplitude.small}
+              periodX={MOTION.duration.ambientSlow}
+              periodY={MOTION.duration.ambientSlower}
+              className="absolute top-24 right-16 w-16 h-16 text-marine-400/10 hidden lg:block"
+            >
+              <Anchor className="w-full h-full" strokeWidth={1} />
+            </TrigAmbientDrift>
+            <TrigAmbientRotate
+              maxDegrees={5}
+              period={MOTION.duration.ambientSlowest}
+              className="absolute bottom-24 left-14 w-10 h-10 text-marine-400/10 hidden lg:block"
+            >
+              <Ship className="w-full h-full" strokeWidth={1} />
+            </TrigAmbientRotate>
+          </div>
 
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] text-white">
-              Build Your <br />
-              <span className="text-marine-400">Career at Sea.</span>
-            </h1>
+          <div className="relative mx-auto max-w-7xl px-6 lg:px-8 z-10">
+            <TrigAmbientFloat amplitude={1.5} period={25000}>
+              {/* Eyebrow */}
+              <div className="inline-flex items-center gap-2 rounded-full bg-marine-500/10 border border-marine-400/20 px-4 py-1.5 text-xs font-mono font-bold tracking-widest text-marine-300 uppercase mb-6 backdrop-blur-sm">
+                <Anchor className="h-3.5 w-3.5 text-marine-400" />
+                <span>Marevita Marine — Careers at Sea</span>
+              </div>
 
-            <p className="mt-6 text-lg sm:text-xl text-navy-200 max-w-3xl leading-relaxed">
-              We offer opportunities for qualified and motivated maritime professionals who want to build a rewarding career in the Merchant Navy. Join a global fleet crewed by Marevita Marine — trusted for certification, safety, and seafarer welfare.
-            </p>
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] text-white">
+                Build Your <br />
+                <span className="text-marine-400">Career at Sea.</span>
+              </h1>
 
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <a
-                href="#open-positions"
-                className="inline-flex items-center gap-2 rounded-full bg-marine-500 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-marine-950/50 hover:bg-marine-400 transition-all"
-              >
-                <span>View Open Positions</span>
-                <ChevronRight className="h-4 w-4" />
-              </a>
-              <a
-                href="#apply"
-                className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-all backdrop-blur-sm"
-              >
-                <span>Apply Directly</span>
-              </a>
-            </div>
-          </TrigAmbientFloat>
-        </div>
-      </section>
+              <p className="mt-6 text-lg sm:text-xl text-navy-200 max-w-3xl leading-relaxed">
+                We offer opportunities for qualified and motivated maritime professionals who want to build a rewarding career in the Merchant Navy. Join a global fleet crewed by Marevita Marine — trusted for certification, safety, and seafarer welfare.
+              </p>
+
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <a
+                  href="#open-positions"
+                  className="inline-flex items-center gap-2 rounded-full bg-marine-500 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-marine-950/50 hover:bg-marine-400 transition-all"
+                >
+                  <span>View Open Positions</span>
+                  <ChevronRight className="h-4 w-4" />
+                </a>
+                <a
+                  href="#apply"
+                  className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-all backdrop-blur-sm"
+                >
+                  <span>Apply Directly</span>
+                </a>
+              </div>
+            </TrigAmbientFloat>
+          </div>
+        </section>
+      </StackedCardSection>
 
       {/* Organic Divider: Navy to White */}
       <TrigWaveDivider fromColor="#0f1318" toColor="#ffffff" height={110} type="ripple" />
@@ -239,40 +244,42 @@ export default function Careers() {
       {/* ============================================================
           SECTION 2: WHY SAIL WITH MAREVITA (Light #ffffff)
           ============================================================ */}
-      <section className="bg-white text-navy-900 py-20 lg:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="max-w-2xl mb-14">
-            <span className="text-xs font-mono font-bold uppercase tracking-widest text-marine-600">
-              Why Choose Marevita
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-navy-900 mt-2">
-              Built for Seafarers. <br />Backed by Standards.
-            </h2>
-            <p className="mt-4 text-base text-navy-600 leading-relaxed">
-              We don't just place crew — we build careers. Every seafarer who joins our network benefits from transparent employment, professional growth, and a company that genuinely invests in crew welfare at every level.
-            </p>
-          </div>
+      <StackedCardSection index={1} total={TOTAL_SECTIONS} targetScale={0.88} cardClassName="bg-white text-navy-900 shadow-[0_-35px_80px_rgba(0,0,0,0.35)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-navy-100">
+        <section className="bg-white text-navy-900 py-20 lg:py-32">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="max-w-2xl mb-14">
+              <span className="text-xs font-mono font-bold uppercase tracking-widest text-marine-600">
+                Why Choose Marevita
+              </span>
+              <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-navy-900 mt-2">
+                Built for Seafarers. <br />Backed by Standards.
+              </h2>
+              <p className="mt-4 text-base text-navy-600 leading-relaxed">
+                We don't just place crew — we build careers. Every seafarer who joins our network benefits from transparent employment, professional growth, and a company that genuinely invests in crew welfare at every level.
+              </p>
+            </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
-            {pillars.map((p, i) => (
-              <div
-                key={i}
-                className="group bg-navy-50/60 border border-navy-100 rounded-2xl p-7 hover:border-marine-300 hover:shadow-xl hover:shadow-marine-900/5 transition-all flex flex-col"
-              >
-                <div className="h-13 w-13 rounded-xl bg-marine-500/10 border border-marine-500/20 text-marine-600 flex items-center justify-center mb-6 group-hover:bg-marine-500 group-hover:text-white transition-colors">
-                  <p.icon className="h-6 w-6" />
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
+              {pillars.map((p, i) => (
+                <div
+                  key={i}
+                  className="group bg-navy-50/60 border border-navy-100 rounded-2xl p-7 hover:border-marine-300 hover:shadow-xl hover:shadow-marine-900/5 transition-all flex flex-col"
+                >
+                  <div className="h-13 w-13 rounded-xl bg-marine-500/10 border border-marine-500/20 text-marine-600 flex items-center justify-center mb-6 group-hover:bg-marine-500 group-hover:text-white transition-colors">
+                    <p.icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-lg font-bold tracking-tight text-navy-900 mb-3">
+                    {p.title}
+                  </h3>
+                  <p className="text-sm text-navy-600 leading-relaxed flex-1">
+                    {p.desc}
+                  </p>
                 </div>
-                <h3 className="text-lg font-bold tracking-tight text-navy-900 mb-3">
-                  {p.title}
-                </h3>
-                <p className="text-sm text-navy-600 leading-relaxed flex-1">
-                  {p.desc}
-                </p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </StackedCardSection>
 
       {/* Organic Divider: White to Navy */}
       <TrigWaveDivider fromColor="#ffffff" toColor="#0f1318" height={110} type="coast" flip />
@@ -280,87 +287,235 @@ export default function Careers() {
       {/* ============================================================
           SECTION 3: OPEN POSITIONS BY DEPARTMENT (Dark #0f1318)
           ============================================================ */}
-      <section id="open-positions" className="bg-navy-900 text-white py-20 lg:py-32 relative">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          {/* Header + Filters */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-            <div>
-              <span className="text-xs font-mono font-bold uppercase tracking-widest text-marine-400">
-                Current Openings
+      <StackedCardSection index={2} total={TOTAL_SECTIONS} targetScale={0.88} cardClassName="bg-navy-900 text-white shadow-[0_-35px_80px_rgba(0,0,0,0.55)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-white/10">
+        <section id="open-positions" className="bg-navy-900 text-white py-20 lg:py-32 relative">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            {/* Header + Filters */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+              <div>
+                <span className="text-xs font-mono font-bold uppercase tracking-widest text-marine-400">
+                  Current Openings
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-black tracking-tight mt-2">
+                  Positions At Sea & Ashore
+                </h2>
+                <p className="mt-3 text-sm text-navy-300 max-w-lg">
+                  Filter by department to find relevant openings. Click any role to view full details and requirements.
+                </p>
+              </div>
+
+              {/* Department Filter */}
+              <div className="flex flex-wrap gap-2">
+                {departments.map((d) => {
+                  const Icon = d.icon;
+                  return (
+                    <button
+                      key={d.id}
+                      onClick={() => setActiveDept(d.id)}
+                      className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+                        activeDept === d.id
+                          ? 'bg-marine-500 text-white shadow-md'
+                          : 'bg-white/10 border border-white/10 text-navy-200 hover:bg-white/20'
+                      }`}
+                    >
+                      <Icon className="h-3.5 w-3.5" />
+                      {d.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Positions List */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+              <AnimatePresence mode="popLayout">
+                {filtered.map((pos) => (
+                  <motion.div
+                    key={pos.id}
+                    layout
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.96 }}
+                    transition={{ duration: 0.3 }}
+                    className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-marine-400/40 hover:bg-white/8 transition-all flex flex-col group"
+                  >
+                    <div className="flex items-start justify-between gap-3 mb-3">
+                      <h3 className="text-base font-bold text-white leading-snug">
+                        {pos.rank}
+                      </h3>
+                      <span className={`flex-shrink-0 text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-md ${levelStyle[pos.level] || 'bg-white/10 text-white'}`}>
+                        {pos.level}
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-navy-300 leading-relaxed mb-4 flex-1">
+                      {pos.desc}
+                    </p>
+
+                    <div className="pt-4 border-t border-white/10">
+                      <button
+                        onClick={() => setSelectedPosition(pos)}
+                        className="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-xl border border-white/15 text-xs font-semibold text-navy-200 hover:bg-marine-500 hover:border-marine-500 hover:text-white transition-all cursor-pointer"
+                      >
+                        <span>View Requirements</span>
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          </div>
+        </section>
+      </StackedCardSection>
+
+      {/* Organic Divider: Navy to White */}
+      <TrigWaveDivider fromColor="#0f1318" toColor="#ffffff" height={110} type="deep" />
+
+      {/* ============================================================
+          SECTION 4: RECRUITMENT PROCESS (Light #ffffff)
+          ============================================================ */}
+      <StackedCardSection index={3} total={TOTAL_SECTIONS} targetScale={0.88} cardClassName="bg-white text-navy-900 shadow-[0_-35px_80px_rgba(0,0,0,0.35)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-navy-100">
+        <section className="bg-white text-navy-900 py-20 lg:py-32">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <span className="text-xs font-mono font-bold uppercase tracking-widest text-marine-600">
+                How It Works
               </span>
-              <h2 className="text-3xl sm:text-5xl font-black tracking-tight mt-2">
-                Positions At Sea & Ashore
+              <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-navy-900 mt-2">
+                The Recruitment & Joining Process
               </h2>
-              <p className="mt-3 text-sm text-navy-300 max-w-lg">
-                Filter by department to find relevant openings. Click any role to view full details and requirements.
+              <p className="mt-3 text-sm text-navy-600 leading-relaxed">
+                A structured, transparent, and professional sign-on process designed to respect your time and ensure full regulatory compliance from Day 1.
               </p>
             </div>
 
-            {/* Department Filter */}
-            <div className="flex flex-wrap gap-2">
-              {departments.map((d) => {
-                const Icon = d.icon;
-                return (
-                  <button
-                    key={d.id}
-                    onClick={() => setActiveDept(d.id)}
-                    className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer ${
-                      activeDept === d.id
-                        ? 'bg-marine-500 text-white shadow-md'
-                        : 'bg-white/10 border border-white/10 text-navy-200 hover:bg-white/20'
-                    }`}
-                  >
-                    <Icon className="h-3.5 w-3.5" />
-                    {d.label}
-                  </button>
-                );
-              })}
+            <div className="relative">
+              {/* Connector line — Desktop */}
+              <div className="hidden lg:block absolute top-[3.25rem] left-[5rem] right-[5rem] h-px bg-navy-100 z-0" />
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-8 relative z-10">
+                {processSteps.map((step, idx) => {
+                  const Icon = step.icon;
+                  return (
+                    <div
+                      key={idx}
+                      className="flex flex-col items-start lg:items-center text-left lg:text-center group"
+                    >
+                      {/* Step Number Circle */}
+                      <div className="relative mb-5">
+                        <div className="h-12 w-12 rounded-full bg-white border-2 border-navy-200 group-hover:border-marine-400 group-hover:shadow-md transition-all flex items-center justify-center text-navy-900 font-black text-xs relative z-10">
+                          <Icon className="h-5 w-5 text-marine-600" />
+                        </div>
+                        <span className="absolute -top-2 -right-2 text-[10px] font-black font-mono text-marine-600 bg-white rounded-full border border-marine-200 px-1.5 leading-tight">
+                          {step.number}
+                        </span>
+                      </div>
+
+                      <h3 className="text-sm font-bold text-navy-900 mb-2 group-hover:text-marine-600 transition-colors">
+                        {step.title}
+                      </h3>
+                      <p className="text-xs text-navy-600 leading-relaxed">
+                        {step.desc}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
+        </section>
+      </StackedCardSection>
 
-          {/* Positions List */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <AnimatePresence mode="popLayout">
-              {filtered.map((pos) => (
-                <motion.div
-                  key={pos.id}
-                  layout
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.96 }}
-                  transition={{ duration: 0.3 }}
-                  className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-marine-400/40 hover:bg-white/8 transition-all flex flex-col group"
-                >
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <h3 className="text-base font-bold text-white leading-snug">
-                      {pos.rank}
-                    </h3>
-                    <span className={`flex-shrink-0 text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-md ${levelStyle[pos.level] || 'bg-white/10 text-white'}`}>
-                      {pos.level}
-                    </span>
-                  </div>
+      {/* Organic Divider: White to Navy */}
+      <TrigWaveDivider fromColor="#ffffff" toColor="#0f1318" height={110} type="rugged" flip />
 
-                  <p className="text-xs text-navy-300 leading-relaxed mb-4 flex-1">
-                    {pos.desc}
+      {/* ============================================================
+          SECTION 5: APPLY / CTA (Dark #0f1318)
+          ============================================================ */}
+      <StackedCardSection index={4} total={TOTAL_SECTIONS} targetScale={0.88} cardClassName="bg-navy-900 text-white shadow-[0_-35px_80px_rgba(0,0,0,0.55)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-white/10">
+        <section id="apply" className="bg-navy-900 text-white py-24 lg:py-32 relative overflow-hidden">
+          <div className="mx-auto max-w-5xl px-6 lg:px-8 relative z-10">
+            <TrigAmbientFloat amplitude={1.5} period={25000}>
+              <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-start">
+                {/* Left — Messaging */}
+                <div className="flex-1">
+                  <span className="text-xs font-mono font-bold uppercase tracking-widest text-marine-400 mb-4 block">
+                    Ready to Join Our Fleet?
+                  </span>
+                  <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
+                    Start Your Next <br />
+                    <span className="text-marine-400">Voyage With Us.</span>
+                  </h2>
+                  <p className="mt-5 text-base text-navy-200 leading-relaxed max-w-lg">
+                    Send your resume, sea-time matrix, and certificates to our crewing department. Our team will review, verify, and respond within 72 working hours.
                   </p>
 
-                  <div className="pt-4 border-t border-white/10">
-                    <button
-                      onClick={() => setSelectedPosition(pos)}
-                      className="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-xl border border-white/15 text-xs font-semibold text-navy-200 hover:bg-marine-500 hover:border-marine-500 hover:text-white transition-all cursor-pointer"
-                    >
-                      <span>View Requirements</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </button>
+                  {/* Contact Methods */}
+                  <div className="mt-8 space-y-4">
+                    <div className="flex items-center gap-3 text-sm text-navy-200">
+                      <div className="h-8 w-8 rounded-lg bg-white/10 flex items-center justify-center">
+                        <Mail className="h-4 w-4 text-marine-400" />
+                      </div>
+                      <span>crew@marevitamarine.com</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm text-navy-200">
+                      <div className="h-8 w-8 rounded-lg bg-white/10 flex items-center justify-center">
+                        <Phone className="h-4 w-4 text-marine-400" />
+                      </div>
+                      <span>+91 (Crewing Desk — India Operations)</span>
+                    </div>
                   </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-        </div>
-      </section>
 
-      {/* Position Detail Modal */}
+                  {/* What to Include */}
+                  <div className="mt-8 p-5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-marine-400 mb-3">
+                      What to Include in Your Application
+                    </h4>
+                    <div className="space-y-2">
+                      {['Updated CV / Resume with sea service summary', 'Certificate of Competency (COC/COE) copies', 'STCW certificates (valid & attested)', 'Sea-time matrix / discharge book', 'Passport, CDC, and Medical certificate copy'].map((item, idx) => (
+                        <div key={idx} className="flex items-start gap-2 text-xs text-navy-300">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-marine-400 flex-shrink-0 mt-0.5" />
+                          <span>{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right — CTA Card */}
+                <div className="w-full lg:w-80 flex-shrink-0">
+                  <div className="bg-white text-navy-900 rounded-3xl p-7 shadow-2xl">
+                    <div className="h-12 w-12 rounded-xl bg-marine-500 text-white flex items-center justify-center mb-5">
+                      <LifeBuoy className="h-6 w-6" />
+                    </div>
+                    <h3 className="text-xl font-black text-navy-900 mb-2">
+                      Apply Now
+                    </h3>
+                    <p className="text-sm text-navy-600 mb-6 leading-relaxed">
+                      Fill out our contact form and attach your documents. Our crewing team will be in touch within 72 hours.
+                    </p>
+
+                    <Link
+                      to="/contact"
+                      className="block w-full text-center inline-flex items-center justify-center gap-2 rounded-xl bg-marine-500 py-3.5 text-sm font-bold text-white hover:bg-marine-400 transition-colors mb-3"
+                    >
+                      <span>Open Application Form</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+
+                    <p className="text-[11px] text-center text-navy-400 font-mono">
+                      All seafarer documents are treated with strict confidentiality.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </TrigAmbientFloat>
+          </div>
+        </section>
+      </StackedCardSection>
+
+      {/* Position Detail Modal — mounted outside the sticky deck so fixed positioning is not trapped */}
       <AnimatePresence>
         {selectedPosition && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-navy-950/75 backdrop-blur-sm">
@@ -427,154 +582,6 @@ export default function Careers() {
           </div>
         )}
       </AnimatePresence>
-
-      {/* Organic Divider: Navy to White */}
-      <TrigWaveDivider fromColor="#0f1318" toColor="#ffffff" height={110} type="deep" />
-
-      {/* ============================================================
-          SECTION 4: RECRUITMENT PROCESS (Light #ffffff)
-          ============================================================ */}
-      <section className="bg-white text-navy-900 py-20 lg:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-xs font-mono font-bold uppercase tracking-widest text-marine-600">
-              How It Works
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-navy-900 mt-2">
-              The Recruitment & Joining Process
-            </h2>
-            <p className="mt-3 text-sm text-navy-600 leading-relaxed">
-              A structured, transparent, and professional sign-on process designed to respect your time and ensure full regulatory compliance from Day 1.
-            </p>
-          </div>
-
-          <div className="relative">
-            {/* Connector line — Desktop */}
-            <div className="hidden lg:block absolute top-[3.25rem] left-[5rem] right-[5rem] h-px bg-navy-100 z-0" />
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-8 relative z-10">
-              {processSteps.map((step, idx) => {
-                const Icon = step.icon;
-                return (
-                  <div
-                    key={idx}
-                    className="flex flex-col items-start lg:items-center text-left lg:text-center group"
-                  >
-                    {/* Step Number Circle */}
-                    <div className="relative mb-5">
-                      <div className="h-12 w-12 rounded-full bg-white border-2 border-navy-200 group-hover:border-marine-400 group-hover:shadow-md transition-all flex items-center justify-center text-navy-900 font-black text-xs relative z-10">
-                        <Icon className="h-5 w-5 text-marine-600" />
-                      </div>
-                      <span className="absolute -top-2 -right-2 text-[10px] font-black font-mono text-marine-600 bg-white rounded-full border border-marine-200 px-1.5 leading-tight">
-                        {step.number}
-                      </span>
-                    </div>
-
-                    <h3 className="text-sm font-bold text-navy-900 mb-2 group-hover:text-marine-600 transition-colors">
-                      {step.title}
-                    </h3>
-                    <p className="text-xs text-navy-600 leading-relaxed">
-                      {step.desc}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Organic Divider: White to Navy */}
-      <TrigWaveDivider fromColor="#ffffff" toColor="#0f1318" height={110} type="rugged" flip />
-
-      {/* ============================================================
-          SECTION 5: APPLY / CTA (Dark #0f1318)
-          ============================================================ */}
-      <section id="apply" className="bg-navy-900 text-white py-24 lg:py-32 relative overflow-hidden">
-        <div className="mx-auto max-w-5xl px-6 lg:px-8 relative z-10">
-          <TrigAmbientFloat amplitude={1.5} period={25000}>
-            <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-start">
-              {/* Left — Messaging */}
-              <div className="flex-1">
-                <span className="text-xs font-mono font-bold uppercase tracking-widest text-marine-400 mb-4 block">
-                  Ready to Join Our Fleet?
-                </span>
-                <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
-                  Start Your Next <br />
-                  <span className="text-marine-400">Voyage With Us.</span>
-                </h2>
-                <p className="mt-5 text-base text-navy-200 leading-relaxed max-w-lg">
-                  Send your resume, sea-time matrix, and certificates to our crewing department. Our team will review, verify, and respond within 72 working hours.
-                </p>
-
-                {/* Contact Methods */}
-                <div className="mt-8 space-y-4">
-                  <div className="flex items-center gap-3 text-sm text-navy-200">
-                    <div className="h-8 w-8 rounded-lg bg-white/10 flex items-center justify-center">
-                      <Mail className="h-4 w-4 text-marine-400" />
-                    </div>
-                    <span>crew@marevitamarine.com</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-navy-200">
-                    <div className="h-8 w-8 rounded-lg bg-white/10 flex items-center justify-center">
-                      <Phone className="h-4 w-4 text-marine-400" />
-                    </div>
-                    <span>+91 (Crewing Desk — India Operations)</span>
-                  </div>
-                </div>
-
-                {/* What to Include */}
-                <div className="mt-8 p-5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-marine-400 mb-3">
-                    What to Include in Your Application
-                  </h4>
-                  <div className="space-y-2">
-                    {[
-                      'Updated CV / Resume with sea service summary',
-                      'Certificate of Competency (COC/COE) copies',
-                      'STCW certificates (valid & attested)',
-                      'Sea-time matrix / discharge book',
-                      'Passport, CDC, and Medical certificate copy',
-                    ].map((item, idx) => (
-                      <div key={idx} className="flex items-start gap-2 text-xs text-navy-300">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-marine-400 flex-shrink-0 mt-0.5" />
-                        <span>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Right — CTA Card */}
-              <div className="w-full lg:w-80 flex-shrink-0">
-                <div className="bg-white text-navy-900 rounded-3xl p-7 shadow-2xl">
-                  <div className="h-12 w-12 rounded-xl bg-marine-500 text-white flex items-center justify-center mb-5">
-                    <LifeBuoy className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-xl font-black text-navy-900 mb-2">
-                    Apply Now
-                  </h3>
-                  <p className="text-sm text-navy-600 mb-6 leading-relaxed">
-                    Fill out our contact form and attach your documents. Our crewing team will be in touch within 72 hours.
-                  </p>
-
-                  <Link
-                    to="/contact"
-                    className="block w-full text-center inline-flex items-center justify-center gap-2 rounded-xl bg-marine-500 py-3.5 text-sm font-bold text-white hover:bg-marine-400 transition-colors mb-3"
-                  >
-                    <span>Open Application Form</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-
-                  <p className="text-[11px] text-center text-navy-400 font-mono">
-                    All seafarer documents are treated with strict confidentiality.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </TrigAmbientFloat>
-        </div>
-      </section>
     </div>
   );
 }
