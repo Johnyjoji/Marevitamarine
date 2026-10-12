@@ -127,7 +127,8 @@ export default function Services() {
       <GlyphPortal
         word="MAREVITA"
         interactive={true}
-        scrollLength={2.4}
+        scrollLength={1.0}
+        enterLabel=""
         className="bg-navy-900 text-white relative w-full"
         style={{
           '--gp-paper': '#0f1318',
@@ -142,7 +143,7 @@ export default function Services() {
               <TrigReveal direction="up" amplitude={20} duration={0.7}>
                 <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-marine-500/10 border border-marine-400/20 text-xs font-mono font-semibold tracking-[0.2em] uppercase text-marine-400 mb-8 mt-12 w-auto mx-auto justify-center">
                   <span className="w-1.5 h-1.5 rounded-full bg-marine-400 animate-pulse" />
-                  Our Expertise
+                  {/* Removed "Our Expertise" as requested */}
                 </span>
               </TrigReveal>
               <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
@@ -154,9 +155,9 @@ export default function Services() {
           </div>
         }
       >
-        <div className="max-w-4xl mx-auto px-6 py-24 text-center">
+        <div className="max-w-4xl mx-auto px-6 py-32 text-center">
           <TrigReveal direction="up" amplitude={20} delay={0.2} duration={0.7}>
-            <p className="mt-8 text-lg lg:text-xl text-white max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-8 text-xl lg:text-2xl text-white max-w-2xl mx-auto leading-relaxed">
               From technical management to crew solutions, we provide accountable, end-to-end marine services that ensure safe, efficient, and compliant operations.
             </p>
           </TrigReveal>
@@ -222,7 +223,7 @@ export default function Services() {
                         <div className="h-10 w-10 rounded-full bg-marine-500 flex items-center justify-center mb-3">
                           <service.icon className="h-6 w-6 text-white" />
                         </div>
-                        <h3 className="text-xl font-semibold text-navy-900">{service.title}</h3>
+                        <h3 className="text-2xl font-semibold text-navy-900">{service.title}</h3>
                       </div>
                       <p className="text-navy-700 leading-relaxed mb-6">{service.desc}</p>
                     </TrigCardHover>
@@ -290,7 +291,7 @@ export default function Services() {
                     <div className="h-8 w-8 rounded-full bg-marine-500/20 flex items-center justify-center">
                       <service.icon className="h-5 w-5 text-marine-400" />
                     </div>
-                    <h3 className="text-lg font-semibold text-white">{service.title}</h3>
+                    <h3 className="text-xl font-semibold text-white">{service.title}</h3>
                   </div>
                   <p className="text-navy-200 text-sm leading-relaxed">{service.desc}</p>
                 </TrigCardHover>
@@ -460,7 +461,7 @@ export default function Services() {
                       />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold tracking-tight">{s.title}</h3>
+                      <h3 className="text-2xl font-bold tracking-tight">{s.title}</h3>
                       <span className="inline-block mt-1 text-xs font-medium text-marine-400 tracking-widest uppercase">{s.eyebrow}</span>
                     </div>
                   </div>
