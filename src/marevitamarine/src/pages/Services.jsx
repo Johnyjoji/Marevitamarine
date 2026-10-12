@@ -259,7 +259,7 @@ export default function Services() {
           <div className="mx-auto max-w-7xl px-6 lg:px-8 py-20 lg:py-24 relative z-10">
             <div className="mb-12 text-center">
               <TrigReveal direction="up" amplitude={20} duration={0.7}>
-                <span className="text-sm font-semibold tracking-[0.2em] uppercase text-marine-400">
+                <span className="text-xs font-semibold tracking-[0.2em] uppercase text-marine-400">
                   Extended Capabilities
                 </span>
               </TrigReveal>
