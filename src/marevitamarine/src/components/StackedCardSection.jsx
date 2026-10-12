@@ -225,11 +225,12 @@ export function StackedCardSection({
         // card's release zone (deck-of-cards handoff).
         marginTop: isFirst ? 0 : `-${releaseZone}px`,
         zIndex: (index + 1) * 10,
+        pointerEvents: 'none',
       }}
     >
       <div
         className={`sticky top-0 w-full overflow-hidden ${cardClassName}`}
-        style={{ height: `${releaseZone}px` }}
+        style={{ height: `${releaseZone}px`, pointerEvents: 'auto' }}
       >
         <motion.div
           ref={contentRef}
