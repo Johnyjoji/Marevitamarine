@@ -127,8 +127,12 @@ export default function Services() {
       <GlyphPortal
         word="MAREVITA"
         interactive={true}
+<<<<<<< HEAD
         scrollLength={1.2} {/* Reduced from 2.4 to 1.2 for less scrolling */}
         enterLabel=""
+=======
+        scrollLength={1.2}
+>>>>>>> worktree-services-fix-error
         className="bg-navy-900 text-white relative w-full"
         style={{
           '--gp-paper': '#0f1318',
@@ -140,12 +144,15 @@ export default function Services() {
         front={
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-6">
             <div className="max-w-4xl text-center">
+<<<<<<< HEAD
               <TrigReveal direction="up" amplitude={20} duration={0.7}>
                 <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-marine-500/10 border border-marine-400/20 text-xs font-mono font-semibold tracking-[0.2em] uppercase text-marine-400 mb-8 mt-12 w-auto mx-auto justify-center">
                   <span className="w-1.5 h-1.5 rounded-full bg-marine-400 animate-pulse" />
                   {/* Removed "Our Expertise" as requested */}
                 </span>
               </TrigReveal>
+=======
+>>>>>>> worktree-services-fix-error
               <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
                 <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-[-0.065em] leading-[0.88] lg:tracking-[-0.07em]">
                   Comprehensive Marine Services<br/><span className="text-marine-400">for Every Voyage</span>
@@ -155,9 +162,15 @@ export default function Services() {
           </div>
         }
       >
+<<<<<<< HEAD
         <div className="max-w-4xl mx-auto px-6 py-20 text-center"> {/* Reduced py from 24 to 20 for more premium spacing */}
           <TrigReveal direction="up" amplitude={20} delay={0.2} duration={0.7}>
             <p className="mt-6 text-lg lg:text-xl text-white max-w-2xl mx-auto leading-relaxed"> {/* Reduced mt from 8 to 6 */}
+=======
+        <div className="max-w-4xl mx-auto px-6 py-32 text-center">
+          <TrigReveal direction="up" amplitude={20} delay={0.2} duration={0.7}>
+            <p className="mt-8 text-xl lg:text-2xl text-white max-w-2xl mx-auto leading-relaxed">
+>>>>>>> worktree-services-fix-error
               From technical management to crew solutions, we provide accountable, end-to-end marine services that ensure safe, efficient, and compliant operations.
             </p>
           </TrigReveal>
