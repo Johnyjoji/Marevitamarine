@@ -223,7 +223,7 @@ export default function Services() {
                         <div className="h-10 w-10 rounded-full bg-marine-500 flex items-center justify-center mb-3">
                           <service.icon className="h-6 w-6 text-white" />
                         </div>
-                        <h3 className="text-xl font-semibold text-navy-900">{service.title}</h3>
+                        <h3 className="text-2xl font-semibold text-navy-900">{service.title}</h3>
                       </div>
                       <p className="text-navy-700 leading-relaxed mb-6">{service.desc}</p>
                     </TrigCardHover>
@@ -291,7 +291,7 @@ export default function Services() {
                     <div className="h-8 w-8 rounded-full bg-marine-500/20 flex items-center justify-center">
                       <service.icon className="h-5 w-5 text-marine-400" />
                     </div>
-                    <h3 className="text-lg font-semibold text-white">{service.title}</h3>
+                    <h3 className="text-xl font-semibold text-white">{service.title}</h3>
                   </div>
                   <p className="text-navy-200 text-sm leading-relaxed">{service.desc}</p>
                 </TrigCardHover>
@@ -461,7 +461,7 @@ export default function Services() {
                       />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold tracking-tight">{s.title}</h3>
+                      <h3 className="text-2xl font-bold tracking-tight">{s.title}</h3>
                       <span className="inline-block mt-1 text-xs font-medium text-marine-400 tracking-widest uppercase">{s.eyebrow}</span>
                     </div>
                   </div>
