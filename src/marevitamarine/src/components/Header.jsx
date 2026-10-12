@@ -67,7 +67,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="fixed inset-x-0 top-4 sm:top-6 z-100 px-4 sm:px-6">
+    <header className="fixed inset-x-0 top-4 sm:top-6 z-100 px-4 sm:px-6 pointer-events-none">
       <motion.nav
         initial={false}
         animate={{
@@ -95,7 +95,7 @@ export default function Header() {
             >
               <Link
                 to="/"
-                className="flex items-center"
+                className="pointer-events-auto flex items-center"
                 aria-label="Marevita Marine — Home"
                 onClick={(e) => e.stopPropagation()}
               >
@@ -152,7 +152,7 @@ export default function Header() {
                   <NavLink
                     to={item.href}
                     className={({ isActive }) =>
-                      `rounded-full px-2.5 py-1.5 text-sm font-medium transition-colors whitespace-nowrap ${
+                      `pointer-events-auto rounded-full px-2.5 py-1.5 text-sm font-medium transition-colors whitespace-nowrap ${
                         isActive
                           ? 'text-navy-900'
                           : 'text-navy-700 hover:text-navy-900 hover:bg-navy-50'
@@ -181,7 +181,7 @@ export default function Header() {
             >
               <Link
                 to="/contact"
-                className="inline-flex items-center rounded-full bg-navy-900 px-4 py-2 text-sm font-semibold text-white hover:bg-navy-800 transition-colors whitespace-nowrap"
+                className="pointer-events-auto inline-flex items-center rounded-full bg-navy-900 px-4 py-2 text-sm font-semibold text-white hover:bg-navy-800 transition-colors whitespace-nowrap"
                 onClick={(e) => e.stopPropagation()}
               >
                 Contact Us
