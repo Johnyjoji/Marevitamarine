@@ -128,6 +128,7 @@ export default function Services() {
         word="MAREVITA"
         interactive={true}
         scrollLength={2.4}
+        enterLabel=""
         className="bg-navy-900 text-white relative w-full"
         style={{
           '--gp-paper': '#0f1318',
