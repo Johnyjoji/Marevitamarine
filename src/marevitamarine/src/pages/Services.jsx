@@ -211,19 +211,15 @@ export default function Services() {
                       transition={{ duration: 0.6, delay: i * 0.1 }}
                       className="group relative bg-white rounded-xl border border-navy-100/50 p-6 hover:border-navy-200/75 overflow-hidden"
                     >
-                      {/* Image placeholder - fixed aspect-ratio for Tailwind v4 */}
-                      <div className="aspect-video bg-gray-200 rounded-lg mb-4 overflow-hidden">
-                        <img
-                          src="/content/placeholder-crew.jpg"
-                          alt={`${service.title} illustration`}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="flex items-start gap-4 mb-4">
-                        <div className="h-10 w-10 rounded-full bg-marine-500 flex items-center justify-center flex-shrink-0">
-                          <service.icon className="h-6 w-6 text-white" />
+                      <div className="flex items-start gap-6 mb-6">
+                        <div className="flex-shrink-0">
+                          <div className="h-10 w-10 rounded-full bg-marine-500 flex items-center justify-center">
+                            <service.icon className="h-6 w-6 text-white" />
+                          </div>
                         </div>
-                        <h3 className="text-xl font-semibold text-navy-900 leading-tight">{service.title}</h3>
+                        <div>
+                          <h3 className="text-xl font-semibold text-navy-900 leading-tight">{service.title}</h3>
+                        </div>
                       </div>
                       <p className="text-navy-700 leading-relaxed mb-6">{service.desc}</p>
                     </TrigCardHover>
