@@ -229,7 +229,7 @@ export default function Fleet() {
 
           <div className="relative mx-auto max-w-7xl px-6 lg:px-8 z-10">
             <TrigAmbientFloat amplitude={1.5} period={25000}>
-              <div className="inline-flex items-center gap-2 rounded-full bg-marine-500/10 border border-marine-400/20 px-4 py-1.5 text-xs font-mono tracking-widest text-marine-300 uppercase mb-6 backdrop-blur-sm">
+              <div className="relative z-40 pointer-events-auto inline-flex items-center gap-2 rounded-full bg-marine-500/10 border border-marine-400/20 px-4 py-1.5 text-xs font-mono tracking-widest text-marine-300 uppercase mb-6 backdrop-blur-sm">
                 <Ship className="h-3.5 w-3.5 text-marine-400" />
                 <span>Marevita Fleet Portfolio</span>
               </div>
@@ -248,14 +248,14 @@ export default function Fleet() {
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <a
                   href="#fleet-categories"
-                  className="inline-flex items-center gap-2 rounded-full bg-marine-500 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-marine-950/60 hover:bg-marine-400 transition-all"
+                  className="relative z-40 pointer-events-auto inline-flex items-center gap-2 rounded-full bg-marine-500 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-marine-950/60 hover:bg-marine-400 transition-all"
                 >
                   <span>Explore Vessel Categories</span>
                   <ChevronRight className="h-4 w-4" />
                 </a>
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-all backdrop-blur-sm"
+                  className="relative z-40 pointer-events-auto inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-all backdrop-blur-sm"
                 >
                   <span>Request Crew Manning</span>
                 </Link>
@@ -510,7 +510,7 @@ export default function Fleet() {
                 </Link>
                 <Link
                   to="/careers"
-                  className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-7 py-4 text-sm font-semibold text-white hover:bg-white/20 transition-all"
+                  className="relative z-40 pointer-events-auto inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-7 py-4 text-sm font-semibold text-white hover:bg-white/20 transition-all"
                 >
                   <span>Join As Seafarer</span>
                 </Link>
@@ -591,7 +591,7 @@ export default function Fleet() {
               <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-navy-100">
                 <Link
                   to="/contact"
-                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-marine-500 py-3.5 text-xs font-bold text-white hover:bg-marine-400 transition-colors"
+                  className="relative z-40 pointer-events-auto flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-marine-500 py-3.5 text-xs font-bold text-white hover:bg-marine-400 transition-colors"
                 >
                   <span>Inquire for this Vessel Type</span>
                   <ArrowRight className="h-3.5 w-3.5" />
