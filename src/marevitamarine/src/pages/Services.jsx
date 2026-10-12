@@ -194,7 +194,7 @@ export default function Services() {
                 </h2>
               </TrigReveal>
               <TrigReveal direction="up" amplitude={20} delay={0.2} duration={0.7}>
-                <p className="mt-6 text-lg text-navy-600 max-w-xl">
+                <p className="mt-6 text-lg text-navy-600 max-w-xl text-center">
                   These services form the backbone of Marevita Marine's offerings, refined through years of industry experience and client partnerships.
                 </p>
               </TrigReveal>
@@ -211,13 +211,15 @@ export default function Services() {
                       transition={{ duration: 0.6, delay: i * 0.1 }}
                       className="group relative bg-white rounded-xl border border-navy-100/50 p-6 hover:border-navy-200/75 overflow-hidden"
                     >
-                      <div className="flex items-start gap-4 mb-4">
+                      <div className="flex items-start gap-3 mb-3">
                         <div className="h-10 w-10 rounded-full bg-marine-500 flex items-center justify-center flex-shrink-0">
                           <service.icon className="h-6 w-6 text-white" />
                         </div>
-                        <h3 className="text-xl font-semibold text-navy-900 leading-tight">{service.title}</h3>
+                        <div>
+                          <h3 className="text-xl font-semibold text-navy-900 leading-tight">{service.title}</h3>
+                        </div>
                       </div>
-                      <p className="text-navy-700 leading-relaxed mb-6">{service.desc}</p>
+                      <p className="text-navy-700 leading-relaxed mt-3">{service.desc}</p>
                     </TrigCardHover>
                   </Link>
                 );
