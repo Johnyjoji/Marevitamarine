@@ -194,7 +194,7 @@ export default function Services() {
                 </h2>
               </TrigReveal>
               <TrigReveal direction="up" amplitude={20} delay={0.2} duration={0.7}>
-                <p className="mt-6 text-lg text-navy-600 max-w-xl">
+                <p className="mt-6 text-lg text-navy-600 max-w-xl text-center">
                   These services form the backbone of Marevita Marine's offerings, refined through years of industry experience and client partnerships.
                 </p>
               </TrigReveal>
