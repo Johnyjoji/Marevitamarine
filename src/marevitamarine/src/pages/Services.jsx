@@ -265,7 +265,7 @@ export default function Services() {
               </TrigReveal>
               <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
                 <h2 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
-                  Comprehensive Marine Solutions<br/><span className="text-marine-400">Beyond the Basics</span>
+                  <span className="text-white">Comprehensive Marine Solutions</span><br/><span className="text-marine-400">Beyond the Basics</span>
                 </h2>
               </TrigReveal>
             </div>
@@ -279,13 +279,13 @@ export default function Services() {
                   transition={{ duration: 0.5, delay: i * 0.06 }}
                   className="group relative bg-navy-800/50 backdrop-blur-sm rounded-xl border border-navy-600/20 p-6 hover:bg-navy-800/75 overflow-hidden"
                 >
-                  <div className="flex items-center justify-start mb-3">
+                  <div className="flex items-center justify-start mb-3 gap-3">
                     <div className="h-8 w-8 rounded-full bg-marine-500/20 flex items-center justify-center">
                       <service.icon className="h-5 w-5 text-marine-400" />
                     </div>
                     <h3 className="text-xl font-semibold text-white">{service.title}</h3>
                   </div>
-                  <p className="text-navy-200 text-sm leading-relaxed">{service.desc}</p>
+                  <p className="text-navy-200 text-sm leading-relaxed mt-3">{service.desc}</p>
                 </TrigCardHover>
               ))}
             </div>
