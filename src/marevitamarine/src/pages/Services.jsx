@@ -184,7 +184,7 @@ export default function Services() {
           <div className="mx-auto max-w-7xl px-6 lg:px-8 py-20 lg:py-24 relative z-10">
             <div className="mb-12 text-center">
               <TrigReveal direction="up" amplitude={20} duration={0.7}>
-                <span className="text-sm font-semibold tracking-[0.2em] uppercase text-marine-600">
+                <span className="text-xs font-semibold tracking-[0.2em] uppercase text-marine-600">
                   Core Services
                 </span>
               </TrigReveal>
@@ -211,19 +211,19 @@ export default function Services() {
                       transition={{ duration: 0.6, delay: i * 0.1 }}
                       className="group relative bg-white rounded-xl border border-navy-100/50 p-6 hover:border-navy-200/75 overflow-hidden"
                     >
-                      {/* Image placeholder */}
-                      <div className="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg mb-4 overflow-hidden">
+                      {/* Image placeholder - fixed aspect-ratio for Tailwind v4 */}
+                      <div className="aspect-video bg-gray-200 rounded-lg mb-4 overflow-hidden">
                         <img
                           src="/content/placeholder-crew.jpg"
                           alt={`${service.title} illustration`}
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <div className="flex items-center justify-start mb-4">
-                        <div className="h-10 w-10 rounded-full bg-marine-500 flex items-center justify-center mb-3">
+                      <div className="flex items-start gap-4 mb-4">
+                        <div className="h-10 w-10 rounded-full bg-marine-500 flex items-center justify-center flex-shrink-0">
                           <service.icon className="h-6 w-6 text-white" />
                         </div>
-                        <h3 className="text-2xl font-semibold text-navy-900">{service.title}</h3>
+                        <h3 className="text-xl font-semibold text-navy-900 leading-tight">{service.title}</h3>
                       </div>
                       <p className="text-navy-700 leading-relaxed mb-6">{service.desc}</p>
                     </TrigCardHover>
@@ -442,8 +442,8 @@ export default function Services() {
         <div className="absolute -top-24 -right-24 w-[28rem] h-[28rem] rounded-full bg-[#0ea5e9]/[0.07] blur-[5rem] pointer-events-none" />
         <div className="mx-auto max-w-6xl px-6 lg:px-8 py-28 lg:py-36 relative z-10">
           <div className="max-w-2xl mb-16">
-            <span className="inline-block text-xs font-semibold tracking-[0.2em] uppercase text-[#7ab3d6] mb-4">Service Details</span>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[0.95] tracking-[-0.04em] text-[#f2f0eb]">Inside Each <span className="italic font-serif text-[#8fbde0]">Service</span></h2>
+            <span className="inline-block text-xs font-semibold tracking-[0.2em] uppercase text-marine-400 mb-4">Service Details</span>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[0.95] tracking-[-0.04em] text-[#f2f0eb]">Inside Each <span className="italic font-serif text-marine-400">Service</span></h2>
             <p className="mt-6 text-[#a8b8c8] text-lg leading-relaxed">What we deliver, how we do it, and the people behind it — not a brochure, just the real substance.</p>
           </div>
           <div className="grid gap-14 lg:grid-cols-2">
@@ -452,8 +452,8 @@ export default function Services() {
               return (
                 <section key={s.title} id={slug} className="group scroll-mt-28 bg-white/5 border border-white/10 rounded-2xl p-7 lg:p-8 hover:border-white/20 transition-colors">
                   <div className="flex items-start gap-6 mb-6">
-                    {/* Image placeholder */}
-                    <div className="flex-shrink-0 aspect-w-16 aspect-h-9 bg-gray-200 rounded-xl overflow-hidden">
+                    {/* Image placeholder - fixed aspect-ratio for Tailwind v4 */}
+                    <div className="flex-shrink-0 w-24 h-16 bg-gray-200 rounded-xl overflow-hidden">
                       <img
                         src={`/content/placeholder-${slug}.jpg`}
                         alt={`${s.title} illustration`}
@@ -461,7 +461,7 @@ export default function Services() {
                       />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold tracking-tight">{s.title}</h3>
+                      <h3 className="text-xl font-bold tracking-tight leading-tight">{s.title}</h3>
                       <span className="inline-block mt-1 text-xs font-medium text-marine-400 tracking-widest uppercase">{s.eyebrow}</span>
                     </div>
                   </div>
