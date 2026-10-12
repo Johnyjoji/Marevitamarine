@@ -452,13 +452,10 @@ export default function Services() {
               return (
                 <section key={s.title} id={slug} className="group scroll-mt-28 bg-white/5 border border-white/10 rounded-2xl p-7 lg:p-8 hover:border-white/20 transition-colors">
                   <div className="flex items-start gap-6 mb-6">
-                    {/* Image placeholder - fixed aspect-ratio for Tailwind v4 */}
-                    <div className="flex-shrink-0 w-24 h-16 bg-gray-200 rounded-xl overflow-hidden">
-                      <img
-                        src={`/content/placeholder-${slug}.jpg`}
-                        alt={`${s.title} illustration`}
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="flex-shrink-0">
+                      <div className="h-10 w-10 rounded-full bg-marine-400/20 flex items-center justify-center">
+                        <s.icon className="h-6 w-6 text-marine-400" />
+                      </div>
                     </div>
                     <div>
                       <h3 className="text-xl font-bold tracking-tight leading-tight">{s.title}</h3>
