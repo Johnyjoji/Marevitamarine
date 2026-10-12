@@ -11,7 +11,6 @@ import {
   Waves,
 } from 'lucide-react';
 import SectionDivider from '../components/SectionDivider';
-import { StackedCardSection } from '../components/StackedCardSection';
 import HeroVideoCarousel, { HeroText } from '../components/HeroVideoCarousel';
 import CountUp from '../components/CountUp';
 import { useHeroScroll } from '../context/HeroScrollContext';
@@ -389,10 +388,8 @@ function HomeContent() {
     },
   ];
 
-  const TOTAL_SECTIONS = 5;
-
   return (
-    <div className="relative bg-navy-950 text-white">
+    <div>
       {/* Scroll progress indicator — uses sine wave for subtle lateral drift */}
       <TrigScrollIndicator color="#0ea5e9" height={3} />
 
@@ -420,275 +417,257 @@ function HomeContent() {
         <Compass className="w-full h-full" strokeWidth={1} />
       </TrigAmbientDrift>
 
-      {/* ===================== 1 / HERO (Dark) ===================== */}
-      <StackedCardSection index={0} total={TOTAL_SECTIONS} targetScale={0.88} cardClassName="bg-navy-950">
-        <HeroVideoCarousel ref={heroRef}>
-          {({ scene, isExiting }) => (
-            <HeroComposition scene={scene} isExiting={isExiting} />
-          )}
-        </HeroVideoCarousel>
-      </StackedCardSection>
+      {/* ===================== HERO with per-scene compositions ===================== */}
+      <HeroVideoCarousel ref={heroRef}>
+        {({ scene, isExiting }) => (
+          <HeroComposition scene={scene} isExiting={isExiting} />
+        )}
+      </HeroVideoCarousel>
 
-      {/* Animated wave divider: hero (dark) → white */}
-      <div className="relative z-20">
-        <TrigWaveDivider
-          fromColor="#0f1318"
-          toColor="white"
-          height={140}
-          baseSpeed={1.5}
-          layers={[
-            { frequency: 1.3, amplitude: 22, speed: 0.014, phaseOffset: 0,    opacity: 1.0 },
-            { frequency: 2.1, amplitude: 14, speed: 0.026, phaseOffset: 1.2,  opacity: 0.55 },
-            { frequency: 3.8, amplitude: 8,  speed: 0.042, phaseOffset: 2.5,  opacity: 0.30 },
-          ]}
+      {/* Animated wave divider: hero (dark) → white — fast multi-layer waves */}
+      <TrigWaveDivider
+        fromColor="#0f1318"
+        toColor="white"
+        height={140}
+        baseSpeed={1.5}
+        layers={[
+          { frequency: 1.3, amplitude: 22, speed: 0.014, phaseOffset: 0,    opacity: 1.0 },
+          { frequency: 2.1, amplitude: 14, speed: 0.026, phaseOffset: 1.2,  opacity: 0.55 },
+          { frequency: 3.8, amplitude: 8,  speed: 0.042, phaseOffset: 2.5,  opacity: 0.30 },
+        ]}
+      />
+
+      {/* ===================== CASE STUDIES (White) ===================== */}
+      <section className="bg-white text-navy-900 relative overflow-hidden">
+        {/* Subtle background wave */}
+        <TrigBackgroundWave
+          className="opacity-30"
+          baseColor="rgba(14, 165, 233, 0.04)"
+          amplitude={30}
+          frequency={0.3}
+          speed={0.0002}
+          layerCount={2}
         />
-      </div>
 
-      {/* ===================== 2 / CASE STUDIES (White) ===================== */}
-      <StackedCardSection index={1} total={TOTAL_SECTIONS} targetScale={0.88} cardClassName="bg-white shadow-[0_-35px_80px_rgba(0,0,0,0.35)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-navy-100">
-        <section className="bg-white text-navy-900 relative overflow-hidden">
-          {/* Subtle background wave */}
-          <TrigBackgroundWave
-            className="opacity-30"
-            baseColor="rgba(14, 165, 233, 0.04)"
-            amplitude={30}
-            frequency={0.3}
-            speed={0.0002}
-            layerCount={2}
-          />
-
-          <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
-            <div className="max-w-3xl mb-16">
-              <TrigReveal direction="up" amplitude={30} duration={0.8}>
-                <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
-                  Three vessels, one harbor, one watch.
-                  <span className="text-marine-500"> Real-world operations.</span>
-                </h2>
-              </TrigReveal>
-              <TrigReveal direction="up" amplitude={20} delay={0.15} duration={0.7}>
-                <p className="mt-6 text-lg text-navy-600 max-w-2xl">
-                  We manage active voyages end-to-end. Here are recent operations where single-team ownership ensured seamless port calls and crossing success.
-                </p>
-              </TrigReveal>
-            </div>
-
-            {/* Asymmetric Bento Layout: 1 prominent wide card + 2 complementary cards */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-              <div className="lg:col-span-2">
-                <CaseStudyCard {...caseStudies[0]} index={0} className="aspect-[16/10] sm:aspect-[16/9] lg:aspect-[16/10]" />
-              </div>
-              <div className="flex flex-col gap-6 lg:gap-8">
-                <CaseStudyCard {...caseStudies[1]} index={1} className="aspect-[4/3] flex-1" />
-                <CaseStudyCard {...caseStudies[2]} index={2} className="aspect-[4/3] flex-1" />
-              </div>
-            </div>
-          </div>
-        </section>
-      </StackedCardSection>
-
-      {/* Animated wave divider: white → black */}
-      <div className="relative z-20">
-        <TrigWaveDivider
-          fromColor="white"
-          toColor="#0f1318"
-          height={140}
-          baseSpeed={1.3}
-          layers={[
-            { frequency: 1.1, amplitude: 20, speed: 0.012, phaseOffset: 0,    opacity: 1.0 },
-            { frequency: 2.3, amplitude: 13, speed: 0.024, phaseOffset: 1.5,  opacity: 0.55 },
-            { frequency: 4.0, amplitude: 7,  speed: 0.038, phaseOffset: 2.8,  opacity: 0.30 },
-          ]}
-        />
-      </div>
-
-      {/* ===================== 3 / STATS (Black) ===================== */}
-      <StackedCardSection index={2} total={TOTAL_SECTIONS} targetScale={0.88} cardClassName="bg-navy-900 text-white shadow-[0_-35px_80px_rgba(0,0,0,0.55)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-white/10">
-        <section className="bg-navy-900 text-white relative overflow-hidden">
-          {/* Subtle parallax decorative element */}
-          <TrigParallax strength={-40} easing="organic" className="absolute top-10 right-10 w-32 h-32 text-marine-400/10 pointer-events-none">
-            <Compass className="w-full h-full" strokeWidth={0.5} />
-          </TrigParallax>
-          <TrigParallax strength={30} easing="sine" className="absolute bottom-10 left-10 w-24 h-24 text-marine-400/8 pointer-events-none">
-            <Anchor className="w-full h-full" strokeWidth={0.5} />
-          </TrigParallax>
-
-          <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8 relative z-10">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-6">
-              {stats.map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.15 }}
-                  className="text-left"
-                >
-                  <div className="text-5xl lg:text-6xl font-extrabold text-marine-400 leading-none">
-                    <CountUp to={stat.value} delay={0.1 + i * 0.12} duration={1.1} />
-                  </div>
-                  <div className="mt-3 text-sm font-semibold uppercase tracking-wider text-white">
-                    {stat.label}
-                  </div>
-                  <div className="mt-1 text-xs text-navy-300 leading-relaxed">
-                    {stat.sub}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-      </StackedCardSection>
-
-      {/* Animated wave divider: black → white */}
-      <div className="relative z-20">
-        <TrigWaveDivider
-          fromColor="#0f1318"
-          toColor="white"
-          height={140}
-          baseSpeed={1.4}
-          layers={[
-            { frequency: 1.4, amplitude: 19, speed: 0.013, phaseOffset: 0,    opacity: 1.0 },
-            { frequency: 2.2, amplitude: 12, speed: 0.025, phaseOffset: 1.3,  opacity: 0.55 },
-            { frequency: 3.6, amplitude: 7,  speed: 0.040, phaseOffset: 2.6,  opacity: 0.30 },
-          ]}
-        />
-      </div>
-
-      {/* ===================== 4 / WHY CHOOSE US (White) ===================== */}
-      <StackedCardSection index={3} total={TOTAL_SECTIONS} targetScale={0.88} cardClassName="bg-white text-navy-900 shadow-[0_-35px_80px_rgba(0,0,0,0.35)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-navy-100">
-        <section className="bg-white text-navy-900 relative overflow-hidden">
-          <TrigBackgroundWave
-            className="opacity-40"
-            baseColor="rgba(14, 165, 233, 0.03)"
-            amplitude={25}
-            frequency={0.4}
-            speed={0.00025}
-            layerCount={2}
-          />
-
-          <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
-            <div className="max-w-3xl mb-16">
-              <TrigReveal direction="up" amplitude={30} duration={0.8}>
-                <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
-                  Why operators partner long term.
-                </h2>
-              </TrigReveal>
-              <TrigReveal direction="up" amplitude={20} delay={0.15} duration={0.7}>
-                <p className="mt-6 text-lg text-navy-600 max-w-2xl leading-relaxed">
-                  The maritime industry rewards quiet, disciplined, and reliable service. We bring hands-on marine command directly into shore operations.
-                </p>
-              </TrigReveal>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-              {differentiators.map((item, i) => (
-                <TrigReveal
-                  key={item.title}
-                  direction="up"
-                  amplitude={25}
-                  delay={i * 0.1}
-                  duration={0.6}
-                >
-                  <div className="p-8 rounded-2xl border border-navy-100 bg-navy-50/30 hover:border-marine-200 transition-colors">
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="w-10 h-10 rounded-xl bg-marine-50 text-marine-600 flex items-center justify-center flex-shrink-0">
-                        <CheckCircle2 className="h-5 w-5" />
-                      </div>
-                      <h3 className="text-xl font-bold text-navy-900">{item.title}</h3>
-                    </div>
-                    <p className="text-navy-600 leading-relaxed text-sm sm:text-base pl-14">
-                      {item.description}
-                    </p>
-                  </div>
-                </TrigReveal>
-              ))}
-            </div>
-          </div>
-        </section>
-      </StackedCardSection>
-
-      {/* Animated wave divider: white → black */}
-      <div className="relative z-20">
-        <TrigWaveDivider
-          fromColor="white"
-          toColor="#0f1318"
-          height={120}
-          baseSpeed={1.2}
-          layers={[
-            { frequency: 1.0, amplitude: 17, speed: 0.011, phaseOffset: 0,    opacity: 1.0 },
-            { frequency: 2.5, amplitude: 11, speed: 0.023, phaseOffset: 1.6,  opacity: 0.55 },
-            { frequency: 4.2, amplitude: 6,  speed: 0.036, phaseOffset: 3.0,  opacity: 0.30 },
-          ]}
-        />
-      </div>
-
-      {/* ===================== 5 / CTA (Black) ===================== */}
-      <StackedCardSection index={4} total={TOTAL_SECTIONS} targetScale={0.88} cardClassName="bg-navy-900 text-white shadow-[0_-35px_80px_rgba(0,0,0,0.55)] rounded-t-[36px] sm:rounded-t-[48px] border-t border-white/10">
-        <section className="bg-navy-900 text-white relative overflow-hidden">
-          {/* Floating decorative shapes */}
-          <TrigFloating amplitude={25} period={8000} className="absolute top-20 left-20 w-16 h-16 text-marine-400/10 pointer-events-none">
-            <Ship className="w-full h-full" strokeWidth={0.5} />
-          </TrigFloating>
-          <TrigFloating amplitude={20} period={6500} horizontal horizontalAmplitude={15} className="absolute bottom-32 right-32 w-20 h-20 text-marine-400/8 pointer-events-none">
-            <Waves className="w-full h-full" strokeWidth={0.5} />
-          </TrigFloating>
-          <TrigScrollRotate maxDegrees={15} easing="organic" className="absolute top-1/2 left-1/3 w-12 h-12 text-marine-400/10 pointer-events-none">
-            <TrigFloating amplitude={15} period={7000} horizontal>
-              <Compass className="w-full h-full" strokeWidth={0.5} />
-            </TrigFloating>
-          </TrigScrollRotate>
-
-          <div className="mx-auto max-w-4xl px-6 py-24 lg:px-8 lg:py-32 text-center relative z-10">
+        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
+          <div className="max-w-3xl mb-16">
             <TrigReveal direction="up" amplitude={30} duration={0.8}>
-              <h2 className="mt-6 text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
-                One accountable team.
-                <br />
-                From the pilot to the port.
+              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
+                Three vessels, one harbor, one watch.
+                <span className="text-marine-500"> Real-world operations.</span>
               </h2>
             </TrigReveal>
             <TrigReveal direction="up" amplitude={20} delay={0.15} duration={0.7}>
-              <p className="mt-6 text-lg text-navy-200 max-w-2xl mx-auto">
-                Tell us about your fleet, your voyage, your next challenge. We respond within one business day, with a named point of contact.
-              </p>
-            </TrigReveal>
-            <TrigReveal direction="up" amplitude={20} delay={0.3} duration={0.7}>
-              <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-                <motion.div
-                  whileHover={{ y: -2, scale: 1.02 }}
-                  whileTap={{ scale: 0.97, y: 0 }}
-                  transition={{ type: 'spring', damping: 18, stiffness: 320 }}
-                  className="inline-block"
-                >
-                  <Link
-                    to="/contact"
-                    className="group inline-flex items-center gap-3 rounded-full bg-marine-500 pl-7 pr-5 py-4 text-sm font-semibold text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 hover:shadow-marine-500/40 transition-colors"
-                  >
-                    Contact our team
-                    <motion.span
-                      className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15"
-                      whileHover={{ backgroundColor: 'rgba(255,255,255,0.25)' }}
-                    >
-                      <motion.span
-                        className="inline-flex"
-                        initial={{ x: 0 }}
-                        whileHover={{ x: 3 }}
-                        transition={{ type: 'spring', damping: 18, stiffness: 320 }}
-                      >
-                        <ArrowRight className="h-4 w-4" />
-                      </motion.span>
-                    </motion.span>
-                  </Link>
-                </motion.div>
-              </div>
-            </TrigReveal>
-            <TrigReveal direction="up" amplitude={15} delay={0.4} duration={0.6}>
-              <p className="mt-6 text-xs text-navy-400 font-mono tracking-widest uppercase">
-                24/7 Support: operations@marevitamarine.com
+              <p className="mt-6 text-lg text-navy-600 max-w-2xl">
+                We manage active voyages end-to-end. Here are recent operations where single-team ownership ensured seamless port calls and crossing success.
               </p>
             </TrigReveal>
           </div>
-        </section>
-      </StackedCardSection>
+
+          {/* Asymmetric Bento Layout: 1 prominent wide card + 2 complementary cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+            <div className="lg:col-span-2">
+              <CaseStudyCard {...caseStudies[0]} index={0} className="aspect-[16/10] sm:aspect-[16/9] lg:aspect-[16/10]" />
+            </div>
+            <div className="flex flex-col gap-6 lg:gap-8">
+              <CaseStudyCard {...caseStudies[1]} index={1} className="aspect-[4/3] flex-1" />
+              <CaseStudyCard {...caseStudies[2]} index={2} className="aspect-[4/3] flex-1" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Animated wave divider: white → black — fast multi-layer waves */}
+      <TrigWaveDivider
+        fromColor="white"
+        toColor="#0f1318"
+        height={140}
+        baseSpeed={1.3}
+        layers={[
+          { frequency: 1.1, amplitude: 20, speed: 0.012, phaseOffset: 0,    opacity: 1.0 },
+          { frequency: 2.3, amplitude: 13, speed: 0.024, phaseOffset: 1.5,  opacity: 0.55 },
+          { frequency: 4.0, amplitude: 7,  speed: 0.038, phaseOffset: 2.8,  opacity: 0.30 },
+        ]}
+      />
+
+      {/* ===================== STATS (Black) — provenanced ===================== */}
+      <section className="bg-navy-900 text-white relative overflow-hidden">
+        {/* Subtle parallax decorative element */}
+        <TrigParallax strength={-40} easing="organic" className="absolute top-10 right-10 w-32 h-32 text-marine-400/10 pointer-events-none">
+          <Compass className="w-full h-full" strokeWidth={0.5} />
+        </TrigParallax>
+        <TrigParallax strength={30} easing="sine" className="absolute bottom-10 left-10 w-24 h-24 text-marine-400/8 pointer-events-none">
+          <Anchor className="w-full h-full" strokeWidth={0.5} />
+        </TrigParallax>
+
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8 relative z-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-6">
+            {stats.map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.15 }}
+                className="text-left"
+              >
+                <div className="text-5xl lg:text-6xl font-extrabold text-marine-400 leading-none">
+                  <CountUp to={stat.value} delay={0.1 + i * 0.12} duration={1.1} />
+                </div>
+                <div className="mt-3 text-sm font-semibold uppercase tracking-wider text-white">
+                  {stat.label}
+                </div>
+                <div className="mt-1 text-xs text-navy-300 leading-relaxed">
+                  {stat.sub}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Animated wave divider: black → white — fast multi-layer waves */}
+      <TrigWaveDivider
+        fromColor="#0f1318"
+        toColor="white"
+        height={140}
+        baseSpeed={1.4}
+        layers={[
+          { frequency: 1.4, amplitude: 19, speed: 0.013, phaseOffset: 0,    opacity: 1.0 },
+          { frequency: 2.2, amplitude: 12, speed: 0.025, phaseOffset: 1.3,  opacity: 0.55 },
+          { frequency: 3.6, amplitude: 7,  speed: 0.040, phaseOffset: 2.6,  opacity: 0.30 },
+        ]}
+      />
+
+      {/* ===================== WHY CHOOSE US (White) ===================== */}
+      <section className="bg-white text-navy-900 relative overflow-hidden">
+        <TrigBackgroundWave
+          className="opacity-40"
+          baseColor="rgba(14, 165, 233, 0.03)"
+          amplitude={25}
+          frequency={0.4}
+          speed={0.00025}
+          layerCount={2}
+        />
+
+        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
+          <div className="max-w-3xl mb-16">
+            <TrigReveal direction="up" amplitude={30} duration={0.8}>
+              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
+                Why operators partner long term.
+              </h2>
+            </TrigReveal>
+            <TrigReveal direction="up" amplitude={20} delay={0.15} duration={0.7}>
+              <p className="mt-6 text-lg text-navy-600 max-w-2xl leading-relaxed">
+                The maritime industry rewards quiet, disciplined, and reliable service. We bring hands-on marine command directly into shore operations.
+              </p>
+            </TrigReveal>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+            {differentiators.map((item, i) => (
+              <TrigReveal
+                key={item.title}
+                direction="up"
+                amplitude={25}
+                delay={i * 0.1}
+                duration={0.6}
+              >
+                <div className="p-8 rounded-2xl border border-navy-100 bg-navy-50/30 hover:border-marine-200 transition-colors">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-marine-50 text-marine-600 flex items-center justify-center flex-shrink-0">
+                      <CheckCircle2 className="h-5 w-5" />
+                    </div>
+                    <h3 className="text-xl font-bold text-navy-900">{item.title}</h3>
+                  </div>
+                  <p className="text-navy-600 leading-relaxed text-sm sm:text-base pl-14">
+                    {item.description}
+                  </p>
+                </div>
+              </TrigReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Animated wave divider: white → black — fast multi-layer waves */}
+      <TrigWaveDivider
+        fromColor="white"
+        toColor="#0f1318"
+        height={120}
+        baseSpeed={1.2}
+        layers={[
+          { frequency: 1.0, amplitude: 17, speed: 0.011, phaseOffset: 0,    opacity: 1.0 },
+          { frequency: 2.5, amplitude: 11, speed: 0.023, phaseOffset: 1.6,  opacity: 0.55 },
+          { frequency: 4.2, amplitude: 6,  speed: 0.036, phaseOffset: 3.0,  opacity: 0.30 },
+        ]}
+      />
+
+      {/* ===================== CTA (Black) ===================== */}
+      <section className="bg-navy-900 text-white relative overflow-hidden">
+        {/* Floating decorative shapes */}
+        <TrigFloating amplitude={25} period={8000} className="absolute top-20 left-20 w-16 h-16 text-marine-400/10 pointer-events-none">
+          <Ship className="w-full h-full" strokeWidth={0.5} />
+        </TrigFloating>
+        <TrigFloating amplitude={20} period={6500} horizontal horizontalAmplitude={15} className="absolute bottom-32 right-32 w-20 h-20 text-marine-400/8 pointer-events-none">
+          <Waves className="w-full h-full" strokeWidth={0.5} />
+        </TrigFloating>
+        <TrigScrollRotate maxDegrees={15} easing="organic" className="absolute top-1/2 left-1/3 w-12 h-12 text-marine-400/10 pointer-events-none">
+          <TrigFloating amplitude={15} period={7000} horizontal>
+            <Compass className="w-full h-full" strokeWidth={0.5} />
+          </TrigFloating>
+        </TrigScrollRotate>
+
+        <div className="mx-auto max-w-4xl px-6 py-24 lg:px-8 lg:py-32 text-center relative z-10">
+          <TrigReveal direction="up" amplitude={30} duration={0.8}>
+            <h2 className="mt-6 text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
+              One accountable team.
+              <br />
+              From the pilot to the port.
+            </h2>
+          </TrigReveal>
+          <TrigReveal direction="up" amplitude={20} delay={0.15} duration={0.7}>
+            <p className="mt-6 text-lg text-navy-200 max-w-2xl mx-auto">
+              Tell us about your fleet, your voyage, your next challenge. We respond within one business day, with a named point of contact.
+            </p>
+          </TrigReveal>
+          <TrigReveal direction="up" amplitude={20} delay={0.3} duration={0.7}>
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+              <motion.div
+                whileHover={{ y: -2, scale: 1.02 }}
+                whileTap={{ scale: 0.97, y: 0 }}
+                transition={{ type: 'spring', damping: 18, stiffness: 320 }}
+                className="inline-block"
+              >
+                <Link
+                  to="/contact"
+                  className="group inline-flex items-center gap-3 rounded-full bg-marine-500 pl-7 pr-5 py-4 text-sm font-semibold text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 hover:shadow-marine-500/40 transition-colors"
+                >
+                  Contact our team
+                  <motion.span
+                    className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15"
+                    whileHover={{ backgroundColor: 'rgba(255,255,255,0.25)' }}
+                  >
+                    <motion.span
+                      className="inline-flex"
+                      initial={{ x: 0 }}
+                      whileHover={{ x: 3 }}
+                      transition={{ type: 'spring', damping: 18, stiffness: 320 }}
+                    >
+                      <ArrowRight className="h-4 w-4" />
+                    </motion.span>
+                  </motion.span>
+                </Link>
+              </motion.div>
+            </div>
+          </TrigReveal>
+          <TrigReveal direction="up" amplitude={15} delay={0.4} duration={0.6}>
+            <p className="mt-6 text-xs text-navy-400 font-mono tracking-widest uppercase">
+              24/7 Support: operations@marevitamarine.com
+            </p>
+          </TrigReveal>
+        </div>
+      </section>
     </div>
   );
 }
