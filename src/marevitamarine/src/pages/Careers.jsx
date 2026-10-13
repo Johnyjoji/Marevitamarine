@@ -523,11 +523,11 @@ export default function Careers() {
               initial={{ opacity: 0, scale: 0.95, y: 24 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white text-navy-900 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-navy-100 max-h-[90vh] overflow-y-auto relative"
+              className="bg-white text-navy-900 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-navy-100 max-h-[90vh] overflow-y-auto relative pointer-events-auto"
             >
               <button
                 onClick={() => setSelectedPosition(null)}
-                className="absolute top-6 right-6 h-9 w-9 rounded-full bg-navy-100 text-navy-600 flex items-center justify-center hover:bg-navy-200 font-bold transition-colors cursor-pointer"
+                className="absolute top-6 right-6 h-9 w-9 rounded-full bg-navy-100 text-navy-600 flex items-center justify-center hover:bg-navy-200 font-bold transition-colors cursor-pointer pointer-events-auto"
               >
                 ✕
               </button>
@@ -573,7 +573,7 @@ export default function Careers() {
                 </Link>
                 <button
                   onClick={() => setSelectedPosition(null)}
-                  className="px-6 py-3.5 rounded-xl border border-navy-200 text-xs font-bold text-navy-700 hover:bg-navy-100 transition-colors cursor-pointer"
+                  className="px-6 py-3.5 rounded-xl border border-navy-200 text-xs font-bold text-navy-700 hover:bg-navy-100 transition-colors cursor-pointer pointer-events-auto"
                 >
                   Close
                 </button>

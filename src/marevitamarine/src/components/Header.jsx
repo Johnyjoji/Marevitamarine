@@ -250,7 +250,7 @@ export default function Header() {
                   <NavLink
                     to={item.href}
                     className={({ isActive }) =>
-                      `rounded-2xl px-4 py-3 text-sm font-medium transition-colors ${
+                      `pointer-events-auto rounded-2xl px-4 py-3 text-sm font-medium transition-colors ${
                         isActive
                           ? 'bg-marine-50 text-marine-700'
                           : 'text-navy-800 hover:bg-navy-50'

@@ -531,11 +531,11 @@ export default function Fleet() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white text-navy-900 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-navy-100 max-h-[90vh] overflow-y-auto relative"
+              className="bg-white text-navy-900 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-navy-100 max-h-[90vh] overflow-y-auto relative pointer-events-auto"
             >
               <button
                 onClick={() => setSelectedVessel(null)}
-                className="absolute top-6 right-6 h-9 w-9 rounded-full bg-navy-100 text-navy-600 flex items-center justify-center hover:bg-navy-200 font-bold transition-colors cursor-pointer"
+                className="absolute top-6 right-6 h-9 w-9 rounded-full bg-navy-100 text-navy-600 flex items-center justify-center hover:bg-navy-200 font-bold transition-colors cursor-pointer pointer-events-auto"
               >
                 ✕
               </button>
@@ -592,13 +592,14 @@ export default function Fleet() {
                 <Link
                   to="/contact"
                   className="relative z-40 pointer-events-auto flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-marine-500 py-3.5 text-xs font-bold text-white hover:bg-marine-400 transition-colors"
+                  onClick={() => setSelectedVessel(null)}
                 >
                   <span>Inquire for this Vessel Type</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
                 <button
                   onClick={() => setSelectedVessel(null)}
-                  className="px-6 py-3.5 rounded-xl border border-navy-200 text-xs font-bold text-navy-700 hover:bg-navy-100 transition-colors cursor-pointer"
+                  className="px-6 py-3.5 rounded-xl border border-navy-200 text-xs font-bold text-navy-700 hover:bg-navy-100 transition-colors cursor-pointer pointer-events-auto"
                 >
                   Close
                 </button>
