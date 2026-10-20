@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Anchor,
@@ -157,6 +157,7 @@ const levelStyle = {
 export default function Careers() {
   const [activeDept, setActiveDept] = useState('all');
   const [selectedPosition, setSelectedPosition] = useState(null);
+  const navigate = useNavigate();
 
   const TOTAL_SECTIONS = 5;
 
@@ -496,13 +497,13 @@ export default function Careers() {
                       Fill out our contact form and attach your documents. Our crewing team will be in touch within 72 hours.
                     </p>
 
-                    <Link
-                      to="/contact"
-                      className="block w-full text-center inline-flex items-center justify-center gap-2 rounded-xl bg-marine-500 py-3.5 text-sm font-bold text-white hover:bg-marine-400 transition-colors mb-3"
+                    <button
+                      onClick={() => navigate('/contact')}
+                      className="w-full text-center inline-flex items-center justify-center gap-2 rounded-xl bg-marine-500 py-3.5 text-sm font-bold text-white hover:bg-marine-400 transition-colors mb-3 cursor-pointer pointer-events-auto"
                     >
                       <span>Open Application Form</span>
                       <ArrowRight className="h-4 w-4" />
-                    </Link>
+                    </button>
 
                     <p className="text-[11px] text-center text-navy-400 font-mono">
                       All seafarer documents are treated with strict confidentiality.
@@ -563,14 +564,16 @@ export default function Careers() {
 
               {/* CTA */}
               <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-navy-100">
-                <Link
-                  to="/contact"
-                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-marine-500 py-3.5 text-xs font-bold text-white hover:bg-marine-400 transition-colors"
-                  onClick={() => setSelectedPosition(null)}
+                <button
+                  onClick={() => {
+                    setSelectedPosition(null);
+                    navigate('/contact');
+                  }}
+                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-marine-500 py-3.5 text-xs font-bold text-white hover:bg-marine-400 transition-colors cursor-pointer pointer-events-auto"
                 >
                   <Mail className="h-3.5 w-3.5" />
                   <span>Apply for This Position</span>
-                </Link>
+                </button>
                 <button
                   onClick={() => setSelectedPosition(null)}
                   className="px-6 py-3.5 rounded-xl border border-navy-200 text-xs font-bold text-navy-700 hover:bg-navy-100 transition-colors cursor-pointer pointer-events-auto"
