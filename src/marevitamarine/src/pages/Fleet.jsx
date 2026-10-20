@@ -503,7 +503,7 @@ export default function Fleet() {
               <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-3 rounded-full bg-marine-500 pl-8 pr-6 py-4 text-sm font-semibold text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 transition-all"
+                  className="relative z-40 pointer-events-auto inline-flex items-center gap-3 rounded-full bg-marine-500 pl-8 pr-6 py-4 text-sm font-semibold text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 transition-all"
                 >
                   <span>Request Manning Proposal</span>
                   <ArrowRight className="h-4 w-4" />
