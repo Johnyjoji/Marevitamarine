@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Ship,
@@ -37,6 +37,7 @@ import { StackedCardSection } from '../components/StackedCardSection';
 export default function Fleet() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [selectedVessel, setSelectedVessel] = useState(null);
+  const navigate = useNavigate();
 
   const categories = [
     { id: 'all', label: 'All Fleet Types' },
@@ -253,12 +254,12 @@ export default function Fleet() {
                   <span>Explore Vessel Categories</span>
                   <ChevronRight className="h-4 w-4" />
                 </a>
-                <Link
-                  to="/contact"
+                <button
+                  onClick={() => navigate('/contact')}
                   className="relative z-40 pointer-events-auto inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-all backdrop-blur-sm"
                 >
                   <span>Request Crew Manning</span>
-                </Link>
+                </button>
               </div>
             </TrigAmbientFloat>
           </div>
@@ -500,20 +501,20 @@ export default function Fleet() {
                 Whether you operate container ships, bulk carriers, product tankers, or specialized offshore support vessels, Marevita Marine delivers certified, experienced, and dependable crews.
               </p>
 
-              <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-                <Link
-                  to="/contact"
+              <div className="mt-10 flex flex-wrap items-center justify-center gap-4 hidden md:flex">
+                <button
+                  onClick={() => navigate('/contact')}
                   className="relative z-40 pointer-events-auto inline-flex items-center gap-3 rounded-full bg-marine-500 pl-8 pr-6 py-4 text-sm font-semibold text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 transition-all"
                 >
                   <span>Request Manning Proposal</span>
                   <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  to="/careers"
+                </button>
+                <button
+                  onClick={() => navigate('/careers')}
                   className="relative z-40 pointer-events-auto inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-7 py-4 text-sm font-semibold text-white hover:bg-white/20 transition-all"
                 >
                   <span>Join As Seafarer</span>
-                </Link>
+                </button>
               </div>
             </TrigAmbientFloat>
           </div>
