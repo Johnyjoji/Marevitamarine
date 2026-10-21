@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useTrigScroll, useElementScrollProgress } from '../hooks/useTrigScroll';
 
@@ -724,7 +724,6 @@ export function TrigWaveDivider({
   className = '',
 }) {
   const { scrollY } = useTrigScroll();
-  const [paths, setPaths] = useState([]);
   const containerRef = useRef(null);
   const [width, setWidth] = useState(1440);
 
@@ -739,7 +738,7 @@ export function TrigWaveDivider({
   }, []);
 
   // Resolve layers: use the `layers` prop if provided, otherwise build from legacy props
-  const resolvedLayers = layers || [
+  const resolvedLayers = useMemo(() => layers || [
     {
       frequency: baseFrequency,
       amplitude: baseAmplitude,
@@ -754,11 +753,18 @@ export function TrigWaveDivider({
       phaseOffset: 1.4,
       opacity: 0.5,
     },
-  ];
+  ], [layers, baseFrequency, baseAmplitude, baseSpeed]);
 
-  useEffect(() => {
-    // Phase animates with absolute scrollY (fast, dramatic) instead of progress (slow)
-    const newPaths = resolvedLayers.map((layer) => {
+  // Use requestAnimationFrame or debounced scrollY or simply avoid setPaths in an effect if scrollY triggers continuous re-renders
+  // Wait, why does TrigWaveDivider need scrollY to trigger setPaths in an effect?
+  // If we compute the path directly during render or use requestAnimationFrame / memoization, or pass scrollY directly to SVG path generation without state:
+  // Since `resolvedLayers`, `width`, `height`, `segments`, `baseSpeed` are stable or change on resize,
+  // but `scrollY` changes on every scroll event (flooding state updates), we can replace `paths` state with a direct useMemo or render calculation!
+  // Let's check: can paths be memoized or computed directly?
+  // Yes! `paths` only depends on `[scrollY, width, height, segments, baseSpeed, resolvedLayers]`.
+  // If we compute `paths` via `useMemo` instead of `useState` + `useEffect` + `setPaths`, there is ZERO state update loop!
+  const paths = useMemo(() => {
+    return resolvedLayers.map((layer) => {
       const ph = scrollY * layer.speed * baseSpeed + layer.phaseOffset;
       const freq = layer.frequency;
       const amp = layer.amplitude;
@@ -767,7 +773,6 @@ export function TrigWaveDivider({
       for (let i = 0; i <= segments; i++) {
         const x = (width / segments) * i;
         const p = i / segments;
-        // Base sine + cosine harmonic for richer coastline silhouette
         const y =
           height / 2 +
           Math.sin(p * Math.PI * 2 * freq + ph) * amp +
@@ -777,7 +782,6 @@ export function TrigWaveDivider({
       newPath += ` L ${width} ${height} L 0 ${height} Z`;
       return { d: newPath, opacity: layer.opacity };
     });
-    setPaths(newPaths);
   }, [scrollY, width, height, segments, baseSpeed, resolvedLayers]);
 
   return (

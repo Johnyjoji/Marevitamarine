@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect, useLayoutEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
 
 /**
  * useReducedMotion hook
@@ -74,8 +73,6 @@ export function StackedCardSection({
 
   const [contentHeight, setContentHeight] = useState(0);
 
-  const location = useLocation();
-
   // Measure the content's natural height. offsetHeight/scrollHeight report
   // the full box even when a sticky ancestor clips with overflow:hidden.
   useLayoutEffect(() => {
@@ -112,15 +109,12 @@ export function StackedCardSection({
     });
     window.addEventListener('resize', schedule);
 
-    const timeoutId = setTimeout(measure, 50);
-
     return () => {
       ro.disconnect();
       window.removeEventListener('resize', schedule);
-      clearTimeout(timeoutId);
       if (rafId != null) cancelAnimationFrame(rafId);
     };
-  }, [children, location.pathname]);
+  }, [children]);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
