@@ -8,7 +8,6 @@ import Services from './pages/Services';
 import Fleet from './pages/Fleet';
 import Safety from './pages/Safety';
 import Careers from './pages/Careers';
-import News from './pages/News';
 import Contact from './pages/Contact';
 import { HeroScrollProvider } from './context/HeroScrollContext';
 
@@ -27,7 +26,6 @@ function App() {
               <Route path="/fleet" element={<Fleet />} />
               <Route path="/safety" element={<Safety />} />
               <Route path="/careers" element={<Careers />} />
-              <Route path="/news" element={<News />} />
               <Route path="/contact" element={<Contact />} />
             </Routes>
           </main>

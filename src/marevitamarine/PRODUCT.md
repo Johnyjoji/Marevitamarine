@@ -29,7 +29,7 @@ Commercial shipping context: vessels in transit, in port, at anchorage; clients 
 ## Capabilities and Constraints
 
 Confirmed in code:
-- 8 routes: `/`, `/about`, `/services`, `/fleet`, `/safety`, `/careers`, `/news`, `/contact` (`App.jsx`)
+- 7 routes: `/`, `/about`, `/services`, `/fleet`, `/safety`, `/careers`, `/contact` (`App.jsx`)
 - 3 hero scenes auto-cycling with crossfade (Departure, Open Sea, Arrival) — `HeroVideoCarousel.jsx`
 - 4 case-study surfaces rendered as bespoke SVG illustrations (vessel, port, crew, compass) — `Home.jsx`
 - Contact form intake is not yet wired (placeholder page)

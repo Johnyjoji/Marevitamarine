@@ -10,7 +10,6 @@ const NAV = [
   { name: 'Fleet', href: '/fleet' },
   { name: 'Safety', href: '/safety' },
   { name: 'Careers', href: '/careers' },
-  { name: 'News & Insights', href: '/news' },
 ];
 
 export default function Header() {
@@ -39,13 +38,18 @@ export default function Header() {
 
     if (direction === 'down' && isExpanded) {
       setIsExpanded(false);
+      setMobileMenuOpen(false); // close mobile menu when collapsing
     } else if (direction === 'up' && !isExpanded) {
       setIsExpanded(true);
     }
   }, [direction, isAtTop, isExpanded, isHeroPage, ignoreScroll]);
 
   const handlePillClick = () => {
-    setIsExpanded(!isExpanded);
+    const nextState = !isExpanded;
+    setIsExpanded(nextState);
+    if (!nextState) {
+      setMobileMenuOpen(false);
+    }
     setIgnoreScroll(true);
     // Clear existing timeout
     if (ignoreScrollTimeoutRef.current) {
@@ -74,8 +78,13 @@ export default function Header() {
           width: isExpanded ? 'min(100%, 80rem)' : '4rem',
         }}
         transition={{ type: 'spring', damping: 22, stiffness: 280 }}
+        onClick={() => {
+          if (!isExpanded) {
+            handlePillClick();
+          }
+        }}
         className={`relative mx-auto flex items-center overflow-hidden rounded-full border border-black/5 bg-white/95 backdrop-blur-xl ${
-          isExpanded ? 'h-14 sm:h-16 px-2' : 'h-12 sm:h-14 px-0'
+          isExpanded ? 'h-14 sm:h-16 px-2 cursor-default' : 'h-12 sm:h-14 px-0 cursor-pointer'
         } ${
           isExpanded
             ? 'shadow-[0_10px_40px_-12px_rgba(15,23,42,0.22),0_2px_8px_-2px_rgba(15,23,42,0.06)]'
@@ -118,10 +127,9 @@ export default function Header() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.7 }}
               transition={{ type: 'spring', damping: 18, stiffness: 280, delay: 0.1 }}
-              className="absolute inset-0 flex items-center justify-center"
-              style={{ pointerEvents: 'none' }}
+              className="absolute inset-0 flex items-center justify-center pointer-events-none"
             >
-              <img src="/logo-dark.png" className="h-7 w-7 sm:h-9 sm:w-9" />
+              <img src="/logo-dark.png" className="h-7 w-7 sm:h-9 sm:w-9" alt="Marevita Marine Logo" />
             </motion.div>
           )}
         </AnimatePresence>
@@ -190,47 +198,56 @@ export default function Header() {
           )}
         </AnimatePresence>
 
-        {/* Mobile menu toggle (always visible on small screens) */}
-        <motion.button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            setMobileMenuOpen((v) => !v);
-          }}
-          whileTap={{ scale: 0.9 }}
-          className="md:hidden ml-auto mr-2 inline-flex items-center justify-center h-9 w-9 rounded-full bg-navy-50 text-navy-900 hover:bg-navy-100 transition-colors"
-          aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={mobileMenuOpen}
-        >
-          <AnimatePresence mode="wait">
-            {mobileMenuOpen ? (
-              <motion.div
-                key="close"
-                initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-                animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
-                transition={{ type: 'spring', damping: 18, stiffness: 300 }}
-              >
-                <X className="h-[18px] w-[18px]" strokeWidth={2.25} />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="menu"
-                initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
-                animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
-                transition={{ type: 'spring', damping: 18, stiffness: 300 }}
-              >
-              <Menu className="h-[18px] w-[18px]" strokeWidth={2.25} />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.button>
+        {/* Mobile menu toggle (only visible on small screens AND when expanded) */}
+        <AnimatePresence initial={false}>
+          {isExpanded && (
+            <motion.button
+              key="mobile-toggle"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={{ type: 'spring', damping: 18, stiffness: 280 }}
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setMobileMenuOpen((v) => !v);
+              }}
+              whileTap={{ scale: 0.9 }}
+              className="md:hidden ml-auto mr-2 inline-flex items-center justify-center h-9 w-9 rounded-full bg-navy-50 text-navy-900 hover:bg-navy-100 transition-colors pointer-events-auto"
+              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={mobileMenuOpen}
+            >
+              <AnimatePresence mode="wait">
+                {mobileMenuOpen ? (
+                  <motion.div
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                    exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                    transition={{ type: 'spring', damping: 18, stiffness: 300 }}
+                  >
+                    <X className="h-[18px] w-[18px]" strokeWidth={2.25} />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="menu"
+                    initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
+                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                    exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                    transition={{ type: 'spring', damping: 18, stiffness: 300 }}
+                  >
+                    <Menu className="h-[18px] w-[18px]" strokeWidth={2.25} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.button>
+          )}
+        </AnimatePresence>
       </motion.nav>
 
       {/* Mobile sheet — animated slide (outside nav so it's not clipped) */}
       <AnimatePresence>
-        {mobileMenuOpen && (
+        {mobileMenuOpen && isExpanded && (
           <motion.div
             initial={{ opacity: 0, y: -16, height: 0 }}
             animate={{ opacity: 1, y: 0, height: 'auto' }}
@@ -249,6 +266,7 @@ export default function Header() {
                 >
                   <NavLink
                     to={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
                     className={({ isActive }) =>
                       `pointer-events-auto rounded-2xl px-4 py-3 text-sm font-medium transition-colors ${
                         isActive

@@ -17,7 +17,6 @@ export default function Footer() {
   ];
 
   const resources = [
-    { name: 'News & Insights', href: '/news' },
     { name: 'Contact', href: '/contact' },
   ];
 
