@@ -406,14 +406,18 @@ export default function Safety() {
       {/* Timeline on white */}
       <section className="relative bg-white py-10 sm:py-16 lg:py-20">
         <div className="mx-auto max-w-5xl px-6 lg:px-8">
-          {PAST_CHALLENGES.map((item, i) => (
-            <TimelineItem
-              key={item.id}
-              item={item}
-              index={i}
-              isLast={i === PAST_CHALLENGES.length - 1}
-            />
-          ))}
+          <StackedCardSection className="w-full" index={0} total={6} targetScale={0.93} cardClassName="bg-white rounded-2xl shadow-sm shadow-navy-900/5 border border-navy-100 p-8 sm:p-10">
+            <TimelineItem item={PAST_CHALLENGES[0]} index={0} isLast={false} />
+          </StackedCardSection>
+          <StackedCardSection className="w-full" index={1} total={6} targetScale={0.93} cardClassName="bg-white rounded-2xl shadow-sm shadow-navy-900/5 border border-navy-100 p-8 sm:p-10">
+            <TimelineItem item={PAST_CHALLENGES[1]} index={1} isLast={false} />
+          </StackedCardSection>
+          <StackedCardSection className="w-full" index={2} total={6} targetScale={0.93} cardClassName="bg-white rounded-2xl shadow-sm shadow-navy-900/5 border border-navy-100 p-8 sm:p-10">
+            <TimelineItem item={PAST_CHALLENGES[2]} index={2} isLast={false} />
+          </StackedCardSection>
+          <StackedCardSection className="w-full" index={3} total={6} targetScale={0.93} cardClassName="bg-white rounded-2xl shadow-sm shadow-navy-900/5 border border-navy-100 p-8 sm:p-10">
+            <TimelineItem item={PAST_CHALLENGES[3]} index={3} isLast={true} />
+          </StackedCardSection>
         </div>
 
         {/* Past lessons takeaway */}
