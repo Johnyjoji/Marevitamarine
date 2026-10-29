@@ -22,6 +22,7 @@ import {
   MOTION,
 } from '../components/TrigScrollAnimations';
 import SectionDivider from '../components/SectionDivider';
+import StackedCardSection from '../components/StackedCardSection';
 
 /* ─────────────────────────────────────────────────────────────
    Safety Page — Editorial Maritime Safety Narrative
@@ -554,85 +555,89 @@ export default function Safety() {
       <SectionDivider type="coast" fromColor="#0f1318" toColor="white" height={100} />
 
       {/* ─── Section F: War, Geopolitics, Maritime Security ─── */}
-      <section ref={geoRef} className="relative bg-white py-20 sm:py-28 lg:py-36">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-            {/* Left: image + accent */}
-            <TrigReveal direction="left" amplitude={30} duration={0.8}>
-              <div className="relative">
-                <div className="rounded-2xl overflow-hidden shadow-2xl shadow-navy-900/15">
-                  <img
-                    src="/assets/aboutuspics/papazachariasa-ship-6282376_1920.jpg"
-                    alt="Merchant vessel at sea illustrating the maritime security environment"
-                    className="w-full h-auto object-cover aspect-[4/3]"
-                  />
-                </div>
-                {/* Floating accent */}
-                <div className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 bg-navy-900 text-white rounded-xl p-4 sm:p-5 shadow-xl max-w-[200px] sm:max-w-[240px]">
-                  <AlertTriangle className="w-5 h-5 text-marine-400 mb-2" strokeWidth={1.5} />
-                  <p className="text-xs sm:text-sm font-light text-navy-200 leading-snug">
-                    Armed conflicts threaten merchant vessels and civilian crews worldwide.
-                  </p>
-                </div>
+      <StackedCardSection
+        className="relative bg-white py-20 sm:py-28 lg:py-36"
+        index={5}
+        total={6}
+        targetScale={0.95}
+        cardClassName="w-full max-w-7xl mx-auto px-6 lg:px-8"
+      >
+        <div ref={geoRef} className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+          {/* Left: image + accent */}
+          <TrigReveal direction="left" amplitude={30} duration={0.8}>
+            <div className="relative">
+              <div className="rounded-2xl overflow-hidden shadow-2xl shadow-navy-900/15">
+                <img
+                  src="/assets/aboutuspics/papazachariasa-ship-6282376_1920.jpg"
+                  alt="Merchant vessel at sea illustrating the maritime security environment"
+                  className="w-full h-auto object-cover aspect-[4/3]"
+                />
               </div>
+              {/* Floating accent */}
+              <div className="absolute -bottom-4 -right-4 sm:-bottom-6 sm:-right-6 bg-navy-900 text-white rounded-xl p-4 sm:p-5 shadow-xl max-w-[200px] sm:max-w-[240px]">
+                <AlertTriangle className="w-5 h-5 text-marine-400 mb-2" strokeWidth={1.5} />
+                <p className="text-xs sm:text-sm font-light text-navy-200 leading-snug">
+                  Armed conflicts threaten merchant vessels and civilian crews worldwide.
+                </p>
+              </div>
+            </div>
+          </TrigReveal>
+
+          {/* Right: editorial content */}
+          <div>
+            <TrigReveal direction="up" amplitude={20} duration={0.6}>
+              <SectionLabel>3A. Geopolitical Security</SectionLabel>
             </TrigReveal>
 
-            {/* Right: editorial content */}
-            <div>
-              <TrigReveal direction="up" amplitude={20} duration={0.6}>
-                <SectionLabel>3A. Geopolitical Security</SectionLabel>
-              </TrigReveal>
+            <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-navy-900 leading-[1.05] mb-6">
+                War, Geopolitical Conflicts, and Maritime Security
+              </h2>
+            </TrigReveal>
 
-              <TrigReveal direction="up" amplitude={30} delay={0.1} duration={0.8}>
-                <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-navy-900 leading-[1.05] mb-6">
-                  War, Geopolitical Conflicts, and Maritime Security
-                </h2>
-              </TrigReveal>
+            <TrigReveal direction="up" amplitude={20} delay={0.2} duration={0.7}>
+              <p className="text-lg text-navy-600 font-light leading-relaxed mb-4">
+                One of the most serious contemporary challenges is the impact of armed conflicts on
+                international shipping.
+              </p>
+            </TrigReveal>
 
-              <TrigReveal direction="up" amplitude={20} delay={0.2} duration={0.7}>
-                <p className="text-lg text-navy-600 font-light leading-relaxed mb-4">
-                  One of the most serious contemporary challenges is the impact of armed conflicts on
-                  international shipping.
-                </p>
-              </TrigReveal>
+            <TrigReveal direction="up" amplitude={20} delay={0.25} duration={0.7}>
+              <p className="text-lg text-navy-600 font-light leading-relaxed mb-8">
+                The Strait of Hormuz, the Red Sea and Gulf of Aden, and the Black Sea have
+                demonstrated how regional conflicts can threaten merchant vessels and civilian crews.
+              </p>
+            </TrigReveal>
 
-              <TrigReveal direction="up" amplitude={20} delay={0.25} duration={0.7}>
-                <p className="text-lg text-navy-600 font-light leading-relaxed mb-8">
-                  The Strait of Hormuz, the Red Sea and Gulf of Aden, and the Black Sea have
-                  demonstrated how regional conflicts can threaten merchant vessels and civilian crews.
-                </p>
-              </TrigReveal>
-
-              {/* Conflict regions */}
-              <div className="space-y-4">
-                {CONFLICT_REGIONS.map((region, i) => (
-                  <TrigReveal
-                    key={region.name}
-                    direction="up"
-                    amplitude={15}
-                    delay={0.3 + i * 0.08}
-                    duration={0.6}
-                  >
-                    <div className="flex items-start gap-4 p-4 rounded-xl bg-navy-50 border border-navy-100">
-                      <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-navy-900 flex items-center justify-center mt-0.5">
-                        <AlertTriangle className="w-4 h-4 text-marine-400" strokeWidth={1.5} />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-navy-900 text-sm sm:text-base">
-                          {region.name}
-                        </h4>
-                        <p className="text-sm text-navy-500 font-light mt-0.5">
-                          {region.description}
-                        </p>
-                      </div>
+            {/* Conflict regions */}
+            <div className="space-y-4">
+              {CONFLICT_REGIONS.map((region, i) => (
+                <TrigReveal
+                  key={region.name}
+                  direction="up"
+                  amplitude={15}
+                  delay={0.3 + i * 0.08}
+                  duration={0.6}
+                >
+                  <div className="flex items-start gap-4 p-4 rounded-xl bg-navy-50 border border-navy-100">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-navy-900 flex items-center justify-center mt-0.5">
+                      <AlertTriangle className="w-4 h-4 text-marine-400" strokeWidth={1.5} />
                     </div>
-                  </TrigReveal>
-                ))}
-              </div>
+                    <div>
+                      <h4 className="font-semibold text-navy-900 text-sm sm:text-base">
+                        {region.name}
+                      </h4>
+                      <p className="text-sm text-navy-500 font-light mt-0.5">
+                        {region.description}
+                      </p>
+                    </div>
+                  </div>
+                </TrigReveal>
+              ))}
             </div>
           </div>
         </div>
-      </section>
+      </StackedCardSection>
 
       {/* ─── Divider: White → Navy (CTA) ─── */}
       <SectionDivider type="deep" fromColor="white" toColor="#0f1318" height={100} />

@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 export const SCENES = [
   {
     id: 'departure',
-    src: 'https://media.marevitamarine.com/harbor1.mp4',
+    src: 'https://media.marevitamarine.com/hero-ship-video.mp4',
     label: 'Departure',
     subtitle: 'Setting COURSE',
     eyebrow: 'New era of marine services',
@@ -32,7 +32,7 @@ export const SCENES = [
   },
   {
     id: 'arrival',
-    src: 'https://media.marevitamarine.com/hero-ship-video.mp4',
+    src: 'https://media.marevitamarine.com/harbor1.mp4',
     label: 'Arrival',
     subtitle: 'Port operations',
     eyebrow: 'In port worldwide',
@@ -163,6 +163,7 @@ export default forwardRef(function HeroVideoCarousel({ children, className = '' 
             />
             <div style={gradientStyles.vignette} />
             <div style={gradientStyles.bottomFade} />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
             <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8">
               {children({ scene: prevScene, index: prevIndex, isExiting: true })}
             </div>
@@ -191,6 +192,7 @@ export default forwardRef(function HeroVideoCarousel({ children, className = '' 
           />
           <div style={gradientStyles.vignette} />
           <div style={gradientStyles.bottomFade} />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
           <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8">
             {children({ scene: currScene, index: currentIndex, isExiting: false })}
           </div>
