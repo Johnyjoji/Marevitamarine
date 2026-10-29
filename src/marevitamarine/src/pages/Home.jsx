@@ -82,9 +82,9 @@ function HeroComposition({ scene, isExiting = false }) {
         {scene.headline.map((line, i) => (
           <span key={i} className="block">
             {i === scene.headline.length - 1 ? (
-              <span className="text-marine-400 erica-one">{line}</span>
+              <span className="font-space font-bold text-marine-300">{line}</span>
             ) : (
-              line
+              <span className="erica-one">{line}</span>
             )}
           </span>
         ))}
