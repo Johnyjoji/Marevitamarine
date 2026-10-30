@@ -3,7 +3,6 @@ import { Menu, X } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollState } from '../hooks/useScrollState';
-import LogoTweakWidget from './LogoTweakWidget';
 
 const NAV = [
   { name: 'About', href: '/about' },
@@ -22,10 +21,10 @@ export default function Header() {
   const ignoreScrollTimeoutRef = useRef(null);
   const { direction, isAtTop } = useScrollState({ directionThreshold: 12, topThreshold: 10 });
 
-  // Adjustable logo and navbar dimensions with slider tweak
-  const [expandedHeight, setExpandedHeight] = useState(40);
-  const [collapsedSize, setCollapsedSize] = useState(34);
-  const [containerPadding, setContainerPadding] = useState(0);
+  // Fixed logo dimensions (Boss's preferred values: 50px expanded, 42px collapsed)
+  const expandedHeight = 50;
+  const collapsedSize = 42;
+  const containerPadding = 0;
 
   // Scroll direction logic: down = collapse, up = expand
   useEffect(() => {
@@ -296,16 +295,6 @@ export default function Header() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Tweak widget for navbar height & logo sizing */}
-      <LogoTweakWidget
-        expandedHeight={expandedHeight}
-        setExpandedHeight={setExpandedHeight}
-        collapsedSize={collapsedSize}
-        setCollapsedSize={setCollapsedSize}
-        containerPadding={containerPadding}
-        setContainerPadding={setContainerPadding}
-      />
     </header>
   );
 }
