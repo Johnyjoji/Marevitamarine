@@ -21,9 +21,6 @@ export default function Header() {
   const ignoreScrollTimeoutRef = useRef(null);
   const { direction, isAtTop } = useScrollState({ directionThreshold: 12, topThreshold: 10 });
 
-  // Fixed logo dimensions as requested by user
-  const expandedHeight = 56;
-  const collapsedSize = 43;
   const containerPadding = 0;
 
   // Scroll direction logic: down = collapse, up = expand
@@ -89,7 +86,7 @@ export default function Header() {
           }
         }}
         className={`relative mx-auto flex items-center overflow-hidden rounded-full border border-black/5 bg-white/95 backdrop-blur-xl ${
-          isExpanded ? 'h-16 sm:h-20 px-2 cursor-default' : 'h-14 sm:h-16 px-0 cursor-pointer'
+          isExpanded ? 'h-14 sm:h-16 px-2 cursor-default' : 'h-12 sm:h-14 px-0 cursor-pointer'
         } ${
           isExpanded
             ? 'shadow-[0_10px_40px_-12px_rgba(15,23,42,0.22),0_2px_8px_-2px_rgba(15,23,42,0.06)]'
@@ -115,8 +112,7 @@ export default function Header() {
                 onClick={(e) => e.stopPropagation()}
               >
                 <img
-                  className="w-auto object-contain"
-                  style={{ height: `${expandedHeight}px` }}
+                  className="w-auto object-contain h-5 sm:h-[50px]"
                   src="/logo-with-name.png"
                   alt="Marevita Marine"
                 />
@@ -138,8 +134,7 @@ export default function Header() {
             >
               <img
                 src="/logo-dark.png"
-                style={{ height: `${collapsedSize}px`, width: `${collapsedSize}px` }}
-                className="object-contain"
+                className="object-contain h-5 w-5 sm:h-[42px] sm:w-[42px]"
                 alt="Marevita Marine Logo"
               />
             </motion.div>
