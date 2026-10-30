@@ -99,7 +99,6 @@ export default function GlyphPortal({
     const marks = section.querySelector("[data-gp-marks]");
     const choices = section.querySelector("[data-gp-choices]");
     const buttons = choices ? Array.from(choices.querySelectorAll("button")) : [];
-    const picker = section.querySelector("[data-gp-select]");
     const root = scrollParent(section);
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const canvas = document.createElement("canvas");
@@ -189,12 +188,6 @@ export default function GlyphPortal({
         button.disabled = !candidates.some((candidate) => candidate.index === Number(button.dataset.gpLetter));
         button.setAttribute("aria-checked", String(selected));
         button.tabIndex = selected ? 0 : -1;
-      }
-      if (picker && picker.value !== "") picker.value = String(target?.index ?? -1);
-      if (picker) {
-        for (const option of Array.from(picker.options)) {
-          option.disabled = option.value === "" || !candidates.some((candidate) => candidate.index === Number(option.value));
-        }
       }
       const u = 1 / startScale;
       const y = bounds.y + bounds.height + 25 * u;
@@ -310,20 +303,12 @@ export default function GlyphPortal({
         : (current + (event.key === "ArrowLeft" || event.key === "ArrowUp" ? -1 : 1) + candidates.length) % candidates.length;
       buttons.find((button) => Number(button.dataset.gpLetter) === candidates[index].index)?.focus({ preventScroll: true });
     };
-    const pick = () => {
-      if (!choosing || position() >= 0.04) return;
-      const next = candidates.find((candidate) => candidate.index === Number(picker?.value));
-      if (next) { select(next); paint(position()); }
-    };
 
     if (choices) {
       choices.addEventListener("pointerover", choose);
       choices.addEventListener("click", choose);
       choices.addEventListener("focusin", choose);
       choices.addEventListener("keydown", navigate);
-    }
-    if (picker) {
-      picker.addEventListener("change", pick);
     }
     const observer = new ResizeObserver(resize);
     observer.observe(section);
@@ -356,9 +341,6 @@ export default function GlyphPortal({
         choices.removeEventListener("focusin", choose);
         choices.removeEventListener("keydown", navigate);
       }
-      if (picker) {
-        picker.removeEventListener("change", pick);
-      }
     };
   }, [text, focusChar, interactive, fontFamily, weight, length, clipId, hasFront]);
 
@@ -383,11 +365,6 @@ export default function GlyphPortal({
         ${q} [data-gp-letter]{box-sizing:border-box;position:absolute;border:0;padding:0;margin:0;background:transparent;cursor:pointer;pointer-events:auto;touch-action:pan-y;}
         ${q} [data-gp-letter]:disabled{pointer-events:none;}
         ${q} [data-gp-letter]:focus-visible{outline:2px solid var(--gp-field);outline-offset:5px;}
-        ${q} [data-gp-touch-picker]{display:none;position:absolute;top:calc(var(--gp-word-bottom,50%) + 42px);left:50%;transform:translateX(-50%);font:12px/1.4 Arial,sans-serif;align-items:center;gap:12px;visibility:hidden;}
-        ${q}[data-gp-choosing=true] [data-gp-touch-picker]{visibility:visible;}
-        ${q} [data-gp-select]{min-height:44px;min-width:90px;border:1px solid #d8deda;border-radius:4px;background:var(--gp-paper);color:var(--gp-ink);padding:0 10px;font:inherit;}
-        ${q} [data-gp-select]:focus-visible{outline:2px solid var(--gp-field);outline-offset:4px;}
-        @media(any-pointer:coarse){${q} [data-gp-touch-picker]{display:flex;}}
         ${q} [data-gp-fallback]{position:absolute;inset:0;display:none;place-items:center;font-size:min(calc(100cqw / var(--gp-characters)),38cqh);line-height:1;color:var(--gp-field);}
         ${q}[data-gp-ready] [data-gp-fallback]{visibility:hidden;}
         ${q} [data-gp-caption]{position:absolute;inset:auto 8% 9%;display:flex;align-items:center;justify-content:space-between;gap:1rem;font:12px/1.4 Arial,sans-serif;opacity:var(--gp-caption,1);pointer-events:var(--gp-caption-hit,auto);}
@@ -454,17 +431,6 @@ export default function GlyphPortal({
             />
           ))}
         </div>
-        <label data-gp-touch-picker>
-          <span style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clipPath: "inset(50%)" }}>
-            Entry letter
-          </span>
-          <select data-gp-select defaultValue="">
-            <option value="" disabled>Choose a letter</option>
-            {characters.map(({ char, index }, i) => (
-              <option key={index} value={index}>{i + 1} · {char}</option>
-            ))}
-          </select>
-        </label>
         {front && <div data-gp-front>{front}</div>}
         <span data-gp-fallback aria-hidden="true" style={{ fontFamily, fontWeight: weight }}>
           {text}
