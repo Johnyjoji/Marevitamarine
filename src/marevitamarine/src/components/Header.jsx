@@ -22,20 +22,20 @@ export default function Header() {
   const ignoreScrollTimeoutRef = useRef(null);
   const { direction, isAtTop } = useScrollState({ directionThreshold: 12, topThreshold: 10 });
 
-  // Tweakable logo states with localStorage persistence
+  // Tweakable logo states with localStorage persistence (defaults updated to user's chosen values)
   const [expandedHeight, setExpandedHeight] = useState(() => {
     const saved = localStorage.getItem('marevita_expanded_logo_height');
-    return saved ? Number(saved) : 34;
+    return saved ? Number(saved) : 50;
   });
 
   const [collapsedSize, setCollapsedSize] = useState(() => {
     const saved = localStorage.getItem('marevita_collapsed_logo_size');
-    return saved ? Number(saved) : 32;
+    return saved ? Number(saved) : 44;
   });
 
   const [containerPadding, setContainerPadding] = useState(() => {
     const saved = localStorage.getItem('marevita_logo_padding');
-    return saved ? Number(saved) : 16;
+    return saved ? Number(saved) : 0;
   });
 
   useEffect(() => {
@@ -114,7 +114,7 @@ export default function Header() {
             }
           }}
           className={`relative mx-auto flex items-center overflow-hidden rounded-full border border-black/5 bg-white/95 backdrop-blur-xl ${
-            isExpanded ? 'h-14 sm:h-16 px-2 cursor-default' : 'h-12 sm:h-14 px-0 cursor-pointer'
+            isExpanded ? 'h-16 sm:h-20 px-2 cursor-default' : 'h-14 sm:h-16 px-0 cursor-pointer'
           } ${
             isExpanded
               ? 'shadow-[0_10px_40px_-12px_rgba(15,23,42,0.22),0_2px_8px_-2px_rgba(15,23,42,0.06)]'
@@ -197,7 +197,7 @@ export default function Header() {
                     <NavLink
                       to={item.href}
                       className={({ isActive }) =>
-                        `pointer-events-auto rounded-full px-2.5 py-1.5 text-sm font-medium transition-colors whitespace-nowrap ${
+                        `pointer-events-auto rounded-full px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
                           isActive
                             ? 'text-navy-900'
                             : 'text-navy-700 hover:text-navy-900 hover:bg-navy-50'
@@ -222,11 +222,11 @@ export default function Header() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 12 }}
                 transition={{ type: 'spring', damping: 18, stiffness: 280, delay: 0.1 }}
-                className="hidden md:flex items-center shrink-0 pr-1"
+                className="hidden md:flex items-center shrink-0 pr-2"
               >
                 <Link
                   to="/contact"
-                  className="pointer-events-auto inline-flex items-center rounded-full bg-navy-900 px-4 py-2 text-sm font-semibold text-white hover:bg-navy-800 transition-colors whitespace-nowrap"
+                  className="pointer-events-auto inline-flex items-center rounded-full bg-navy-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-navy-800 transition-colors whitespace-nowrap shadow-md"
                   onClick={(e) => e.stopPropagation()}
                 >
                   Contact Us
@@ -250,7 +250,7 @@ export default function Header() {
                   setMobileMenuOpen((v) => !v);
                 }}
                 whileTap={{ scale: 0.9 }}
-                className="md:hidden ml-auto mr-2 inline-flex items-center justify-center h-9 w-9 rounded-full bg-navy-50 text-navy-900 hover:bg-navy-100 transition-colors pointer-events-auto"
+                className="md:hidden ml-auto mr-2 inline-flex items-center justify-center h-10 w-10 rounded-full bg-navy-50 text-navy-900 hover:bg-navy-100 transition-colors pointer-events-auto"
                 aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={mobileMenuOpen}
               >
@@ -263,7 +263,7 @@ export default function Header() {
                       exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
                       transition={{ type: 'spring', damping: 18, stiffness: 300 }}
                     >
-                      <X className="h-[18px] w-[18px]" strokeWidth={2.25} />
+                      <X className="h-5 w-5" strokeWidth={2.25} />
                     </motion.div>
                   ) : (
                     <motion.div
@@ -273,7 +273,7 @@ export default function Header() {
                       exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
                       transition={{ type: 'spring', damping: 18, stiffness: 300 }}
                     >
-                      <Menu className="h-[18px] w-[18px]" strokeWidth={2.25} />
+                      <Menu className="h-5 w-5" strokeWidth={2.25} />
                     </motion.div>
                   )}
                 </AnimatePresence>
