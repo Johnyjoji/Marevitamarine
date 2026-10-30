@@ -3,6 +3,7 @@ import { Menu, X } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollState } from '../hooks/useScrollState';
+import LogoTweakWidget from './LogoTweakWidget';
 
 const NAV = [
   { name: 'About', href: '/about' },
@@ -21,10 +22,10 @@ export default function Header() {
   const ignoreScrollTimeoutRef = useRef(null);
   const { direction, isAtTop } = useScrollState({ directionThreshold: 12, topThreshold: 10 });
 
-  // Fixed logo dimensions as requested by user
-  const expandedHeight = 56;
-  const collapsedSize = 43;
-  const containerPadding = 0;
+  // Adjustable logo and navbar dimensions with slider tweak
+  const [expandedHeight, setExpandedHeight] = useState(40);
+  const [collapsedSize, setCollapsedSize] = useState(34);
+  const [containerPadding, setContainerPadding] = useState(0);
 
   // Scroll direction logic: down = collapse, up = expand
   useEffect(() => {
@@ -89,7 +90,7 @@ export default function Header() {
           }
         }}
         className={`relative mx-auto flex items-center overflow-hidden rounded-full border border-black/5 bg-white/95 backdrop-blur-xl ${
-          isExpanded ? 'h-16 sm:h-20 px-2 cursor-default' : 'h-14 sm:h-16 px-0 cursor-pointer'
+          isExpanded ? 'h-14 sm:h-16 px-2 cursor-default' : 'h-12 sm:h-14 px-0 cursor-pointer'
         } ${
           isExpanded
             ? 'shadow-[0_10px_40px_-12px_rgba(15,23,42,0.22),0_2px_8px_-2px_rgba(15,23,42,0.06)]'
@@ -295,6 +296,16 @@ export default function Header() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Tweak widget for navbar height & logo sizing */}
+      <LogoTweakWidget
+        expandedHeight={expandedHeight}
+        setExpandedHeight={setExpandedHeight}
+        collapsedSize={collapsedSize}
+        setCollapsedSize={setCollapsedSize}
+        containerPadding={containerPadding}
+        setContainerPadding={setContainerPadding}
+      />
     </header>
   );
 }
