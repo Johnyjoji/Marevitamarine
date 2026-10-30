@@ -21,9 +21,6 @@ export default function Header() {
   const ignoreScrollTimeoutRef = useRef(null);
   const { direction, isAtTop } = useScrollState({ directionThreshold: 12, topThreshold: 10 });
 
-  // Fixed logo dimensions (Boss's preferred values: 50px expanded, 42px collapsed)
-  const expandedHeight = 50;
-  const collapsedSize = 42;
   const containerPadding = 0;
 
   // Scroll direction logic: down = collapse, up = expand
@@ -115,8 +112,7 @@ export default function Header() {
                 onClick={(e) => e.stopPropagation()}
               >
                 <img
-                  className="w-auto object-contain"
-                  style={{ height: `${expandedHeight}px` }}
+                  className="w-auto object-contain h-5 sm:h-[50px]"
                   src="/logo-with-name.png"
                   alt="Marevita Marine"
                 />
@@ -138,8 +134,7 @@ export default function Header() {
             >
               <img
                 src="/logo-dark.png"
-                style={{ height: `${collapsedSize}px`, width: `${collapsedSize}px` }}
-                className="object-contain"
+                className="object-contain h-5 w-5 sm:h-[42px] sm:w-[42px]"
                 alt="Marevita Marine Logo"
               />
             </motion.div>
