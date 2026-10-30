@@ -437,46 +437,47 @@ function HomeContent() {
         ]}
       />
 
-      {/* ===================== CASE STUDIES (White) ===================== */}
-      <section className="bg-white text-navy-900 relative overflow-hidden">
-        {/* Subtle background wave */}
+      {/* ===================== WHAT WE DO ===================== */}
+      <section className="bg-navy-900 text-white relative overflow-hidden">
         <TrigBackgroundWave
-          className="opacity-30"
-          baseColor="rgba(14, 165, 233, 0.04)"
-          amplitude={30}
-          frequency={0.3}
-          speed={0.0002}
+          className="opacity-20"
+          baseColor="rgba(14, 165, 233, 0.03)"
+          amplitude={25}
+          frequency={0.4}
+          speed={0.00025}
           layerCount={2}
         />
-
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
-          <div className="max-w-3xl mb-16">
-            <TrigReveal direction="up" amplitude={30} duration={0.8}>
-              <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
-                Three vessels, one harbor, one watch.
-                <span className="text-marine-500"> Real-world operations.</span>
+          <div className="grid gap-12 lg:grid-cols-2 items-center">
+            <div>
+              <span className="inline-block text-xs font-semibold tracking-[0.2em] uppercase text-marine-400 mb-4">What We Do</span>
+              <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] text-white mb-6">
+                Navigating Maritime Needs.<br />
+                Delivering Marine Solutions.
               </h2>
-            </TrigReveal>
-            <TrigReveal direction="up" amplitude={20} delay={0.15} duration={0.7}>
-              <p className="mt-6 text-lg text-navy-600 max-w-2xl">
-                We manage active voyages end-to-end. Here are recent operations where single-team ownership ensured seamless port calls and crossing success.
+              <p className="text-base sm:text-lg text-navy-300 leading-relaxed max-w-xl">
+                We are dedicated to providing marine services and solutions that support the evolving needs of the maritime industry. Through a practical, client-focused approach, we aim to make maritime operations more efficient and reliable.
               </p>
-            </TrigReveal>
-          </div>
-
-          {/* Asymmetric Bento Layout: 1 prominent wide card + 2 complementary cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-            <div className="lg:col-span-2">
-              <CaseStudyCard {...caseStudies[0]} index={0} className="aspect-[16/10] sm:aspect-[16/9] lg:aspect-[16/10]" />
+              <div className="mt-8">
+                <Link
+                  to="/services"
+                  className="relative z-40 pointer-events-auto inline-flex items-center gap-2 rounded-full bg-marine-500 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-marine-950/60 hover:bg-marine-400 transition-all"
+                >
+                  <span>Explore Our Services →</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
             </div>
-            <div className="flex flex-col gap-6 lg:gap-8">
-              <CaseStudyCard {...caseStudies[1]} index={1} className="aspect-[4/3] flex-1" />
-              <CaseStudyCard {...caseStudies[2]} index={2} className="aspect-[4/3] flex-1" />
+            <div className="relative">
+              <img
+                src="/logo-with-name.png"
+                alt="Marevita Marine maritime vessel at sea"
+                className="relative w-full h-[420] sm:h-[560] lg:h-[640] object-cover rounded-lg shadow-2xl shadow-marine-950/40"
+              />
             </div>
           </div>
         </div>
       </section>
-
       {/* Animated wave divider: white → black — fast multi-layer waves */}
       <TrigWaveDivider
         fromColor="white"
