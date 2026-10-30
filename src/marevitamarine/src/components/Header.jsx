@@ -112,7 +112,7 @@ export default function Header() {
                 onClick={(e) => e.stopPropagation()}
               >
                 <img
-                  className="w-auto object-contain h-5 sm:h-[50px]"
+                  className="w-auto object-contain h-[38px] sm:h-[50px]"
                   src="/logo-with-name.png"
                   alt="Marevita Marine"
                 />
@@ -134,7 +134,7 @@ export default function Header() {
             >
               <img
                 src="/logo-dark.png"
-                className="object-contain h-5 w-5 sm:h-[42px] sm:w-[42px]"
+                className="object-contain h-7 w-7 sm:h-[42px] sm:w-[42px]"
                 alt="Marevita Marine Logo"
               />
             </motion.div>
