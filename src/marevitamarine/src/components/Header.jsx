@@ -1,5 +1,5 @@
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Menu, X, Navigation } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollState } from '../hooks/useScrollState';
@@ -20,6 +20,11 @@ export default function Header() {
   const [ignoreScroll, setIgnoreScroll] = useState(false);
   const ignoreScrollTimeoutRef = useRef(null);
   const { direction, isAtTop } = useScrollState({ directionThreshold: 12, topThreshold: 10 });
+
+  // Fixed logo dimensions as requested by user
+  const expandedHeight = 56;
+  const collapsedSize = 43;
+  const containerPadding = 0;
 
   // Scroll direction logic: down = collapse, up = expand
   useEffect(() => {
@@ -84,7 +89,7 @@ export default function Header() {
           }
         }}
         className={`relative mx-auto flex items-center overflow-hidden rounded-full border border-black/5 bg-white/95 backdrop-blur-xl ${
-          isExpanded ? 'h-14 sm:h-16 px-2 cursor-default' : 'h-12 sm:h-14 px-0 cursor-pointer'
+          isExpanded ? 'h-16 sm:h-20 px-2 cursor-default' : 'h-14 sm:h-16 px-0 cursor-pointer'
         } ${
           isExpanded
             ? 'shadow-[0_10px_40px_-12px_rgba(15,23,42,0.22),0_2px_8px_-2px_rgba(15,23,42,0.06)]'
@@ -100,7 +105,8 @@ export default function Header() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -12 }}
               transition={{ type: 'spring', damping: 18, stiffness: 280 }}
-              className="flex-shrink-0 flex items-center pl-3 sm:pl-4 pr-2"
+              className="flex-shrink-0 flex items-center pr-2"
+              style={{ paddingLeft: `${containerPadding}px` }}
             >
               <Link
                 to="/"
@@ -109,7 +115,8 @@ export default function Header() {
                 onClick={(e) => e.stopPropagation()}
               >
                 <img
-                  className="h-7 w-auto sm:h-9"
+                  className="w-auto object-contain"
+                  style={{ height: `${expandedHeight}px` }}
                   src="/logo-with-name.png"
                   alt="Marevita Marine"
                 />
@@ -129,7 +136,12 @@ export default function Header() {
               transition={{ type: 'spring', damping: 18, stiffness: 280, delay: 0.1 }}
               className="absolute inset-0 flex items-center justify-center pointer-events-none"
             >
-              <img src="/logo-dark.png" className="h-7 w-7 sm:h-9 sm:w-9" alt="Marevita Marine Logo" />
+              <img
+                src="/logo-dark.png"
+                style={{ height: `${collapsedSize}px`, width: `${collapsedSize}px` }}
+                className="object-contain"
+                alt="Marevita Marine Logo"
+              />
             </motion.div>
           )}
         </AnimatePresence>
@@ -160,7 +172,7 @@ export default function Header() {
                   <NavLink
                     to={item.href}
                     className={({ isActive }) =>
-                      `pointer-events-auto rounded-full px-2.5 py-1.5 text-sm font-medium transition-colors whitespace-nowrap ${
+                      `pointer-events-auto rounded-full px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
                         isActive
                           ? 'text-navy-900'
                           : 'text-navy-700 hover:text-navy-900 hover:bg-navy-50'
@@ -185,11 +197,11 @@ export default function Header() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 12 }}
               transition={{ type: 'spring', damping: 18, stiffness: 280, delay: 0.1 }}
-              className="hidden md:flex items-center shrink-0 pr-1"
+              className="hidden md:flex items-center shrink-0 pr-2"
             >
               <Link
                 to="/contact"
-                className="pointer-events-auto inline-flex items-center rounded-full bg-navy-900 px-4 py-2 text-sm font-semibold text-white hover:bg-navy-800 transition-colors whitespace-nowrap"
+                className="pointer-events-auto inline-flex items-center rounded-full bg-navy-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-navy-800 transition-colors whitespace-nowrap shadow-md"
                 onClick={(e) => e.stopPropagation()}
               >
                 Contact Us
@@ -213,7 +225,7 @@ export default function Header() {
                 setMobileMenuOpen((v) => !v);
               }}
               whileTap={{ scale: 0.9 }}
-              className="md:hidden ml-auto mr-2 inline-flex items-center justify-center h-9 w-9 rounded-full bg-navy-50 text-navy-900 hover:bg-navy-100 transition-colors pointer-events-auto"
+              className="md:hidden ml-auto mr-2 inline-flex items-center justify-center h-10 w-10 rounded-full bg-navy-50 text-navy-900 hover:bg-navy-100 transition-colors pointer-events-auto"
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileMenuOpen}
             >
@@ -226,7 +238,7 @@ export default function Header() {
                     exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
                     transition={{ type: 'spring', damping: 18, stiffness: 300 }}
                   >
-                    <X className="h-[18px] w-[18px]" strokeWidth={2.25} />
+                    <X className="h-5 w-5" strokeWidth={2.25} />
                   </motion.div>
                 ) : (
                   <motion.div
@@ -236,7 +248,7 @@ export default function Header() {
                     exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
                     transition={{ type: 'spring', damping: 18, stiffness: 300 }}
                   >
-                    <Menu className="h-[18px] w-[18px]" strokeWidth={2.25} />
+                    <Menu className="h-5 w-5" strokeWidth={2.25} />
                   </motion.div>
                 )}
               </AnimatePresence>
