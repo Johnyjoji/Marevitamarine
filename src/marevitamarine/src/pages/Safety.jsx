@@ -271,8 +271,8 @@ export default function Safety() {
             className="absolute inset-0 z-0"
           >
             <img
-              src="/assets/aboutuspics/wikimediaimages-arco-humber-883867_1920.jpg"
-              alt="Commercial vessel navigating open waters"
+              src="/assets/harbor-sunset.jpg"
+              alt="Harbor at sunset"
               className="w-full h-full object-cover object-center"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/70 to-navy-950/30" />

@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import {
   Ship,
   ArrowRight,
@@ -38,6 +38,15 @@ export default function Fleet() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [selectedVessel, setSelectedVessel] = useState(null);
   const navigate = useNavigate();
+
+  const heroRef = useRef(null);
+  const { scrollYProgress: heroScroll } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  });
+  const heroY = useTransform(heroScroll, [0, 1], [0, 200]);
+  const heroOpacity = useTransform(heroScroll, [0, 0.6], [1, 0]);
+  const heroScale = useTransform(heroScroll, [0, 1], [1, 1.08]);
 
   const categories = [
     { id: 'all', label: 'All Fleet Types' },
@@ -196,73 +205,77 @@ export default function Fleet() {
       {/* ============================================================
           1 / HERO (Dark #0f1318)
           ============================================================ */}
-      <StackedCardSection index={0} total={TOTAL_SECTIONS} targetScale={0.88} cardClassName="bg-navy-950">
-        <section className="relative bg-navy-900 text-white overflow-hidden pt-28 pb-20 lg:pt-36 lg:pb-28">
-          {/* Ambient background glow */}
-          <TrigAmbientGradientShift
-            amplitudeX={4}
-            amplitudeY={2}
-            period={MOTION.duration.ambientSlowest}
-            className="absolute inset-0 opacity-15 pointer-events-none"
+      <StackedCardSection
+        index={0}
+        total={TOTAL_SECTIONS}
+        targetScale={0.88}
+        cardClassName="bg-navy-950 text-white"
+      >
+        <section
+          ref={heroRef}
+          className="relative min-h-[100dvh] flex items-end overflow-hidden bg-navy-950"
+        >
+          <motion.div
+            style={{ y: heroY, scale: heroScale }}
+            className="absolute inset-0 z-0"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-marine-600/30 via-transparent to-marine-900/40" />
-          </TrigAmbientGradientShift>
+            <img
+              src="/assets/aboutuspics/wikimediaimages-arco-humber-883867_1920.jpg"
+              alt="Commercial fleet vessel navigating open waters"
+              className="w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/70 to-navy-950/30" />
+            <div className="absolute inset-0 bg-gradient-to-r from-navy-950/80 via-transparent to-transparent" />
+          </motion.div>
 
-          {/* Ambient floating decorative icons */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <TrigAmbientDrift
-              amplitudeX={MOTION.amplitude.small}
-              amplitudeY={MOTION.amplitude.small}
-              periodX={MOTION.duration.ambientSlow}
-              periodY={MOTION.duration.ambientSlower}
-              className="absolute top-24 right-12 w-14 h-14 text-marine-400/10 hidden md:block"
-            >
-              <Compass className="w-full h-full" strokeWidth={1} />
-            </TrigAmbientDrift>
-            <TrigAmbientRotate
-              maxDegrees={5}
-              period={MOTION.duration.ambientSlowest}
-              className="absolute bottom-20 left-10 w-12 h-12 text-marine-400/10 hidden md:block"
-            >
-              <Anchor className="w-full h-full" strokeWidth={1} />
-            </TrigAmbientRotate>
-          </div>
+          <motion.div
+            style={{ opacity: heroOpacity }}
+            className="relative z-10 w-full"
+          >
+            <div className="mx-auto max-w-7xl px-6 lg:px-8 pb-16 sm:pb-24 pt-32">
+              <div className="max-w-4xl">
+                <TrigReveal direction="up" amplitude={20} duration={0.6}>
+                  <div className="relative z-40 pointer-events-auto inline-flex items-center gap-2 rounded-full bg-marine-500/10 border border-marine-400/20 px-4 py-1.5 text-xs font-mono tracking-widest text-marine-300 uppercase mb-6 backdrop-blur-sm">
+                    <Ship className="h-3.5 w-3.5 text-marine-400" />
+                    <span>Marevita Fleet Portfolio</span>
+                  </div>
+                </TrigReveal>
 
-          <div className="relative mx-auto max-w-7xl px-6 lg:px-8 z-10">
-            <TrigAmbientFloat amplitude={1.5} period={25000}>
-              <div className="relative z-40 pointer-events-auto inline-flex items-center gap-2 rounded-full bg-marine-500/10 border border-marine-400/20 px-4 py-1.5 text-xs font-mono tracking-widest text-marine-300 uppercase mb-6 backdrop-blur-sm">
-                <Ship className="h-3.5 w-3.5 text-marine-400" />
-                <span>Marevita Fleet Portfolio</span>
+                <TrigReveal direction="up" amplitude={40} delay={0.1} duration={0.9}>
+                  <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] text-white">
+                    Our Fleet <br />
+                    <span className="text-marine-400">
+                      Manned With Precision.
+                    </span>
+                  </h1>
+                </TrigReveal>
+
+                <TrigReveal direction="up" amplitude={20} delay={0.25} duration={0.7}>
+                  <p className="mt-6 text-lg sm:text-xl text-navy-200 max-w-3xl leading-relaxed">
+                    Our fleet support encompasses modern and well-maintained vessels operated with a strong focus on safety, operational efficiency, reliability, and environmental responsibility. We supply qualified, vetted, and certified crew across key global maritime sectors.
+                  </p>
+                </TrigReveal>
+
+                <TrigReveal direction="up" amplitude={10} delay={0.4} duration={0.6}>
+                  <div className="mt-8 flex flex-wrap items-center gap-4">
+                    <a
+                      href="#fleet-categories"
+                      className="relative z-40 pointer-events-auto inline-flex items-center gap-2 rounded-full bg-marine-500 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-marine-950/60 hover:bg-marine-400 transition-all"
+                    >
+                      <span>Explore Vessel Categories</span>
+                      <ChevronRight className="h-4 w-4" />
+                    </a>
+                    <button
+                      onClick={() => navigate('/contact')}
+                      className="relative z-40 pointer-events-auto inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-all backdrop-blur-sm"
+                    >
+                      <span>Request Crew Manning</span>
+                    </button>
+                  </div>
+                </TrigReveal>
               </div>
-
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] text-white">
-                Our Fleet <br />
-                <span className="text-marine-400">
-                  Manned With Precision.
-                </span>
-              </h1>
-
-              <p className="mt-6 text-lg sm:text-xl text-navy-200 max-w-3xl leading-relaxed">
-                Our fleet support encompasses modern and well-maintained vessels operated with a strong focus on safety, operational efficiency, reliability, and environmental responsibility. We supply qualified, vetted, and certified crew across key global maritime sectors.
-              </p>
-
-              <div className="mt-8 flex flex-wrap items-center gap-4">
-                <a
-                  href="#fleet-categories"
-                  className="relative z-40 pointer-events-auto inline-flex items-center gap-2 rounded-full bg-marine-500 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-marine-950/60 hover:bg-marine-400 transition-all"
-                >
-                  <span>Explore Vessel Categories</span>
-                  <ChevronRight className="h-4 w-4" />
-                </a>
-                <button
-                  onClick={() => navigate('/contact')}
-                  className="relative z-40 pointer-events-auto inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/20 transition-all backdrop-blur-sm"
-                >
-                  <span>Request Crew Manning</span>
-                </button>
-              </div>
-            </TrigAmbientFloat>
-          </div>
+            </div>
+          </motion.div>
         </section>
       </StackedCardSection>
 
