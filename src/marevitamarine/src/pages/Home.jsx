@@ -1,40 +1,34 @@
+
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Anchor,
   ArrowRight,
-  Award,
   CheckCircle2,
   Compass,
   Ship,
-  Users,
   Waves,
 } from 'lucide-react';
-import SectionDivider from '../components/SectionDivider';
-import HeroVideoCarousel, { HeroText } from '../components/HeroVideoCarousel';
+
+import HeroVideoCarousel from '../components/HeroVideoCarousel';
 import CountUp from '../components/CountUp';
 import { useHeroScroll } from '../context/HeroScrollContext';
+
 import {
   TrigParallax,
   TrigReveal,
   TrigFloating,
   TrigWaveDivider,
   TrigScrollRotate,
-  TrigScaleReveal,
   TrigScrollIndicator,
   TrigBackgroundWave,
-  TrigSectionWrapper,
   TrigAmbientFloat,
   TrigAmbientDrift,
-  TrigAmbientBreath,
 } from '../components/TrigScrollAnimations';
 
-/**
- * Per-scene layout: where the typography sits inside the safe band.
- * - left   = flush to the left edge, italic-anchored departure feel
- * - center = centered column, large condensed display
- * - right  = right-aligned, all-caps letterspaced
- */
+
+/* ===================== HERO COMPOSITION ===================== */
+
 const COMPOSITION_ALIGN = {
   left: 'items-start text-left mr-auto',
   center: 'items-center text-center mx-auto',
@@ -53,17 +47,14 @@ const HEADLINE_STYLE = {
   right: 'font-light leading-[1.0] tracking-[0.04em] uppercase',
 };
 
-/**
- * HeroComposition — Renders the per-scene typography inside the safe band.
- * No enter/exit animations — the full card flip handles transitions.
- */
+
+/* ===================== HERO TEXT ===================== */
+
 function HeroComposition({ scene, isExiting = false }) {
-  // No animations needed — the parent card flips as a unit
   return (
     <div
       className={`flex flex-col gap-5 ${COMPOSITION_ALIGN[scene.composition]} ${COMPOSITION_WIDTH[scene.composition]}`}
     >
-      {/* Eyebrow — small, all caps, tracks the scene */}
       <AnimatePresence mode="wait">
         <motion.div
           key={scene.id + '-eyebrow'}
@@ -77,12 +68,15 @@ function HeroComposition({ scene, isExiting = false }) {
         </motion.div>
       </AnimatePresence>
 
-      {/* Headline — the editorial centerpiece */}
-      <h1 className={`erica-one text-white drop-shadow-md text-4xl sm:text-6xl lg:text-7xl ${HEADLINE_STYLE[scene.composition]}`}>
+      <h1
+        className={`erica-one text-white drop-shadow-md text-4xl sm:text-6xl lg:text-7xl ${HEADLINE_STYLE[scene.composition]}`}
+      >
         {scene.headline.map((line, i) => (
           <span key={i} className="block">
             {i === scene.headline.length - 1 ? (
-              <span className="font-space font-bold text-marine-300">{line}</span>
+              <span className="font-space font-bold text-marine-300">
+                {line}
+              </span>
             ) : (
               <span className="erica-one">{line}</span>
             )}
@@ -90,12 +84,10 @@ function HeroComposition({ scene, isExiting = false }) {
         ))}
       </h1>
 
-      {/* Body — the proof */}
       <p className="text-base prompt sm:text-lg text-slate-200 leading-relaxed max-w-xl font-light drop-shadow">
         {scene.body}
       </p>
 
-      {/* Single primary CTA per scene — spring hover/tap for a premium tactile feel */}
       <div className="mt-4">
         <motion.div
           whileHover={{ y: -2, scale: 1.02 }}
@@ -108,6 +100,7 @@ function HeroComposition({ scene, isExiting = false }) {
             className="group inline-flex items-center gap-3 rounded-full bg-marine-500 pl-5 pr-3 py-3 text-sm text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 hover:shadow-marine-500/40 transition-colors"
           >
             {scene.cta.label}
+
             <motion.span
               className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15"
               whileHover={{ backgroundColor: 'rgba(255,255,255,0.25)' }}
@@ -128,239 +121,11 @@ function HeroComposition({ scene, isExiting = false }) {
   );
 }
 
-/**
- * CaseStudyCard — One vessel/port/crew moment, rendered as a bold editorial
- * spread. Photographic backgrounds are out of scope until licensing is set,
- * so the cards use brand-toned geometric SVG illustrations instead.
- */
-function CaseStudyCard({ kind, name, meta, fact, href, index, className = '' }) {
-  return (
-    <motion.article
-      initial={{ opacity: 0, y: 40, scale: 1.02 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{
-        duration: 0.7,
-        delay: index * 0.14,
-        ease: [0.2, 0.65, 0.3, 0.9],
-      }}
-      className={`group relative overflow-hidden rounded-2xl bg-navy-950 text-white ${className || 'aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5]'}`}
-    >
-      <CaseStudyIllustration kind={kind} />
 
-      {/* Bottom-anchored caption — magazine-spread feel */}
-      <div className="absolute inset-0 flex flex-col justify-between p-7 sm:p-8 z-10">
-        <div className="flex items-center gap-2 text-xs font-semibold tracking-[0.25em] uppercase text-marine-300">
-          <span className="w-6 h-px bg-marine-400" />
-          {kind}
-        </div>
-        <div>
-          <p className="text-xs font-mono tracking-widest text-marine-300/80 mb-2">
-            {meta}
-          </p>
-          <h3 className="text-2xl sm:text-3xl font-bold leading-[1.05] tracking-tight">
-            {name}
-          </h3>
-          <p className="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed max-w-md">
-            {fact}
-          </p>
-          <Link
-            to={href}
-            className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-marine-300 group-hover:translate-x-2 transition-transform"
-          >
-            Learn more
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </div>
-    </motion.article>
-  );
-}
-
-/**
- * CaseStudyIllustration — Geometric SVG composition for each card.
- * Different for each kind, but always in the marine/navy palette.
- */
-function CaseStudyIllustration({ kind }) {
-  if (kind === 'Vessel') {
-    return (
-      <svg
-        viewBox="0 0 400 500"
-        preserveAspectRatio="xMidYMid slice"
-        className="absolute inset-0 w-full h-full"
-        aria-hidden="true"
-      >
-        <defs>
-          <linearGradient id="seaGrad" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="#0c4a6e" />
-            <stop offset="100%" stopColor="#020617" />
-          </linearGradient>
-        </defs>
-        <rect width="400" height="500" fill="url(#seaGrad)" />
-        {/* Horizon line */}
-        <line x1="0" y1="220" x2="400" y2="220" stroke="#0ea5e9" strokeOpacity="0.35" strokeWidth="0.5" />
-        {/* Sun */}
-        <circle cx="290" cy="180" r="32" fill="#38bdf8" fillOpacity="0.18" />
-        <circle cx="290" cy="180" r="18" fill="#7dd3fc" fillOpacity="0.35" />
-        {/* Hull */}
-        <path d="M 40 310 L 360 310 L 340 350 L 60 350 Z" fill="#e2e8f0" />
-        {/* Superstructure */}
-        <rect x="120" y="270" width="160" height="40" fill="#cbd5e1" />
-        <rect x="200" y="240" width="60" height="30" fill="#cbd5e1" />
-        {/* Funnel */}
-        <rect x="220" y="210" width="20" height="30" fill="#0f1318" />
-        <rect x="218" y="208" width="24" height="6" fill="#0ea5e9" />
-        {/* Masts */}
-        <line x1="100" y1="270" x2="100" y2="210" stroke="#cbd5e1" strokeWidth="1" />
-        <line x1="280" y1="270" x2="280" y2="220" stroke="#cbd5e1" strokeWidth="1" />
-        {/* Waves */}
-        {[360, 390, 420, 450].map((y, i) => (
-          <path
-            key={y}
-            d={`M 0 ${y} Q 100 ${y - 6} 200 ${y} T 400 ${y}`}
-            stroke="#0ea5e9"
-            strokeOpacity={0.15 + i * 0.07}
-            strokeWidth="0.8"
-            fill="none"
-          />
-        ))}
-      </svg>
-    );
-  }
-
-  if (kind === 'Port') {
-    return (
-      <svg
-        viewBox="0 0 400 500"
-        preserveAspectRatio="xMidYMid slice"
-        className="absolute inset-0 w-full h-full"
-        aria-hidden="true"
-      >
-        <defs>
-          <linearGradient id="portGrad" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="#082f49" />
-            <stop offset="100%" stopColor="#020617" />
-          </linearGradient>
-        </defs>
-        <rect width="400" height="500" fill="url(#portGrad)" />
-        {/* Sky grid lines */}
-        <line x1="0" y1="80" x2="400" y2="80" stroke="#0ea5e9" strokeOpacity="0.1" strokeWidth="0.5" />
-        <line x1="0" y1="140" x2="400" y2="140" stroke="#0ea5e9" strokeOpacity="0.1" strokeWidth="0.5" />
-        {/* Cranes */}
-        {[80, 160, 240, 320].map((x, i) => (
-          <g key={x} opacity={0.6 - i * 0.05}>
-            <line x1={x} y1="80" x2={x} y2="320" stroke="#475569" strokeWidth="2" />
-            <line x1={x} y1="80" x2={x + 60} y2="110" stroke="#475569" strokeWidth="2" />
-            <line x1={x + 60} y1="110" x2={x + 60} y2="140" stroke="#64748b" strokeWidth="1" />
-            <rect x={x + 50} y="140" width="20" height="14" fill="#0ea5e9" fillOpacity="0.6" />
-          </g>
-        ))}
-        {/* Dock */}
-        <rect x="0" y="320" width="400" height="40" fill="#1e293b" />
-        <line x1="0" y1="340" x2="400" y2="340" stroke="#0ea5e9" strokeOpacity="0.4" strokeWidth="0.5" />
-        {/* Water reflections */}
-        {[380, 410, 440, 470].map((y, i) => (
-          <line
-            key={y}
-            x1="0"
-            y1={y}
-            x2="400"
-            y2={y}
-            stroke="#0ea5e9"
-            strokeOpacity={0.08 + i * 0.05}
-            strokeWidth="0.5"
-          />
-        ))}
-      </svg>
-    );
-  }
-
-  if (kind === 'Crew') {
-    return (
-      <svg
-        viewBox="0 0 400 500"
-        preserveAspectRatio="xMidYMid slice"
-        className="absolute inset-0 w-full h-full"
-        aria-hidden="true"
-      >
-        <defs>
-          <linearGradient id="crewGrad" x1="0" x2="1" y1="0" y2="1">
-            <stop offset="0%" stopColor="#0c4a6e" />
-            <stop offset="100%" stopColor="#020617" />
-          </linearGradient>
-        </defs>
-        <rect width="400" height="500" fill="url(#crewGrad)" />
-        {/* Compass rose */}
-        <g transform="translate(200, 230)">
-          <circle r="120" fill="none" stroke="#0ea5e9" strokeOpacity="0.15" strokeWidth="0.5" />
-          <circle r="90" fill="none" stroke="#0ea5e9" strokeOpacity="0.2" strokeWidth="0.5" />
-          <circle r="60" fill="none" stroke="#0ea5e9" strokeOpacity="0.3" strokeWidth="0.5" />
-          <circle r="3" fill="#7dd3fc" />
-          {/* Cardinal points */}
-          {[0, 90, 180, 270].map((deg) => (
-            <g key={deg} transform={`rotate(${deg})`}>
-              <path d="M 0 -110 L -4 -90 L 0 -85 L 4 -90 Z" fill="#7dd3fc" fillOpacity="0.7" />
-            </g>
-          ))}
-          {/* Minor points */}
-          {[45, 135, 225, 315].map((deg) => (
-            <g key={deg} transform={`rotate(${deg})`}>
-              <path d="M 0 -100 L -2 -88 L 0 -85 L 2 -88 Z" fill="#0ea5e9" fillOpacity="0.5" />
-            </g>
-          ))}
-        </g>
-        {/* Coordinate text */}
-        <text x="20" y="470" fontFamily="ui-monospace, monospace" fontSize="9" fill="#7dd3fc" fillOpacity="0.4">
-          19°04′N · 72°52′E
-        </text>
-        <text x="290" y="40" fontFamily="ui-monospace, monospace" fontSize="9" fill="#7dd3fc" fillOpacity="0.4">
-          MMPL · NEW START
-        </text>
-      </svg>
-    );
-  }
-
-  return null;
-}
-
-/**
- * DecorativeIcon - Floating decorative icon with trig-based scroll rotation
- */
-function DecorativeIcon({ Icon, className, style, amplitude = 20, period = 5000, rotateStrength = 8 }) {
-  return (
-    <TrigScrollRotate maxDegrees={rotateStrength} easing="organic" className={className} style={style}>
-      <TrigFloating amplitude={amplitude} period={period}>
-        <Icon className="w-full h-full" strokeWidth={1} />
-      </TrigFloating>
-    </TrigScrollRotate>
-  );
-}
+/* ===================== HOME CONTENT ===================== */
 
 function HomeContent() {
   const { heroRef } = useHeroScroll();
-  const caseStudies = [
-    {
-      kind: 'Vessel Management',
-      meta: 'MV NORTHERN STAR · BULK CARRIER · 82,000 DWT',
-      name: 'Six-week Atlantic crossing with single-point accountability.',
-      fact: 'Full technical, crew, and commercial management from Singapore charter to Rotterdam discharge with zero off-hire time.',
-      href: '/services',
-    },
-    {
-      kind: 'Port Agency',
-      meta: 'MUMBAI · JNPT · TURNAROUND 38 HOURS',
-      name: 'Twelve cranes, one ship, a hundred moving parts.',
-      fact: 'Bunkers, provisions, customs clearance, and coordinated crew changes completed ahead of schedule.',
-      href: '/services',
-    },
-    {
-      kind: 'Crewing Solutions',
-      meta: 'CHIEF OFFICER · PLACEMENT · 72 HOURS',
-      name: 'The right rank and vessel endorsement in three days.',
-      fact: 'Rapid mobilization of certified deck officers ensuring continuous watchkeeping and sea-time compliance.',
-      href: '/careers',
-    },
-  ];
 
   const stats = [
     { value: '24/7', label: 'Operations support', sub: 'round-the-clock coverage' },
@@ -390,55 +155,97 @@ function HomeContent() {
 
   return (
     <div>
-      {/* Scroll progress indicator — uses sine wave for subtle lateral drift */}
       <TrigScrollIndicator color="#0ea5e9" height={3} />
 
-      {/* Decorative floating icons in the hero zone */}
-      <TrigFloating amplitude={15} period={6000} className="fixed top-1/3 left-8 w-8 h-8 text-marine-400/20 pointer-events-none z-0 hidden lg:block">
+      {/* Decorative floating icons */}
+
+      <TrigFloating
+        amplitude={15}
+        period={6000}
+        className="fixed top-1/3 left-8 w-8 h-8 text-marine-400/20 pointer-events-none z-0 hidden lg:block"
+      >
         <Anchor className="w-full h-full" strokeWidth={1} />
       </TrigFloating>
-      <TrigFloating amplitude={20} period={7000} horizontal horizontalAmplitude={10} className="fixed top-2/3 right-12 w-10 h-10 text-marine-400/15 pointer-events-none z-0 hidden lg:block">
+
+      <TrigFloating
+        amplitude={20}
+        period={7000}
+        horizontal
+        horizontalAmplitude={10}
+        className="fixed top-2/3 right-12 w-10 h-10 text-marine-400/15 pointer-events-none z-0 hidden lg:block"
+      >
         <Waves className="w-full h-full" strokeWidth={1} />
       </TrigFloating>
-      <TrigScrollRotate maxDegrees={10} easing="organic" className="fixed top-1/2 right-1/4 w-6 h-6 text-marine-400/20 pointer-events-none z-0 hidden lg:block">
+
+      <TrigScrollRotate
+        maxDegrees={10}
+        easing="organic"
+        className="fixed top-1/2 right-1/4 w-6 h-6 text-marine-400/20 pointer-events-none z-0 hidden lg:block"
+      >
         <TrigFloating amplitude={12} period={5500} horizontal>
           <Compass className="w-full h-full" strokeWidth={1} />
         </TrigFloating>
       </TrigScrollRotate>
 
-      {/* Ambient floating elements in hero zone */}
-      <TrigAmbientFloat amplitude={2} period={25000} className="fixed top-1/3 left-8 w-8 h-8 text-marine-400/15 pointer-events-none z-0 hidden lg:block">
+      {/* Ambient floating elements */}
+
+      <TrigAmbientFloat
+        amplitude={2}
+        period={25000}
+        className="fixed top-1/3 left-8 w-8 h-8 text-marine-400/15 pointer-events-none z-0 hidden lg:block"
+      >
         <Anchor className="w-full h-full" strokeWidth={1} />
       </TrigAmbientFloat>
-      <TrigAmbientFloat amplitude={2} period={30000} horizontal horizontalAmplitude={2} className="fixed top-2/3 right-12 w-10 h-10 text-marine-400/10 pointer-events-none z-0 hidden lg:block">
+
+      <TrigAmbientFloat
+        amplitude={2}
+        period={30000}
+        horizontal
+        horizontalAmplitude={2}
+        className="fixed top-2/3 right-12 w-10 h-10 text-marine-400/10 pointer-events-none z-0 hidden lg:block"
+      >
         <Waves className="w-full h-full" strokeWidth={1} />
       </TrigAmbientFloat>
-      <TrigAmbientDrift amplitudeX={1} amplitudeY={1} periodX={20000} periodY={25000} className="fixed top-1/2 right-1/4 w-6 h-6 text-marine-400/15 pointer-events-none z-0 hidden lg:block">
+
+      <TrigAmbientDrift
+        amplitudeX={1}
+        amplitudeY={1}
+        periodX={20000}
+        periodY={25000}
+        className="fixed top-1/2 right-1/4 w-6 h-6 text-marine-400/15 pointer-events-none z-0 hidden lg:block"
+      >
         <Compass className="w-full h-full" strokeWidth={1} />
       </TrigAmbientDrift>
 
-      {/* ===================== HERO with per-scene compositions ===================== */}
+
+      {/* ===================== HERO ===================== */}
+
       <HeroVideoCarousel ref={heroRef}>
         {({ scene, isExiting }) => (
           <HeroComposition scene={scene} isExiting={isExiting} />
         )}
       </HeroVideoCarousel>
 
-      {/* Animated wave divider: hero (dark) → white — fast multi-layer waves */}
+
+      {/* ===================== HERO WAVE DIVIDER ===================== */}
+
       <TrigWaveDivider
         fromColor="#0f1318"
         toColor="white"
         height={140}
         baseSpeed={1.5}
         layers={[
-          { frequency: 1.3, amplitude: 22, speed: 0.014, phaseOffset: 0,    opacity: 1.0 },
-          { frequency: 2.1, amplitude: 14, speed: 0.026, phaseOffset: 1.2,  opacity: 0.55 },
-          { frequency: 3.8, amplitude: 8,  speed: 0.042, phaseOffset: 2.5,  opacity: 0.30 },
+          { frequency: 1.3, amplitude: 22, speed: 0.014, phaseOffset: 0, opacity: 1.0 },
+          { frequency: 2.1, amplitude: 14, speed: 0.026, phaseOffset: 1.2, opacity: 0.55 },
+          { frequency: 3.8, amplitude: 8, speed: 0.042, phaseOffset: 2.5, opacity: 0.30 },
         ]}
       />
 
+
       {/* ===================== WHAT WE DO ===================== */}
-      <section className="bg-navy-900 text-white relative overflow-hidden">
+
+      <section className="bg-white text-navy-900 relative overflow-hidden">
+
         <TrigBackgroundWave
           className="opacity-20"
           baseColor="rgba(14, 165, 233, 0.03)"
@@ -447,62 +254,102 @@ function HomeContent() {
           speed={0.00025}
           layerCount={2}
         />
+
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
+
           <div className="grid gap-12 lg:grid-cols-2 items-center">
+
+            {/* LEFT: TEXT */}
+
             <div>
-              <span className="inline-block text-xs font-semibold tracking-[0.2em] uppercase text-marine-400 mb-4">What We Do</span>
-              <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] text-white mb-6">
+              <span className="inline-block text-xs font-semibold tracking-[0.2em] uppercase text-marine-600 mb-4">
+                What We Do
+              </span>
+
+              <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] text-navy-900 mb-6">
                 Navigating Maritime Needs.<br />
                 Delivering Marine Solutions.
               </h2>
-              <p className="text-base sm:text-lg text-navy-300 leading-relaxed max-w-xl">
+
+              <p className="text-base sm:text-lg text-navy-600 leading-relaxed max-w-xl">
                 We are dedicated to providing marine services and solutions that support the evolving needs of the maritime industry. Through a practical, client-focused approach, we aim to make maritime operations more efficient and reliable.
               </p>
+
               <div className="mt-8">
                 <Link
                   to="/services"
-                  className="relative z-40 pointer-events-auto inline-flex items-center gap-2 rounded-full bg-marine-500 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-marine-950/60 hover:bg-marine-400 transition-all"
+                  className="relative z-40 pointer-events-auto inline-flex items-center gap-2 rounded-full bg-marine-500 px-7 py-3.5 text-sm font-semibold text-white shadow-xl shadow-marine-950/20 hover:bg-marine-400 transition-all"
                 >
                   <span>Explore Our Services →</span>
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
             </div>
-            <div className="relative">
+
+
+            {/* RIGHT: LOGO ON LIGHT BACKGROUND */}
+
+            <div className="relative flex items-center justify-center">
+
               <img
                 src="/logo-with-name.png"
-                alt="Marevita Marine maritime vessel at sea"
-                className="relative w-full h-[420] sm:h-[560] lg:h-[640] object-cover rounded-lg shadow-2xl shadow-marine-950/40"
+                alt="Marevita Marine Private Limited logo"
+                className="
+                  block
+                  w-full
+                  max-w-[650px]
+                  h-auto
+                  object-contain
+                  bg-transparent
+                "
               />
+
             </div>
+
           </div>
         </div>
       </section>
-      {/* Animated wave divider: white → black — fast multi-layer waves */}
+
+
+      {/* ===================== WAVE DIVIDER ===================== */}
+
       <TrigWaveDivider
         fromColor="white"
         toColor="#0f1318"
         height={140}
         baseSpeed={1.3}
         layers={[
-          { frequency: 1.1, amplitude: 20, speed: 0.012, phaseOffset: 0,    opacity: 1.0 },
-          { frequency: 2.3, amplitude: 13, speed: 0.024, phaseOffset: 1.5,  opacity: 0.55 },
-          { frequency: 4.0, amplitude: 7,  speed: 0.038, phaseOffset: 2.8,  opacity: 0.30 },
+          { frequency: 1.1, amplitude: 20, speed: 0.012, phaseOffset: 0, opacity: 1.0 },
+          { frequency: 2.3, amplitude: 13, speed: 0.024, phaseOffset: 1.5, opacity: 0.55 },
+          { frequency: 4.0, amplitude: 7, speed: 0.038, phaseOffset: 2.8, opacity: 0.30 },
         ]}
       />
 
-      {/* ===================== STATS (Black) — provenanced ===================== */}
+
+      {/* ===================== STATS ===================== */}
+
       <section className="bg-navy-900 text-white relative overflow-hidden">
-        {/* Subtle parallax decorative element */}
-        <TrigParallax strength={-40} easing="organic" className="absolute top-10 right-10 w-32 h-32 text-marine-400/10 pointer-events-none">
+
+        <TrigParallax
+          strength={-40}
+          easing="organic"
+          className="absolute top-10 right-10 w-32 h-32 text-marine-400/10 pointer-events-none"
+        >
           <Compass className="w-full h-full" strokeWidth={0.5} />
         </TrigParallax>
-        <TrigParallax strength={30} easing="sine" className="absolute bottom-10 left-10 w-24 h-24 text-marine-400/8 pointer-events-none">
+
+        <TrigParallax
+          strength={30}
+          easing="sine"
+          className="absolute bottom-10 left-10 w-24 h-24 text-marine-400/8 pointer-events-none"
+        >
           <Anchor className="w-full h-full" strokeWidth={0.5} />
         </TrigParallax>
 
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8 relative z-10">
+
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-6">
+
             {stats.map((stat, i) => (
               <motion.div
                 key={stat.label}
@@ -513,35 +360,47 @@ function HomeContent() {
                 className="text-left"
               >
                 <div className="text-5xl lg:text-6xl font-extrabold text-marine-400 leading-none">
-                  <CountUp to={stat.value} delay={0.1 + i * 0.12} duration={1.1} />
+                  <CountUp
+                    to={stat.value}
+                    delay={0.1 + i * 0.12}
+                    duration={1.1}
+                  />
                 </div>
+
                 <div className="mt-3 text-sm font-semibold uppercase tracking-wider text-white">
                   {stat.label}
                 </div>
+
                 <div className="mt-1 text-xs text-navy-300 leading-relaxed">
                   {stat.sub}
                 </div>
               </motion.div>
             ))}
+
           </div>
         </div>
       </section>
 
-      {/* Animated wave divider: black → white — fast multi-layer waves */}
+
+      {/* ===================== STATS WAVE DIVIDER ===================== */}
+
       <TrigWaveDivider
         fromColor="#0f1318"
         toColor="white"
         height={140}
         baseSpeed={1.4}
         layers={[
-          { frequency: 1.4, amplitude: 19, speed: 0.013, phaseOffset: 0,    opacity: 1.0 },
-          { frequency: 2.2, amplitude: 12, speed: 0.025, phaseOffset: 1.3,  opacity: 0.55 },
-          { frequency: 3.6, amplitude: 7,  speed: 0.040, phaseOffset: 2.6,  opacity: 0.30 },
+          { frequency: 1.4, amplitude: 19, speed: 0.013, phaseOffset: 0, opacity: 1.0 },
+          { frequency: 2.2, amplitude: 12, speed: 0.025, phaseOffset: 1.3, opacity: 0.55 },
+          { frequency: 3.6, amplitude: 7, speed: 0.040, phaseOffset: 2.6, opacity: 0.30 },
         ]}
       />
 
-      {/* ===================== WHY CHOOSE US (White) ===================== */}
+
+      {/* ===================== WHY CHOOSE US ===================== */}
+
       <section className="bg-white text-navy-900 relative overflow-hidden">
+
         <TrigBackgroundWave
           className="opacity-40"
           baseColor="rgba(14, 165, 233, 0.03)"
@@ -552,20 +411,25 @@ function HomeContent() {
         />
 
         <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32 relative z-10">
+
           <div className="max-w-3xl mb-16">
+
             <TrigReveal direction="up" amplitude={30} duration={0.8}>
               <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
                 Why operators partner long term.
               </h2>
             </TrigReveal>
+
             <TrigReveal direction="up" amplitude={20} delay={0.15} duration={0.7}>
               <p className="mt-6 text-lg text-navy-600 max-w-2xl leading-relaxed">
                 The maritime industry rewards quiet, disciplined, and reliable service. We bring hands-on marine command directly into shore operations.
               </p>
             </TrigReveal>
+
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+
             {differentiators.map((item, i) => (
               <TrigReveal
                 key={item.title}
@@ -575,51 +439,81 @@ function HomeContent() {
                 duration={0.6}
               >
                 <div className="p-8 rounded-2xl border border-navy-100 bg-navy-50/30 hover:border-marine-200 transition-colors">
+
                   <div className="flex items-center gap-4 mb-4">
+
                     <div className="w-10 h-10 rounded-xl bg-marine-50 text-marine-600 flex items-center justify-center flex-shrink-0">
                       <CheckCircle2 className="h-5 w-5" />
                     </div>
-                    <h3 className="text-xl font-bold text-navy-900">{item.title}</h3>
+
+                    <h3 className="text-xl font-bold text-navy-900">
+                      {item.title}
+                    </h3>
+
                   </div>
+
                   <p className="text-navy-600 leading-relaxed text-sm sm:text-base pl-14">
                     {item.description}
                   </p>
+
                 </div>
               </TrigReveal>
             ))}
+
           </div>
         </div>
       </section>
 
-      {/* Animated wave divider: white → black — fast multi-layer waves */}
+
+      {/* ===================== WHITE TO BLACK WAVE ===================== */}
+
       <TrigWaveDivider
         fromColor="white"
         toColor="#0f1318"
         height={120}
         baseSpeed={1.2}
         layers={[
-          { frequency: 1.0, amplitude: 17, speed: 0.011, phaseOffset: 0,    opacity: 1.0 },
-          { frequency: 2.5, amplitude: 11, speed: 0.023, phaseOffset: 1.6,  opacity: 0.55 },
-          { frequency: 4.2, amplitude: 6,  speed: 0.036, phaseOffset: 3.0,  opacity: 0.30 },
+          { frequency: 1.0, amplitude: 17, speed: 0.011, phaseOffset: 0, opacity: 1.0 },
+          { frequency: 2.5, amplitude: 11, speed: 0.023, phaseOffset: 1.6, opacity: 0.55 },
+          { frequency: 4.2, amplitude: 6, speed: 0.036, phaseOffset: 3.0, opacity: 0.30 },
         ]}
       />
 
-      {/* ===================== CTA (Black) ===================== */}
+
+      {/* ===================== CTA ===================== */}
+
       <section className="bg-navy-900 text-white relative overflow-hidden">
-        {/* Floating decorative shapes */}
-        <TrigFloating amplitude={25} period={8000} className="absolute top-20 left-20 w-16 h-16 text-marine-400/10 pointer-events-none">
+
+        <TrigFloating
+          amplitude={25}
+          period={8000}
+          className="absolute top-20 left-20 w-16 h-16 text-marine-400/10 pointer-events-none"
+        >
           <Ship className="w-full h-full" strokeWidth={0.5} />
         </TrigFloating>
-        <TrigFloating amplitude={20} period={6500} horizontal horizontalAmplitude={15} className="absolute bottom-32 right-32 w-20 h-20 text-marine-400/8 pointer-events-none">
+
+        <TrigFloating
+          amplitude={20}
+          period={6500}
+          horizontal
+          horizontalAmplitude={15}
+          className="absolute bottom-32 right-32 w-20 h-20 text-marine-400/8 pointer-events-none"
+        >
           <Waves className="w-full h-full" strokeWidth={0.5} />
         </TrigFloating>
-        <TrigScrollRotate maxDegrees={15} easing="organic" className="absolute top-1/2 left-1/3 w-12 h-12 text-marine-400/10 pointer-events-none">
+
+        <TrigScrollRotate
+          maxDegrees={15}
+          easing="organic"
+          className="absolute top-1/2 left-1/3 w-12 h-12 text-marine-400/10 pointer-events-none"
+        >
           <TrigFloating amplitude={15} period={7000} horizontal>
             <Compass className="w-full h-full" strokeWidth={0.5} />
           </TrigFloating>
         </TrigScrollRotate>
 
         <div className="mx-auto max-w-4xl px-6 py-24 lg:px-8 lg:py-32 text-center relative z-10">
+
           <TrigReveal direction="up" amplitude={30} duration={0.8}>
             <h2 className="mt-6 text-3xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.05]">
               One accountable team.
@@ -627,13 +521,16 @@ function HomeContent() {
               From the pilot to the port.
             </h2>
           </TrigReveal>
+
           <TrigReveal direction="up" amplitude={20} delay={0.15} duration={0.7}>
             <p className="mt-6 text-lg text-navy-200 max-w-2xl mx-auto">
               Tell us about your fleet, your voyage, your next challenge. We respond within one business day, with a named point of contact.
             </p>
           </TrigReveal>
+
           <TrigReveal direction="up" amplitude={20} delay={0.3} duration={0.7}>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+
               <motion.div
                 whileHover={{ y: -2, scale: 1.02 }}
                 whileTap={{ scale: 0.97, y: 0 }}
@@ -645,6 +542,7 @@ function HomeContent() {
                   className="group inline-flex items-center gap-3 rounded-full bg-marine-500 pl-7 pr-5 py-4 text-sm font-semibold text-white shadow-2xl shadow-marine-950/50 hover:bg-marine-400 hover:shadow-marine-500/40 transition-colors"
                 >
                   Contact our team
+
                   <motion.span
                     className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15"
                     whileHover={{ backgroundColor: 'rgba(255,255,255,0.25)' }}
@@ -660,18 +558,25 @@ function HomeContent() {
                   </motion.span>
                 </Link>
               </motion.div>
+
             </div>
           </TrigReveal>
+
           <TrigReveal direction="up" amplitude={15} delay={0.4} duration={0.6}>
             <p className="mt-6 text-xs text-navy-400 font-mono tracking-widest uppercase">
               24/7 Support: info@marevitamarine.com
             </p>
           </TrigReveal>
+
         </div>
       </section>
+
     </div>
   );
 }
+
+
+/* ===================== EXPORT ===================== */
 
 export default function Home() {
   return <HomeContent />;
