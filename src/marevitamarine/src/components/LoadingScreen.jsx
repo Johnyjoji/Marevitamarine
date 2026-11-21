@@ -4,9 +4,12 @@ import { WifiOff, RefreshCw } from 'lucide-react';
 import { useLoading } from '../context/LoadingContext';
 import { getSkeletonForRoute } from './LoadingSkeletons';
 
+// Exact sampled color of the video background to ensure zero visible seam
+const VIDEO_BG_COLOR = '#DDDFE1';
+
 /**
  * LoadingScreen
- * - Full-screen branded loading experience featuring loading-logo.webm.
+ * - Full-screen branded loading experience matching the exact video background color (#DDDFE1).
  * - Always plays the video to completion (3.4s).
  * - If online: smoothly transitions out to reveal the active page.
  * - If offline: seamlessly switches into the page-specific skeleton loader
@@ -78,16 +81,20 @@ export default function LoadingScreen() {
           initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.6, ease: 'easeInOut' } }}
-          className="fixed inset-0 z-[9999] bg-[#080a0d] overflow-y-auto"
+          className="fixed inset-0 z-[9999] overflow-y-auto"
+          style={{ backgroundColor: VIDEO_BG_COLOR }}
           role="status"
           aria-label="Loading application"
           aria-busy="true"
         >
           {/* ============================================================
-              1 / VIDEO LAYER: Plays full 3.4s on entrance or offline nav
+              1 / VIDEO LAYER: Seamless background matching video's #DDDFE1
               ============================================================ */}
           {!showSkeleton && (
-            <div className="absolute inset-0 flex items-center justify-center bg-[#080a0d]">
+            <div
+              className="absolute inset-0 flex items-center justify-center overflow-hidden"
+              style={{ backgroundColor: VIDEO_BG_COLOR }}
+            >
               <video
                 ref={videoRef}
                 src="/loading-logo.webm"
@@ -96,13 +103,14 @@ export default function LoadingScreen() {
                 playsInline
                 disablePictureInPicture
                 onEnded={handleEnded}
-                className="w-full h-full object-contain max-w-4xl max-h-[85vh] mx-auto pointer-events-none"
+                className="w-full h-full object-contain pointer-events-none"
+                style={{ backgroundColor: VIDEO_BG_COLOR }}
               />
             </div>
           )}
 
           {/* ============================================================
-              2 / SKELETON LAYER: Appears if internet is not back after video
+              2 / SKELETON LAYER: Appears if internet is still down
               ============================================================ */}
           {showSkeleton && (
             <motion.div
@@ -111,19 +119,19 @@ export default function LoadingScreen() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="relative min-h-screen w-full bg-navy-950 text-white px-4 sm:px-8 pt-24 pb-32"
+              className="relative min-h-screen w-full bg-white text-navy-900 px-4 sm:px-8 pt-24 pb-32"
             >
               {/* Offline notification banner */}
-              <div className="mx-auto max-w-2xl mb-10 rounded-2xl bg-marine-950/80 border border-marine-400/30 p-4 sm:p-5 backdrop-blur-md shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="mx-auto max-w-2xl mb-10 rounded-2xl bg-navy-50 border border-navy-200 p-4 sm:p-5 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-3 text-left">
-                  <div className="h-10 w-10 rounded-xl bg-marine-500/20 text-marine-300 flex items-center justify-center shrink-0">
+                  <div className="h-10 w-10 rounded-xl bg-marine-50 text-marine-600 flex items-center justify-center shrink-0">
                     <WifiOff className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-white tracking-wide">
+                    <h4 className="text-sm font-bold text-navy-900 tracking-wide">
                       Connection interrupted
                     </h4>
-                    <p className="text-xs text-navy-300">
+                    <p className="text-xs text-navy-600">
                       Displaying cached blueprint. Will reconnect automatically once online.
                     </p>
                   </div>
@@ -132,7 +140,7 @@ export default function LoadingScreen() {
                 <button
                   type="button"
                   onClick={retryConnection}
-                  className="inline-flex items-center gap-2 rounded-full bg-marine-500 hover:bg-marine-400 text-white px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-colors shrink-0 cursor-pointer shadow-lg shadow-marine-950/50"
+                  className="inline-flex items-center gap-2 rounded-full bg-marine-500 hover:bg-marine-400 text-white px-4 py-2 text-xs font-semibold tracking-wider uppercase transition-colors shrink-0 cursor-pointer shadow-md"
                 >
                   <RefreshCw className="h-3.5 w-3.5" />
                   <span>Retry</span>
@@ -140,7 +148,7 @@ export default function LoadingScreen() {
               </div>
 
               {/* Page-specific skeleton layout */}
-              <div className="w-full max-w-7xl mx-auto opacity-75">
+              <div className="w-full max-w-7xl mx-auto">
                 <SkeletonComponent />
               </div>
             </motion.div>
