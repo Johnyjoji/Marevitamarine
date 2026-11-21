@@ -5,7 +5,7 @@ import { useLoading } from '../context/LoadingContext';
 import { getSkeletonForRoute } from './LoadingSkeletons';
 
 // Exact sampled color of the video background to ensure zero visible seam
-const VIDEO_BG_COLOR = '#DDDFE1';
+const VIDEO_BG_COLOR = '#E1E2E4';
 
 /**
  * LoadingScreen
