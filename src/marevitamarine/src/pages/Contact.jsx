@@ -185,7 +185,7 @@ export default function Contact() {
                 </motion.a>
 
                 <motion.a
-                  href="tel:+914842XXXXXX"
+                  href="tel:+919142673145"
                   whileHover={{ scale: 1.01, x: 6 }}
                   whileTap={{ scale: 0.99 }}
                   transition={{ type: 'spring', damping: 20, stiffness: 300 }}
@@ -196,7 +196,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <div className="text-xs font-mono uppercase tracking-wider text-slate-500 mb-0.5">Telephone & Emergency Desk</div>
-                    <div className="text-base sm:text-lg font-bold text-navy-900 group-hover:text-marine-600 transition-colors">+91 (484) 2XX XXXX</div>
+                    <div className="text-base sm:text-lg font-bold text-navy-900 group-hover:text-marine-600 transition-colors">(+91) 91426 73145</div>
                   </div>
                 </motion.a>
 
