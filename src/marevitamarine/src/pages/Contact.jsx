@@ -18,6 +18,7 @@ import {
   TrigAmbientDrift,
   MOTION
 } from '../components/TrigScrollAnimations';
+import emailjs from '@emailjs/browser';
 
 export default function Contact() {
   const [isLoading, setIsLoading] = useState(false);
@@ -32,17 +33,12 @@ export default function Contact() {
   });
   const [focusedField, setFocusedField] = useState(null);
 
-  // Load EmailJS script
+  // Initialize EmailJS
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
-    script.async = true;
-    document.body.appendChild(script);
-    return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
-    };
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+    if (publicKey && publicKey !== 'YOUR_PUBLIC_KEY_HERE') {
+      emailjs.init(publicKey);
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -50,15 +46,27 @@ export default function Contact() {
     setFormValues(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setMessage('');
     setMessageType('');
 
-    const serviceID = window.emailjs ? 'service_marevita' : 'YOUR_SERVICE_ID';
-    const templateID = window.emailjs ? 'template_marevita' : 'YOUR_TEMPLATE_ID';
-    const userID = window.emailjs ? 'YOUR_PUBLIC_KEY' : 'YOUR_USER_ID';
+    const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    // Check if EmailJS is properly configured
+    if (!serviceID || !templateID || !publicKey ||
+        serviceID === 'YOUR_SERVICE_ID' ||
+        templateID === 'YOUR_TEMPLATE_ID' ||
+        publicKey === 'YOUR_PUBLIC_KEY_HERE') {
+      // Show configuration error
+      setIsLoading(false);
+      setMessage('Contact form is not yet configured. Please contact the administrator to set up EmailJS credentials.');
+      setMessageType('error');
+      return;
+    }
 
     const templateParams = {
       from_name: formValues.from_name,
@@ -66,31 +74,20 @@ export default function Contact() {
       subject: formValues.subject,
       message: formValues.message,
       service_type: formValues.service_type,
+      to_email: 'info@marevitamarine.com',
     };
 
-    if (window.emailjs && serviceID !== 'YOUR_SERVICE_ID') {
-      window.emailjs.send(serviceID, templateID, templateParams, userID)
-        .then(
-          () => {
-            setIsLoading(false);
-            setMessage('Your transmission has been securely dispatched. Our marine operations desk will connect within 1 business day.');
-            setMessageType('success');
-            setFormValues({ from_name: '', from_email: '', subject: '', message: '', service_type: 'General Inquiry' });
-          },
-          (error) => {
-            setIsLoading(false);
-            setMessage('Transmission received successfully. Our team will review your inquiry immediately.');
-            setMessageType('success');
-            console.warn('EmailJS fallback simulated:', error);
-          }
-        );
-    } else {
-      setTimeout(() => {
-        setIsLoading(false);
-        setMessage('Transmission received successfully. Our maritime operations desk will connect with you within 1 business day.');
-        setMessageType('success');
-        setFormValues({ from_name: '', from_email: '', subject: '', message: '', service_type: 'General Inquiry' });
-      }, 800);
+    try {
+      await emailjs.send(serviceID, templateID, templateParams);
+      setIsLoading(false);
+      setMessage('Your transmission has been securely dispatched. Our marine operations desk will connect within 1 business day.');
+      setMessageType('success');
+      setFormValues({ from_name: '', from_email: '', subject: '', message: '', service_type: 'General Inquiry' });
+    } catch (error) {
+      console.error('EmailJS error:', error);
+      setIsLoading(false);
+      setMessage('Transmission encountered rough seas. Please try again or contact us directly at info@marevitamarine.com');
+      setMessageType('error');
     }
   };
 
