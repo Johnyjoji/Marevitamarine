@@ -286,6 +286,22 @@ export default function Header() {
                   </NavLink>
                 </motion.div>
               ))}
+              {/* Contact Us in mobile menu */}
+              <motion.div
+                key="mobile-cta"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ type: 'spring', damping: 18, stiffness: 280, delay: 0.2 }}
+              >
+                <Link
+                  to="/contact"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="pointer-events-auto w-full inline-flex items-center justify-center rounded-full bg-navy-900 px-6 py-3 text-base font-semibold text-white hover:bg-navy-800 transition-colors whitespace-nowrap shadow-md mt-4"
+                >
+                  Contact Us
+                </Link>
+              </motion.div>
             </nav>
           </motion.div>
         )}
