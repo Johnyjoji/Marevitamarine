@@ -10,30 +10,42 @@ import Safety from './pages/Safety';
 import Careers from './pages/Careers';
 import Contact from './pages/Contact';
 import { HeroScrollProvider } from './context/HeroScrollContext';
+import { LoadingProvider } from './context/LoadingContext';
+import LoadingScreen from './components/LoadingScreen';
+import NavigationOfflineHandler from './components/NavigationOfflineHandler';
 
-function App() {
+/**
+ * App — Main component with loading screen system
+ * - Uses loading-logo.webm on initial entrance
+ * - Plays video to completion (3.4s)
+ * - Transitions to skeleton loaders if network fails during navigation
+ */
+export default function App() {
   return (
     <Router>
-      <HeroScrollProvider>
-        <ScrollToTop />
-        <div className="flex min-h-screen flex-col bg-white">
-          <Header />
-          <main className="flex-1">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/fleet" element={<Fleet />} />
-              <Route path="/safety" element={<Safety />} />
-              <Route path="/careers" element={<Careers />} />
-              <Route path="/contact" element={<Contact />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </HeroScrollProvider>
+      <LoadingProvider>
+        <HeroScrollProvider>
+          <ScrollToTop />
+          <NavigationOfflineHandler />
+          <div className="flex min-h-screen flex-col bg-white">
+            <Header />
+            <main className="flex-1">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/fleet" element={<Fleet />} />
+                <Route path="/safety" element={<Safety />} />
+                <Route path="/careers" element={<Careers />} />
+                <Route path="/contact" element={<Contact />} />
+              </Routes>
+            </main>
+            <Footer />
+            {/* Global branded video loading screen & offline skeleton fallback */}
+            <LoadingScreen />
+          </div>
+        </HeroScrollProvider>
+      </LoadingProvider>
     </Router>
   );
 }
-
-export default App;
