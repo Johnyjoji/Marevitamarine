@@ -22,8 +22,8 @@ export default function Footer() {
 
   return (
     <footer className="bg-navy-900 text-white">
-      <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-16">
-        <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 lg:px-8 lg:py-16">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:gap-8 lg:grid-cols-6">
           {/* Brand */}
           <div className="col-span-2 lg:col-span-2">
             <div className="brightness-0 invert rounded-lg p-2 mb-4">
@@ -50,24 +50,31 @@ export default function Footer() {
           </div>
 
           {/* Contact */}
-          <div>
+          <div className="min-w-0">
             <h3 className="text-sm font-semibold mb-4">Contact</h3>
             <ul className="space-y-3">
-              <li className="flex items-start space-x-2">
-                <Mail className="h-5 w-5 text-gray-400 flex-shrink-0 mt-0.5" />
-                <a href="mailto:info@marevitamarine.com" className="text-sm text-gray-400 hover:text-white transition-colors">
-                  info@marevitamarine.com
+              <li className="flex items-start space-x-2 min-w-0">
+                <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 flex-shrink-0 mt-0.5" />
+                <a
+                  href="mailto:info@marevitamarine.com"
+                  className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors min-w-0 leading-tight sm:leading-normal"
+                >
+                  <span className="block sm:inline lg:block xl:inline">info@</span>
+                  <span className="block sm:inline lg:block xl:inline break-all sm:break-normal">marevitamarine.com</span>
                 </a>
               </li>
-              <li className="flex items-start space-x-2">
-                <Phone className="h-5 w-5 text-gray-400 flex-shrink-0 mt-0.5" />
-                <a href="tel:+1234567890" className="text-sm text-gray-400 hover:text-white transition-colors">
+              <li className="flex items-start space-x-2 min-w-0">
+                <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 flex-shrink-0 mt-0.5" />
+                <a
+                  href="tel:+919142673145"
+                  className="text-xs sm:text-sm text-gray-400 hover:text-white transition-colors"
+                >
                   (+91) 91426 73145
                 </a>
               </li>
-              <li className="flex items-start space-x-2">
-                <MapPin className="h-5 w-5 text-gray-400 flex-shrink-0 mt-0.5" />
-                <span className="text-sm text-gray-400">
+              <li className="flex items-start space-x-2 min-w-0">
+                <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 flex-shrink-0 mt-0.5" />
+                <span className="text-xs sm:text-sm text-gray-400">
                   Kerala, India
                 </span>
               </li>
@@ -75,7 +82,7 @@ export default function Footer() {
           </div>
 
           {/* Services */}
-          <div>
+          <div className="min-w-0">
             <h3 className="text-sm font-semibold mb-4">Services</h3>
             <ul className="space-y-3">
               {services.map((item) => (
@@ -92,7 +99,7 @@ export default function Footer() {
           </div>
 
           {/* Company */}
-          <div>
+          <div className="min-w-0">
             <h3 className="text-sm font-semibold mb-4">Company</h3>
             <ul className="space-y-3">
               {company.map((item) => (
@@ -109,7 +116,7 @@ export default function Footer() {
           </div>
 
           {/* Resources */}
-          <div>
+          <div className="min-w-0">
             <h3 className="text-sm font-semibold mb-4">Resources</h3>
             <ul className="space-y-3">
               {resources.map((item) => (
