@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { WifiOff, RefreshCw } from 'lucide-react';
 import { useLoading } from '../context/LoadingContext';
 import { getSkeletonForRoute } from './LoadingSkeletons';
+import LoadingTopSlider from './LoadingTopSlider';
 
 // Exact sampled color of the video background to ensure zero visible seam
 const VIDEO_BG_COLOR = '#E1E2E4';
@@ -87,6 +88,17 @@ export default function LoadingScreen() {
           aria-label="Loading application"
           aria-busy="true"
         >
+          {/* ============================================================
+              0 / PREMIUM TOP LOADING SLIDER
+              ============================================================ */}
+          {!showSkeleton && (
+            <LoadingTopSlider
+              videoRef={videoRef}
+              isLoading={isLoading}
+              videoFinished={videoFinished}
+            />
+          )}
+
           {/* ============================================================
               1 / VIDEO LAYER: Seamless background matching video's #DDDFE1
               ============================================================ */}
